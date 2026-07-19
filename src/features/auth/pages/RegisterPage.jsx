@@ -1,12 +1,21 @@
+import React from 'react';
+import RegisterForm from '../../landing/pages/RegisterForm';
+
 function RegisterPage() {
   return (
-    <section className="flex flex-col items-center justify-center gap-4 py-16 text-center">
-      <h1 className="text-3xl font-bold text-slate-900 md:text-5xl">Registro</h1>
-      <p className="max-w-xl text-slate-600 md:text-lg">
-        Formulario de registro próximamente.
-      </p>
+    <section className="flex flex-col items-center justify-center gap-8 py-12">
+      <div className="text-center max-w-xl">
+        <h1 className="text-3xl font-bold text-slate-900 md:text-4xl mb-2">
+          Únete como Beta Tester
+        </h1>
+        <p className="text-slate-600 text-sm md:text-base">
+          Ayúdanos a probar las nuevas expansiones de Los Sims antes que nadie.
+        </p>
+      </div>
+
+      <RegisterForm />
     </section>
-  )
+  );
 }
 
-export default RegisterPage
+export default RegisterPage;

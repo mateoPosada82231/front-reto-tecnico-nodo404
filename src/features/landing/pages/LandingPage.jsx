@@ -1,12 +1,14 @@
+import React from 'react';
+import HeroSection from './HeroSection';
+import ExpansionGrid from './ExpansionGrid';
+
 function LandingPage() {
   return (
-    <section className="flex flex-col items-center justify-center gap-4 py-16 text-center">
-      <h1 className="text-3xl font-bold text-slate-900 md:text-5xl">Landing Page</h1>
-      <p className="max-w-xl text-slate-600 md:text-lg">
-        Contenido de bienvenida próximamente.
-      </p>
-    </section>
-  )
+    <div className="w-full flex flex-col gap-12 pb-16">
+      <HeroSection />
+      <ExpansionGrid />
+    </div>
+  );
 }
 
-export default LandingPage
+export default LandingPage;

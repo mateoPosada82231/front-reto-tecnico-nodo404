@@ -15,7 +15,7 @@ function Card({ image, category, title, description, price, ctaLabel, onCtaClick
         <div className="mt-auto flex items-center justify-between pt-2">
           {price && <span className="text-sm font-semibold text-slate-900">{price}</span>}
           {ctaLabel && (
-            <Button variant="secondary" href={href} onClick={onCtaClick}>
+            <Button variant="secondary" href={href} onClick={onCtaClick} target="_blank" rel="noopener noreferrer">
               {ctaLabel}
             </Button>
           )}
