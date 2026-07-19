@@ -19,7 +19,7 @@ export default function Carousel() {
       
       <div className="w-full aspect-[21/9] bg-white border border-zinc-200 rounded-3xl shadow-md flex items-center justify-center transition-all duration-300">
         <span className="text-zinc-300 font-medium tracking-wider uppercase text-sm">
-          [ Espacio para Imagen - Diapositiva {currentIndex + 1} ]
+          [ Espacio para Imagen {currentIndex + 1} ]
         </span>
       </div>
 

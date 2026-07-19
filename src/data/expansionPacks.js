@@ -8,7 +8,7 @@ export const expansionPacks = [
     precio: 159900,
     descripcion: "Crea tu propia vida rústica. Cría y entrena caballos, entabla amistad con mini-cabras y mini-ovejas, y elabora tu propio néctar casero para vender o compartir.",
     imagen: packMedia[1].imagen,
-    destacado: true,
+    featured: true,
     linkTienda: packMedia[1].linkTienda
   },
   {
@@ -18,7 +18,7 @@ export const expansionPacks = [
     precio: 159900,
     descripcion: "Inscríbete en la universidad, explora experiencias académicas y asiste a actividades extracurriculares.",
     imagen: packMedia[2].imagen,
-    destacado: false,
+    featured: false,
     linkTienda: packMedia[2].linkTienda
   },
   {
@@ -28,7 +28,7 @@ export const expansionPacks = [
     precio: 159900,
     descripcion: "Lleva a tus Sims a la gran ciudad y experimenta todo lo que ofrece, desde el bullicio exterior hasta situaciones exclusivas de los apartamentos.",
     imagen: packMedia[3].imagen,
-    destacado: false,
+    featured: false,
     linkTienda: packMedia[3].linkTienda
   },
   {
@@ -38,7 +38,7 @@ export const expansionPacks = [
     precio: 159900,
     descripcion: "Añade el clima a la vida de tus Sims para contar nuevas historias, disfrutar de actividades estacionales y celebrar festividades.",
     imagen: packMedia[4].imagen,
-    destacado: false,
+    featured: false,
     linkTienda: packMedia[4].linkTienda
   },
   {
@@ -48,7 +48,7 @@ export const expansionPacks = [
     precio: 159900,
     descripcion: "Controla activamente a tus Sims en sus lugares de trabajo y determina si se dirigen hacia un gran ascenso o se convierten en una amenaza.",
     imagen: packMedia[5].imagen,
-    destacado: false,
+    featured: false,
     linkTienda: packMedia[5].linkTienda
   },
   {
@@ -58,7 +58,7 @@ export const expansionPacks = [
     precio: 159900,
     descripcion: "Crea una variedad de perros y gatos, añádelos a los hogares de tus Sims para cambiar sus vidas para siempre y cuida de las mascotas del vecindario.",
     imagen: packMedia[6].imagen,
-    destacado: false,
+    featured: false,
     linkTienda: packMedia[6].linkTienda
   },
   {
@@ -68,7 +68,7 @@ export const expansionPacks = [
     precio: 159900,
     descripcion: "Escapa de la rutina y disfruta de un estilo de vida relajado rodeado de playas en Sulani, donde el sol brilla con fuerza y las noches son refrescantes.",
     imagen: packMedia[7].imagen,
-    destacado: false,
+    featured: false,
     linkTienda: packMedia[7].linkTienda
   },
   {
@@ -78,7 +78,7 @@ export const expansionPacks = [
     precio: 159900,
     descripcion: "Equípate para los deportes de invierno, relájate en aguas termales y diseña tu hogar de estilo japonés.",
     imagen: packMedia[8].imagen,
-    destacado: false,
+    featured: false,
     linkTienda: packMedia[8].linkTienda
   },
   {
@@ -88,7 +88,7 @@ export const expansionPacks = [
     precio: 159900,
     descripcion: "Experimenta la vida en vecindarios multifamiliares como inquilino o propietario de propiedades residenciales en alquiler.",
     imagen: packMedia[9].imagen,
-    destacado: false,
+    featured: false,
     linkTienda: packMedia[9].linkTienda
   }
 ];
