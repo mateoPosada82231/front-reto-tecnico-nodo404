@@ -19,7 +19,7 @@ export default function Carousel() {
       
       <div className="w-full aspect-[21/9] bg-white border border-zinc-200 rounded-3xl shadow-md flex items-center justify-center transition-all duration-300">
         <span className="text-zinc-300 font-medium tracking-wider uppercase text-sm">
-          [ Espacio para Imagen {currentIndex + 1} ]
+          [ Image {currentIndex + 1} ]
         </span>
       </div>
 
@@ -40,10 +40,10 @@ export default function Carousel() {
 
       <div className="flex flex-col items-center gap-1 text-center">
         <span className="text-xs font-semibold uppercase tracking-widest text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-100">
-          {currentPack.categoria}
+          {currentPack.category}
         </span>
         <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight mt-2 transition-all duration-300">
-          {currentPack.nombre}
+          {currentPack.name}
         </h2>
       </div>
 
@@ -63,15 +63,15 @@ export default function Carousel() {
 
         <div className="flex flex-col items-center gap-5 text-center max-w-2xl">
           <p className="text-zinc-600 text-sm md:text-base leading-relaxed font-light transition-all duration-300 min-h-[4.5rem]">
-            {currentPack.descripcion}
+            {currentPack.description}
           </p>
           
           <div className="flex flex-col sm:flex-row items-center gap-4 mt-2">
             <span className="text-base md:text-lg font-bold text-slate-900 bg-slate-100 px-4 py-2 rounded-xl border border-slate-200">
-              {currentPack.precio.toLocaleString('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 })}
+              {currentPack.price.toLocaleString('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 })}
             </span>
             <a
-              href={currentPack.linkTienda}
+              href={currentPack.link}
               target="_blank"
               rel="noopener noreferrer"
               className="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm rounded-xl shadow-lg shadow-emerald-600/10 active:scale-95 transition-all duration-200 flex items-center gap-2 cursor-pointer inline-flex text-center"
