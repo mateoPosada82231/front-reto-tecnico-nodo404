@@ -30,15 +30,15 @@ export default function HeroSection() {
 
             <div className="relative z-10 w-full max-w-5xl px-12 md:px-16 text-center md:text-left flex flex-col md:items-start items-center gap-4 text-white">
               <h1 className="text-3xl sm:text-4xl md:text-6xl font-black tracking-tight leading-tight max-w-3xl drop-shadow-md">
-                {pack.nombre}
+                {pack.name}
               </h1>
 
               <p className="text-sm sm:text-base md:text-lg text-gray-200 max-w-2xl leading-relaxed font-light">
-                {pack.descripcion}
+                {pack.description}
               </p>
 
               <a 
-                href={pack.linkTienda}
+                href={pack.link}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-4 px-8 py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-lg shadow-lg shadow-emerald-500/20 active:scale-95 transition-all duration-200 text-sm md:text-base cursor-pointer inline-block text-center"
