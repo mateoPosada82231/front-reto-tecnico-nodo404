@@ -2,7 +2,7 @@ import Button from '../atoms/Button'
 
 function Card({ image, category, title, description, price, ctaLabel, onCtaClick, href }) {
   return (
-    <article className="flex flex-col overflow-hidden rounded-lg border border-slate-200 transition-shadow hover:shadow-md">
+    <article className="flex flex-col overflow-hidden rounded-lg border border-slate-200 transition-all duration-300 hover:shadow-xl hover:scale-105">
       <img src={image} alt={title} className="aspect-video w-full object-cover" />
       <div className="flex flex-1 flex-col gap-2 p-4">
         {category && (
