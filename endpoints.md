@@ -18,6 +18,8 @@ Content-Type: application/json
 
 - `POST /api/auth/register`
 - `POST /api/auth/login`
+- `POST /api/auth/beta/**`
+- `GET /api/beta-testers/**`
 - `GET /api/extensions/**`
 - `GET /oauth2/authorization/google`
 - `GET /oauth2/authorization/facebook`
@@ -31,6 +33,7 @@ Content-Type: application/json
 - `POST/PUT/DELETE /api/extensions/**`
 - `GET/POST/DELETE /api/cart/**`
 - `GET/POST /api/buys/**`
+- `POST/PUT/DELETE /api/beta-testers/**`
 - Cualquier otra ruta no pública
 
 ### Reglas de ownership (carrito y compras)
@@ -191,7 +194,91 @@ Respuestas comunes:
 
 ---
 
-## 4) Extensions - `/api/extensions`
+## 4) Beta Testers - `/api/beta-testers`
+
+### Públicas (GET)
+
+- `GET /api/beta-testers`
+- `GET /api/beta-testers/{email}`
+
+### Protegidas (escritura)
+
+- `POST /api/beta-testers`
+- `PUT /api/beta-testers/{email}`
+- `DELETE /api/beta-testers/{email}`
+
+### GET `/api/beta-testers`
+
+Lista todos los beta testers registrados.
+
+```json
+[
+  {
+    "email": "beta@nodo.com",
+    "country": "CO",
+    "dateOfBirth": "1995-06-15",
+    "identification": "1234567890",
+    "fullName": "Beta Tester",
+    "mobileNumber": "3001234567",
+    "dateOfAdmission": "2026-07-23",
+    "provider": "FORM",
+    "providerId": null
+  }
+]
+```
+
+### GET `/api/beta-testers/{email}`
+
+Consulta un beta tester por email.
+
+- `200 OK`: beta tester encontrado
+- `404 Not Found`: email inexistente
+
+### POST `/api/beta-testers`
+
+Registra un nuevo beta tester. La contraseña se encripta automáticamente. `dateOfAdmission` se asigna con la fecha actual.
+
+Body:
+
+```json
+{
+  "email": "beta@nodo.com",
+  "password": "Secret123!",
+  "country": "CO",
+  "dateOfBirth": "1995-06-15",
+  "identification": "1234567890",
+  "fullName": "Beta Tester",
+  "mobileNumber": "3001234567"
+}
+```
+
+Respuesta `201 Created`: beta tester creado (sin contraseña en claro).
+
+### PUT `/api/beta-testers/{email}`
+
+Actualiza un beta tester existente. La contraseña se re-encripta.
+
+Body: mismo formato que POST.
+
+- `200 OK`: beta tester actualizado
+- `404 Not Found`: email inexistente
+
+### DELETE `/api/beta-testers/{email}`
+
+Elimina un beta tester por email.
+
+- `204 No Content`: eliminado correctamente
+- `404 Not Found`: email inexistente
+
+Respuestas comunes del módulo:
+
+- `200 OK`, `201 Created`, `204 No Content`
+- `401 Unauthorized` sin token o con token inválido
+- `404 Not Found` para recursos inexistentes
+
+---
+
+## 5) Extensions - `/api/extensions`
 
 ### Públicas (GET)
 
@@ -241,7 +328,7 @@ Respuestas comunes:
 
 ---
 
-## 5) Cart - `/api/cart` (todas protegidas + ownership)
+## 6) Cart - `/api/cart` (todas protegidas + ownership)
 
 ### GET `/api/cart/{email}`
 
@@ -300,7 +387,7 @@ Respuestas comunes del módulo:
 
 ---
 
-## 6) Buys - `/api/buys` (todas protegidas)
+## 7) Buys - `/api/buys` (todas protegidas)
 
 ### GET `/api/buys`
 
@@ -408,6 +495,8 @@ Respuestas comunes del módulo:
 
 - `POST /api/auth/register`
 - `POST /api/auth/login`
+- `POST /api/auth/beta/**`
+- `GET /api/beta-testers/**`
 - `GET /api/extensions/**`
 - `GET /oauth2/authorization/{provider}`
 - `GET /login/oauth2/code/{registrationId}`
@@ -419,3 +508,4 @@ Respuestas comunes del módulo:
 - `POST/PUT/DELETE /api/extensions/**`
 - `GET/POST/DELETE /api/cart/**`
 - `GET/POST /api/buys/**`
+- `POST/PUT/DELETE /api/beta-testers/**`

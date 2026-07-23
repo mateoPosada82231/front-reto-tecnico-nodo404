@@ -1,4 +1,4 @@
-import MainLayout from '../shared/components/layout/MainLayout'
+import MainLayout from '../shared/components/MainLayout'
 import AppRouter from './router'
 
 function App() {

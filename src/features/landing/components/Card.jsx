@@ -1,4 +1,4 @@
-import Button from '../atoms/Button'
+import Button from '../../../shared/components/Button'
 
 function Card({ image, category, title, description, price, ctaLabel, onCtaClick, href }) {
   return (
