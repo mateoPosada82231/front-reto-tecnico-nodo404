@@ -1,18 +1,24 @@
-import React, { useState } from 'react';
-import { expansionPacks } from '../../../data/expansionPacks.js';
+import React from 'react';
+import useHeroSection from '../hooks/useHeroSection';
 
 export default function HeroSection() {
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const { packs, currentPack, currentIndex, setCurrentIndex, prevSlide, nextSlide, loading, error } = useHeroSection();
 
-  const prevSlide = () => {
-    setCurrentIndex((prev) => (prev === 0 ? expansionPacks.length - 1 : prev - 1));
-  };
+  if (loading) {
+    return (
+      <section className="relative w-full h-[80vh] overflow-hidden flex items-center justify-center bg-slate-900">
+        <div className="w-10 h-10 border-4 border-emerald-400 border-t-transparent rounded-full animate-spin" />
+      </section>
+    );
+  }
 
-  const nextSlide = () => {
-    setCurrentIndex((prev) => (prev === expansionPacks.length - 1 ? 0 : prev + 1));
-  };
-
-  const currentPack = expansionPacks[currentIndex];
+  if (error) {
+    return (
+      <section className="relative w-full h-[80vh] overflow-hidden flex items-center justify-center bg-slate-900">
+        <p className="text-red-400 text-sm">Error al cargar extensiones: {error}</p>
+      </section>
+    );
+  }
 
   return (
     <section className="relative w-full h-[80vh] overflow-hidden flex items-center justify-center">
@@ -20,11 +26,11 @@ export default function HeroSection() {
         className="absolute inset-0 flex transition-transform duration-500 ease-in-out"
         style={{ transform: `translateX(-${currentIndex * 100}%)` }}
       >
-        {expansionPacks.map((pack) => (
+        {packs.map((pack) => (
           <div 
             key={pack.id}
             className="relative w-full h-full flex-shrink-0 flex items-center justify-center bg-cover bg-center"
-            style={{ backgroundImage: `url('${pack.imagen}')` }}
+            style={{ backgroundImage: `url('${pack.image || pack.imagen || ''}')` }}
           >
             <div className="absolute inset-0 bg-black/65 z-0" />
 
@@ -34,11 +40,11 @@ export default function HeroSection() {
               </h1>
 
               <p className="text-sm sm:text-base md:text-lg text-gray-200 max-w-2xl leading-relaxed font-light">
-                {pack.description}
+                {pack.description || pack.aboutGame}
               </p>
 
               <a 
-                href={pack.link}
+                href={pack.link || '#'}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-4 px-8 py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-lg shadow-lg shadow-emerald-500/20 active:scale-95 transition-all duration-200 text-sm md:text-base cursor-pointer inline-block text-center"
@@ -73,7 +79,7 @@ export default function HeroSection() {
       </button>
 
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2.5 z-20">
-        {expansionPacks.map((_, index) => (
+        {packs.map((_, index) => (
           <button
             key={index}
             onClick={() => setCurrentIndex(index)}
