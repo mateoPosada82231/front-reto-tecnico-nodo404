@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { X, Sparkles } from 'lucide-react'
+import { X } from 'lucide-react'
 
 export default function WelcomeModal() {
   const [open, setOpen] = useState(true)
@@ -22,8 +22,12 @@ export default function WelcomeModal() {
           <X className="w-5 h-5" />
         </button>
 
-        <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-plumbob/10 mb-5">
-          <Sparkles className="w-7 h-7 text-plumbob" />
+        <div className="flex justify-center mb-5">
+          <img
+            src="/sims-icon.png"
+            alt=""
+            className="w-20 h-20 object-contain"
+          />
         </div>
 
         <h2 className="text-2xl font-extrabold mb-3 tracking-tight text-text-main">
