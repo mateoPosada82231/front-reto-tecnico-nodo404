@@ -11,7 +11,7 @@ function LoginForm() {
   })
 
   return (
-    <form onSubmit={handleSubmit} className="w-full max-w-md space-y-5 rounded-xl bg-white p-8 shadow-lg">
+    <form onSubmit={handleSubmit} className="w-full max-w-md space-y-5 rounded-2xl bg-surface border border-border/50 p-8 shadow-2xl shadow-black/20 animate-scale-in">
       {success && (
         <Alert variant="success">Inicio de sesión exitoso. Redirigiendo...</Alert>
       )}
@@ -27,6 +27,7 @@ function LoginForm() {
         value={form.email}
         onChange={handleChange}
         error={errors.email}
+        placeholder="tu@email.com"
         required
       />
 
@@ -37,6 +38,7 @@ function LoginForm() {
         value={form.password}
         onChange={handleChange}
         error={errors.password}
+        placeholder="••••••••"
         required
       />
 
