@@ -1,9 +1,12 @@
 import { Loader2 } from 'lucide-react'
 
 const VARIANT_CLASSES = {
-  primary: 'bg-indigo-600 text-white hover:bg-indigo-500 focus-visible:outline-indigo-600',
+  primary:
+    'bg-plumbob text-white hover:bg-plumbob-light font-semibold shadow-lg shadow-plumbob/20 hover:shadow-plumbob/40 focus-visible:outline-plumbob',
   secondary:
-    'bg-white text-slate-900 border border-slate-300 hover:bg-slate-50 focus-visible:outline-indigo-600',
+    'bg-surface text-text-main border border-border hover:bg-hover hover:border-text-dim focus-visible:outline-plumbob',
+  ghost:
+    'bg-transparent text-text-sub hover:text-text-main hover:bg-surface/50 focus-visible:outline-plumbob',
 }
 
 function Button({
@@ -18,7 +21,7 @@ function Button({
   ...props
 }) {
   const isDisabled = disabled || loading
-  const classes = `inline-flex items-center justify-center gap-2 rounded-md px-4 py-2 text-sm font-medium transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${VARIANT_CLASSES[variant]} ${className}`
+  const classes = `inline-flex items-center justify-center gap-2 rounded-xl px-5 py-2.5 text-sm font-medium transition-all duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-50 active:scale-[0.97] ${VARIANT_CLASSES[variant]} ${className}`
 
   const content = (
     <>

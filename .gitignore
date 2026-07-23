@@ -22,3 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# AI context
+AGENTS.md
+skills-lock.json
+.agents

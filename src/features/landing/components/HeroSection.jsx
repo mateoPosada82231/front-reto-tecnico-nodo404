@@ -1,53 +1,54 @@
-import React from 'react';
-import useHeroSection from '../hooks/useHeroSection';
+import React from 'react'
+import useHeroSection from '../hooks/useHeroSection'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 
 export default function HeroSection() {
-  const { packs, currentPack, currentIndex, setCurrentIndex, prevSlide, nextSlide, loading, error } = useHeroSection();
+  const { packs, currentIndex, setCurrentIndex, prevSlide, nextSlide, loading, error } = useHeroSection()
 
   if (loading) {
     return (
-      <section className="relative w-full h-[80vh] overflow-hidden flex items-center justify-center bg-slate-900">
-        <div className="w-10 h-10 border-4 border-emerald-400 border-t-transparent rounded-full animate-spin" />
+      <section className="relative w-full h-[80vh] overflow-hidden flex items-center justify-center bg-bg">
+        <div className="w-12 h-12 border-4 border-plumbob/30 border-t-plumbob rounded-full animate-spin" />
       </section>
-    );
+    )
   }
 
   if (error) {
     return (
-      <section className="relative w-full h-[80vh] overflow-hidden flex items-center justify-center bg-slate-900">
+      <section className="relative w-full h-[80vh] overflow-hidden flex items-center justify-center bg-bg">
         <p className="text-red-400 text-sm">Error al cargar extensiones: {error}</p>
       </section>
-    );
+    )
   }
 
   return (
-    <section className="relative w-full h-[80vh] overflow-hidden flex items-center justify-center">
-      <div 
-        className="absolute inset-0 flex transition-transform duration-500 ease-in-out"
+    <section className="relative w-full h-[80vh] overflow-hidden flex items-center justify-center rounded-2xl mx-auto max-w-7xl">
+      <div
+        className="absolute inset-0 flex transition-transform duration-700 ease-[cubic-bezier(0.25,0.1,0.25,1)]"
         style={{ transform: `translateX(-${currentIndex * 100}%)` }}
       >
         {packs.map((pack) => (
-          <div 
+          <div
             key={pack.id}
             className="relative w-full h-full flex-shrink-0 flex items-center justify-center bg-cover bg-center"
             style={{ backgroundImage: `url('${pack.image || pack.imagen || ''}')` }}
           >
-            <div className="absolute inset-0 bg-black/65 z-0" />
+            <div className="absolute inset-0 bg-gradient-to-t from-bg/80 via-bg/10 to-transparent z-0" />
 
-            <div className="relative z-10 w-full max-w-5xl px-12 md:px-16 text-center md:text-left flex flex-col md:items-start items-center gap-4 text-white">
-              <h1 className="text-3xl sm:text-4xl md:text-6xl font-black tracking-tight leading-tight max-w-3xl drop-shadow-md">
+            <div className="relative z-10 w-full max-w-5xl px-8 md:px-16 text-center md:text-left flex flex-col md:items-start items-center gap-5 text-white">
+              <h1 className="text-3xl sm:text-4xl md:text-6xl font-extrabold tracking-tight leading-[1.1] max-w-3xl">
                 {pack.name}
               </h1>
 
-              <p className="text-sm sm:text-base md:text-lg text-gray-200 max-w-2xl leading-relaxed font-light">
+              <p className="text-sm sm:text-base md:text-lg text-text-muted max-w-2xl leading-relaxed font-light">
                 {pack.description || pack.aboutGame}
               </p>
 
-              <a 
+              <a
                 href={pack.link || '#'}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-4 px-8 py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-lg shadow-lg shadow-emerald-500/20 active:scale-95 transition-all duration-200 text-sm md:text-base cursor-pointer inline-block text-center"
+                className="mt-2 px-8 py-3.5 bg-plumbob hover:bg-plumbob-light text-white font-bold rounded-xl shadow-lg shadow-plumbob/25 hover:shadow-plumbob/40 active:scale-[0.97] transition-all duration-200 text-sm md:text-base cursor-pointer inline-block text-center"
               >
                 Comprar ahora
               </a>
@@ -59,23 +60,19 @@ export default function HeroSection() {
       <button
         type="button"
         onClick={prevSlide}
-        className="absolute left-4 md:left-8 z-20 p-3 bg-black/30 hover:bg-black/50 border border-white/20 hover:border-white/50 text-white rounded-full active:scale-95 transition-all duration-200 cursor-pointer flex items-center justify-center"
+        className="absolute left-4 md:left-8 z-20 p-3 glass rounded-full active:scale-95 transition-all duration-200 cursor-pointer flex items-center justify-center text-text-sub hover:text-text-main hover:border-plumbob/30"
         aria-label="Paquete anterior"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-        </svg>
+        <ChevronLeft className="w-5 h-5" />
       </button>
 
       <button
         type="button"
         onClick={nextSlide}
-        className="absolute right-4 md:right-8 z-20 p-3 bg-black/30 hover:bg-black/50 border border-white/20 hover:border-white/50 text-white rounded-full active:scale-95 transition-all duration-200 cursor-pointer flex items-center justify-center"
+        className="absolute right-4 md:right-8 z-20 p-3 glass rounded-full active:scale-95 transition-all duration-200 cursor-pointer flex items-center justify-center text-text-sub hover:text-text-main hover:border-plumbob/30"
         aria-label="Paquete siguiente"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-        </svg>
+        <ChevronRight className="w-5 h-5" />
       </button>
 
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2.5 z-20">
@@ -83,16 +80,15 @@ export default function HeroSection() {
           <button
             key={index}
             onClick={() => setCurrentIndex(index)}
-            className={`w-2.5 h-2.5 rounded-full border transition-all duration-200 cursor-pointer ${
+            className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
               currentIndex === index
-                ? 'bg-emerald-400 border-emerald-400 scale-110'
-                : 'bg-white/40 border-white/20 hover:bg-white/60'
+                ? 'w-8 bg-plumbob shadow-lg shadow-plumbob/40'
+                : 'w-2 bg-white/30 hover:bg-white/50'
             }`}
             aria-label={`Ir al paquete ${index + 1}`}
           />
         ))}
       </div>
-
     </section>
-  );
+  )
 }

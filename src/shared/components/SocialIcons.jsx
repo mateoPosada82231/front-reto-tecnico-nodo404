@@ -8,7 +8,7 @@ function SocialIcons({ items = [], className = '' }) {
             target="_blank"
             rel="noopener noreferrer"
             aria-label={label}
-            className="text-slate-500 transition-colors hover:text-slate-900"
+            className="text-text-dim transition-all duration-200 hover:text-plumbob hover:scale-110"
           >
             <Icon className="h-5 w-5" aria-hidden="true" />
           </a>

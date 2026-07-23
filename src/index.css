@@ -1,1 +1,168 @@
 @import "tailwindcss";
+
+@theme {
+  --color-plumbob: #10b981;
+  --color-plumbob-light: #34d399;
+  --color-plumbob-dark: #059669;
+
+  --color-azure: #3b82f6;
+  --color-azure-light: #60a5fa;
+  --color-azure-dark: #2563eb;
+
+  --color-bg: #0f172a;
+  --color-surface: #1e293b;
+  --color-border: #334155;
+  --color-hover: #2d3a4f;
+  --color-text-main: #f8fafc;
+  --color-text-sub: #94a3b8;
+  --color-text-dim: #64748b;
+  --color-glass-bg: rgba(15, 23, 42, 0.8);
+  --color-glass-border: rgba(51, 65, 85, 0.6);
+  --color-glass-surface: rgba(30, 41, 59, 0.6);
+
+  --font-sans: "Plus Jakarta Sans", system-ui, sans-serif;
+
+  --animate-fade-in: fadeIn 0.6s ease-out;
+  --animate-slide-up: slideUp 0.5s ease-out;
+  --animate-slide-down: slideDown 0.3s ease-out;
+  --animate-scale-in: scaleIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-glow-pulse: glowPulse 2.5s ease-in-out infinite;
+  --animate-beta-shimmer: betaShimmer 3s ease-in-out infinite;
+  --animate-float: float 3s ease-in-out infinite;
+}
+
+/* ─── Light theme overrides ─── */
+[data-theme="light"] {
+  --color-bg: #f8fafc;
+  --color-surface: #ffffff;
+  --color-border: #e2e8f0;
+  --color-hover: #f1f5f9;
+  --color-text-main: #0f172a;
+  --color-text-sub: #475569;
+  --color-text-dim: #94a3b8;
+  --color-plumbob: #059669;
+  --color-plumbob-light: #10b981;
+  --color-plumbob-dark: #047857;
+  --color-azure: #2563eb;
+  --color-azure-light: #3b82f6;
+  --color-azure-dark: #1d4ed8;
+  --color-glass-bg: rgba(255, 255, 255, 0.8);
+  --color-glass-border: rgba(226, 232, 240, 0.8);
+  --color-glass-surface: rgba(255, 255, 255, 0.6);
+}
+
+/* ─── Keyframes ─── */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 8px var(--color-plumbob), 0 0 20px var(--color-plumbob); }
+  50% { box-shadow: 0 0 16px var(--color-plumbob), 0 0 40px var(--color-plumbob); }
+}
+
+@keyframes betaShimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+@keyframes modalBackdrop {
+  from { opacity: 0; backdrop-filter: blur(0); }
+  to { opacity: 1; backdrop-filter: blur(8px); }
+}
+
+@keyframes modalContent {
+  from { opacity: 0; transform: scale(0.9) translateY(16px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* ─── Base layer ─── */
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color-scheme: light dark;
+  }
+
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-text-main);
+    font-family: var(--font-sans);
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  ::selection {
+    background-color: rgba(16, 185, 129, 0.3);
+    color: white;
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--color-bg);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-border);
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-text-dim);
+  }
+}
+
+/* ─── Utilities ─── */
+@utility beta-glow {
+  animation: glowPulse 2.5s ease-in-out infinite, float 3s ease-in-out infinite;
+}
+
+@utility beta-shimmer {
+  background: linear-gradient(
+    110deg,
+    var(--color-plumbob-dark) 0%,
+    var(--color-plumbob) 25%,
+    var(--color-plumbob-light) 50%,
+    var(--color-plumbob) 75%,
+    var(--color-plumbob-dark) 100%
+  );
+  background-size: 200% 100%;
+  animation: betaShimmer 3s ease-in-out infinite;
+}
+
+@utility glass {
+  background: var(--color-glass-surface);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--color-glass-border);
+}
+
+@utility glass-strong {
+  background: var(--color-glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--color-glass-border);
+}

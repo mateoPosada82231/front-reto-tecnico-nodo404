@@ -1,20 +1,20 @@
-import RegisterForm from '../components/RegisterForm';
+import RegisterForm from '../components/RegisterForm'
 
 function RegisterPage() {
   return (
-    <section className="flex flex-col items-center justify-center gap-8 py-12">
+    <section className="flex flex-col items-center justify-center gap-8 py-12 animate-fade-in">
       <div className="text-center max-w-xl">
-        <h1 className="text-3xl font-bold text-slate-900 md:text-4xl mb-2">
+        <h1 className="text-3xl font-extrabold text-text-main md:text-4xl mb-3 tracking-tight">
           Crear Cuenta
         </h1>
-        <p className="text-slate-600 text-sm md:text-base">
+        <p className="text-text-sub text-sm md:text-base leading-relaxed">
           Regístrate para acceder a todas las funcionalidades.
         </p>
       </div>
 
       <RegisterForm />
     </section>
-  );
+  )
 }
 
-export default RegisterPage;
+export default RegisterPage
