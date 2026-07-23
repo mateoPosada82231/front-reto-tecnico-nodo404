@@ -1,9 +1,8 @@
-import InputField from './InputField'
-import SelectField from './SelectField'
+import InputField from '../../auth/components/InputField'
+import SelectField from '../../auth/components/SelectField'
 import Button from '../../../shared/components/Button'
-import Alert from './Alert'
-import SocialButtons from './SocialButtons'
-import useRegisterForm from '../hooks/useRegisterForm'
+import Alert from '../../auth/components/Alert'
+import useBetaTesterForm from '../hooks/useBetaTesterForm'
 
 const countries = [
   { value: 'CO', label: 'Colombia' },
@@ -16,13 +15,15 @@ const countries = [
   { value: 'BR', label: 'Brasil' },
 ]
 
-function RegisterForm() {
-  const { form, errors, serverError, loading, success, handleChange, handleSubmit } = useRegisterForm()
+function BetaTesterForm() {
+  const { form, errors, serverError, loading, success, handleChange, handleSubmit } = useBetaTesterForm()
 
   return (
     <form onSubmit={handleSubmit} className="w-full max-w-2xl space-y-5 rounded-xl bg-white p-8 shadow-lg">
       {success && (
-        <Alert variant="success">Cuenta creada con éxito. Ya puedes iniciar sesión.</Alert>
+        <Alert variant="success">
+          ¡Registro exitoso! Ya eres un Beta Tester.
+        </Alert>
       )}
 
       {serverError && !success && (
@@ -39,12 +40,10 @@ function RegisterForm() {
       <InputField label="Confirmar contraseña" name="confirmPassword" type="password" value={form.confirmPassword} onChange={handleChange} error={errors.confirmPassword} required />
 
       <Button type="submit" loading={loading} disabled={loading} className="w-full">
-        {loading ? 'Creando cuenta...' : 'Crear Cuenta'}
+        {loading ? 'Registrando...' : 'Ser Beta Tester'}
       </Button>
-
-      <SocialButtons />
     </form>
   )
 }
 
-export default RegisterForm
+export default BetaTesterForm

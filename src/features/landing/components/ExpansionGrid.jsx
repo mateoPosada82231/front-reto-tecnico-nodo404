@@ -1,5 +1,5 @@
 import React from 'react';
-import Card from '../../../shared/components/molecules/Card.jsx';
+import Card from './Card';
 import useExpansionGrid from '../hooks/useExpansionGrid';
 
 export default function ExpansionGrid() {

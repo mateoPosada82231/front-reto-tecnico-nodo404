@@ -1,7 +1,7 @@
 import React from 'react';
-import HeroSection from './HeroSection';
-import ExpansionGrid from './ExpansionGrid';
-import WelcomeModal from '../../../shared/components/molecules/WelcomeModal';
+import HeroSection from '../components/HeroSection';
+import ExpansionGrid from '../components/ExpansionGrid';
+import WelcomeModal from '../components/WelcomeModal';
 
 function LandingPage() {
   return (
