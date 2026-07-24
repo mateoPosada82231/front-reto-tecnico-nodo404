@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom'
-import { LogOut, Beaker, Menu, X } from 'lucide-react'
+import { LogOut, Beaker, Menu, X, AlertCircle } from 'lucide-react'
 import Logo from './Logo'
 import ThemeToggle from './ThemeToggle'
 import useHeader from '../hooks/useHeader'
@@ -17,6 +17,7 @@ function Header() {
     user,
     email,
     isBetaTester,
+    profileComplete,
     isLoggedIn,
     betaCount,
     mobileOpen,
@@ -30,6 +31,15 @@ function Header() {
 
   return (
     <header className="w-full glass-strong sticky top-0 z-50">
+      {isLoggedIn && !profileComplete && (
+        <div className="bg-azure/10 border-b border-azure/20 px-4 py-2 md:px-8">
+          <div className="max-w-7xl mx-auto flex items-center justify-center gap-2 text-xs md:text-sm text-azure">
+            <AlertCircle className="w-4 h-4 shrink-0" />
+            <span>Completa tu información en el perfil</span>
+          </div>
+        </div>
+      )}
+
       <div className="max-w-7xl mx-auto flex items-center justify-between px-4 py-3 md:px-8">
         <Logo />
 

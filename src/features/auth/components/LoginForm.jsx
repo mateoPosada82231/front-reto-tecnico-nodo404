@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import InputField from './InputField'
 import Button from '../../../shared/components/Button'
 import Alert from './Alert'
+import SocialButtons from './SocialButtons'
 import useLoginForm from '../hooks/useLoginForm'
 
 function LoginForm() {
@@ -45,6 +46,8 @@ function LoginForm() {
       <Button type="submit" loading={loading} disabled={loading} className="w-full">
         {loading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
       </Button>
+
+      <SocialButtons mode="login" />
     </form>
   )
 }

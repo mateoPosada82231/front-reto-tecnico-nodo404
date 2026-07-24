@@ -3,6 +3,7 @@ import LandingPage from '../features/landing/pages/LandingPage'
 import RegisterPage from '../features/auth/pages/RegisterPage'
 import LoginPage from '../features/auth/pages/LoginPage'
 import BetaTesterPage from '../features/betatester/pages/BetaTesterPage'
+import OAuthCallback from '../features/auth/pages/OAuthCallback'
 
 function AppRouter() {
   return (
@@ -11,6 +12,7 @@ function AppRouter() {
       <Route path="/registro" element={<RegisterPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/beta-tester" element={<BetaTesterPage />} />
+      <Route path="/oauth2/callback" element={<OAuthCallback />} />
     </Routes>
   )
 }

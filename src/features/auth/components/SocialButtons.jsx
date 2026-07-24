@@ -1,14 +1,23 @@
 import Button from '../../../shared/components/Button'
 
-function SocialButtons() {
+function SocialButtons({ mode = 'register' }) {
+  const handleOAuthClick = (provider) => {
+    window.location.href = `/oauth2/authorization/${provider}`
+  }
+
   return (
     <div className="mt-6 border-t border-border/50 pt-6">
       <p className="mb-4 text-center text-sm text-text-dim">
-        O regístrate con
+        {mode === 'login' ? 'O inicia sesión con' : 'O regístrate con'}
       </p>
 
       <div className="flex flex-col gap-3 sm:flex-row">
-        <Button type="button" variant="secondary" className="w-full">
+        <Button
+          type="button"
+          variant="secondary"
+          className="w-full cursor-pointer"
+          onClick={() => handleOAuthClick('google')}
+        >
           <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
             <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" />
             <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
@@ -18,7 +27,12 @@ function SocialButtons() {
           Google
         </Button>
 
-        <Button type="button" variant="secondary" className="w-full">
+        <Button
+          type="button"
+          variant="secondary"
+          className="w-full cursor-pointer"
+          onClick={() => handleOAuthClick('facebook')}
+        >
           <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
             <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
           </svg>
