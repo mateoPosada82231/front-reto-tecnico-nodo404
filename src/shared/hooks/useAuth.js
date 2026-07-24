@@ -14,6 +14,7 @@ export default function useAuth() {
   const [user, setUser] = useState(null)
   const [isBetaTester, setIsBetaTester] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [profileComplete, setProfileComplete] = useState(true)
 
   const fetchAuthData = useCallback(() => {
     const { token, email } = getStoredAuth()
@@ -22,6 +23,7 @@ export default function useAuth() {
     if (!token || !email) {
       setUser(null)
       setIsBetaTester(false)
+      setProfileComplete(true)
       setLoading(false)
       return
     }
@@ -31,8 +33,10 @@ export default function useAuth() {
       getUserByEmail(email).catch(() => null),
       getBetaTesterByEmail(email).then(() => true).catch(() => false),
     ]).then(([userResult, betaResult]) => {
-      setUser(userResult.status === 'fulfilled' ? userResult.value : null)
+      const userData = userResult.status === 'fulfilled' ? userResult.value : null
+      setUser(userData)
       setIsBetaTester(betaResult.status === 'fulfilled' ? betaResult.value : false)
+      setProfileComplete(userData?.profileComplete ?? true)
       setLoading(false)
     })
   }, [])
@@ -52,7 +56,8 @@ export default function useAuth() {
     setAuth({ token: null, email: null })
     setUser(null)
     setIsBetaTester(false)
+    setProfileComplete(true)
   }, [])
 
-  return { user, email: auth.email, isBetaTester, isLoggedIn: !!auth.token, loading, logout }
+  return { user, email: auth.email, isBetaTester, profileComplete, isLoggedIn: !!auth.token, loading, logout }
 }

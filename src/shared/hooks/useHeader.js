@@ -6,7 +6,7 @@ import { getBetaTesters } from '../services/betaTesters'
 
 export default function useHeader() {
   const navigate = useNavigate()
-  const { user, email, isBetaTester, isLoggedIn, logout } = useAuth()
+  const { user, email, isBetaTester, profileComplete, isLoggedIn, logout } = useAuth()
   const { theme, toggleTheme } = useTheme()
   const [betaCount, setBetaCount] = useState(null)
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -45,6 +45,7 @@ export default function useHeader() {
     user,
     email,
     isBetaTester,
+    profileComplete,
     isLoggedIn,
     betaCount,
     mobileOpen,
