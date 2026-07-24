@@ -36,6 +36,9 @@ export default function useBetaTesterForm() {
     if (!form.phone.trim()) newErrors.phone = 'Ingrese su celular'
     if (!form.password) newErrors.password = 'Ingrese una contraseña'
     else if (form.password.length < 8) newErrors.password = 'La contraseña debe tener mínimo 8 caracteres'
+    else if (!/[A-Z]/.test(form.password)) newErrors.password = 'Debe contener al menos una mayúscula'
+    else if (!/[0-9]/.test(form.password)) newErrors.password = 'Debe contener al menos un número'
+    else if (!/[$@$!%*?&#]/.test(form.password)) newErrors.password = 'Debe contener al menos un carácter especial'
     if (!form.confirmPassword) newErrors.confirmPassword = 'Confirme su contraseña'
     else if (form.password !== form.confirmPassword) newErrors.confirmPassword = 'Las contraseñas no coinciden'
     return newErrors

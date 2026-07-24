@@ -57,7 +57,7 @@ function Header() {
               <Beaker className="w-3.5 h-3.5" />
               Ser Beta Tester
               {betaCount !== null && betaCount > 0 && (
-                <span className="ml-1 inline-flex items-center justify-center rounded-full bg-plumbob text-white px-1.5 py-0.5 text-[10px] font-bold leading-none">
+                <span className="ml-1 inline-flex items-center justify-center rounded-full bg-plumbob text-white px-1.5 py-0.5 text-[0.625rem] font-bold leading-none">
                   {betaCount}
                 </span>
               )}
@@ -66,7 +66,7 @@ function Header() {
 
           {isLoggedIn && (
             <div className="flex items-center gap-3 ml-2 pl-4 border-l border-border/50">
-              <span className="text-sm font-medium text-text-sub truncate max-w-[140px]">
+              <span className="text-sm font-medium text-text-sub truncate max-w-[8.75rem]">
                 {user?.fullName || email}
               </span>
               {isBetaTester && (

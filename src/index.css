@@ -29,6 +29,8 @@
   --animate-glow-pulse: glowPulse 2.5s ease-in-out infinite;
   --animate-beta-shimmer: betaShimmer 3s ease-in-out infinite;
   --animate-float: float 3s ease-in-out infinite;
+
+  --hero-height: 80vh;
 }
 
 /* ─── Light theme overrides ─── */
@@ -58,12 +60,12 @@
 }
 
 @keyframes slideUp {
-  from { opacity: 0; transform: translateY(24px); }
+  from { opacity: 0; transform: translateY(1.5rem); }
   to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes slideDown {
-  from { opacity: 0; transform: translateY(-12px); }
+  from { opacity: 0; transform: translateY(-0.75rem); }
   to { opacity: 1; transform: translateY(0); }
 }
 
@@ -73,8 +75,8 @@
 }
 
 @keyframes glowPulse {
-  0%, 100% { box-shadow: 0 0 8px var(--color-plumbob), 0 0 20px var(--color-plumbob); }
-  50% { box-shadow: 0 0 16px var(--color-plumbob), 0 0 40px var(--color-plumbob); }
+  0%, 100% { box-shadow: 0 0 0.5rem var(--color-plumbob), 0 0 1.25rem var(--color-plumbob); }
+  50% { box-shadow: 0 0 1rem var(--color-plumbob), 0 0 2.5rem var(--color-plumbob); }
 }
 
 @keyframes betaShimmer {
@@ -84,16 +86,16 @@
 
 @keyframes float {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-4px); }
+  50% { transform: translateY(-0.25rem); }
 }
 
 @keyframes modalBackdrop {
   from { opacity: 0; backdrop-filter: blur(0); }
-  to { opacity: 1; backdrop-filter: blur(8px); }
+  to { opacity: 1; backdrop-filter: blur(0.5rem); }
 }
 
 @keyframes modalContent {
-  from { opacity: 0; transform: scale(0.9) translateY(16px); }
+  from { opacity: 0; transform: scale(0.9) translateY(1rem); }
   to { opacity: 1; transform: scale(1) translateY(0); }
 }
 
@@ -118,7 +120,7 @@
   }
 
   ::-webkit-scrollbar {
-    width: 8px;
+    width: 0.5rem;
   }
 
   ::-webkit-scrollbar-track {
@@ -127,7 +129,7 @@
 
   ::-webkit-scrollbar-thumb {
     background: var(--color-border);
-    border-radius: 4px;
+    border-radius: 0.25rem;
   }
 
   ::-webkit-scrollbar-thumb:hover {
@@ -155,14 +157,32 @@
 
 @utility glass {
   background: var(--color-glass-surface);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--color-glass-border);
+  backdrop-filter: blur(0.75rem);
+  -webkit-backdrop-filter: blur(0.75rem);
+  border: 0.0625rem solid var(--color-glass-border);
 }
 
 @utility glass-strong {
   background: var(--color-glass-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--color-glass-border);
+  backdrop-filter: blur(1.25rem);
+  -webkit-backdrop-filter: blur(1.25rem);
+  border: 0.0625rem solid var(--color-glass-border);
+}
+
+.hero-overlay {
+  background: linear-gradient(
+    to top,
+    color-mix(in srgb, var(--color-bg) 80%, transparent),
+    color-mix(in srgb, var(--color-bg) 10%, transparent),
+    transparent
+  );
+}
+
+[data-theme="light"] .hero-overlay {
+  background: linear-gradient(
+    to top,
+    color-mix(in srgb, var(--color-bg) 55%, transparent),
+    color-mix(in srgb, var(--color-bg) 5%, transparent),
+    transparent
+  );
 }
