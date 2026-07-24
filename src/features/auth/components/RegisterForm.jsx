@@ -45,7 +45,7 @@ function RegisterForm() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-        <InputField label="Contraseña" name="password" type="password" value={form.password} onChange={handleChange} error={errors.password} placeholder="Mínimo 8 caracteres" required minLength={8} />
+        <InputField label="Contraseña" name="password" type="password" value={form.password} onChange={handleChange} error={errors.password} placeholder="Mayúscula, número y carácter especial" required minLength={8} />
         <InputField label="Confirmar contraseña" name="confirmPassword" type="password" value={form.confirmPassword} onChange={handleChange} error={errors.confirmPassword} placeholder="Repite tu contraseña" required />
       </div>
 

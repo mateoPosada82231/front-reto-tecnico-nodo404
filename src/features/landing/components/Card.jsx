@@ -14,7 +14,7 @@ function Card({ image, category, title, description, price, ctaLabel, onCtaClick
 
       <div className="flex flex-1 flex-col gap-2.5 p-5">
         {category && (
-          <span className="text-[11px] font-semibold uppercase tracking-widest text-plumbob">
+          <span className="text-[0.6875rem] font-semibold uppercase tracking-widest text-plumbob">
             {category}
           </span>
         )}
