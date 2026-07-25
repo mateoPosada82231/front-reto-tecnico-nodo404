@@ -19,7 +19,6 @@ Content-Type: application/json
 - `POST /api/auth/register`
 - `POST /api/auth/login`
 - `POST /api/auth/beta/**`
-- `GET /api/beta-testers/**`
 - `GET /api/extensions/**`
 - `GET /oauth2/authorization/google`
 - `GET /oauth2/authorization/facebook`
@@ -33,7 +32,6 @@ Content-Type: application/json
 - `POST/PUT/DELETE /api/extensions/**`
 - `GET/POST/DELETE /api/cart/**`
 - `GET/POST /api/buys/**`
-- `POST/PUT/DELETE /api/beta-testers/**`
 - Cualquier otra ruta no pública
 
 ### Reglas de ownership (carrito y compras)
@@ -64,7 +62,7 @@ Sin autenticación válida:
 
 ### POST `/api/auth/register`
 
-Crea usuario local (`provider=FORM`).
+Crea usuario local (`provider=FORM`, `betaTester=false`).
 
 Body:
 
@@ -87,7 +85,7 @@ Respuestas comunes:
 
 ### POST `/api/auth/login`
 
-Autentica con email/password y retorna JWT.
+Autentica con email/password y retorna JWT con `type=USER`.
 
 Body:
 
@@ -146,21 +144,64 @@ Respuestas comunes:
 }
 ```
 
+### POST `/api/auth/beta/register`
+
+Crea usuario beta tester (`provider=FORM`, `betaTester=true`).
+
+Body: mismo formato que `/api/auth/register`.
+
+Respuestas comunes:
+
+- `200 OK`: `"Beta tester creado con éxito"`
+- `400 Bad Request`: `"El email ya está registrado"`
+
+### POST `/api/auth/beta/login`
+
+Autentica un beta tester y retorna JWT con `type=BETA`. Solo acepta usuarios con `betaTester=true`.
+
+Body: mismo formato que `/api/auth/login`.
+
+Respuestas comunes:
+
+- `200 OK`:
+
+```json
+{
+  "token": "<JWT>"
+}
+```
+
+- `401 Unauthorized`:
+
+```json
+{
+  "message": "Credenciales inválidas"
+}
+```
+
 ---
 
 ## 2) OAuth2
 
 ### GET `/oauth2/authorization/google`
 
-Inicia autenticación OAuth2 con Google.
+Inicia autenticación OAuth2 con Google (crea usuario normal).
+
+### GET `/oauth2/authorization/google-beta`
+
+Inicia autenticación OAuth2 con Google (crea usuario beta tester).
 
 ### GET `/oauth2/authorization/facebook`
 
-Inicia autenticación OAuth2 con Facebook.
+Inicia autenticación OAuth2 con Facebook (crea usuario normal).
+
+### GET `/oauth2/authorization/facebook-beta`
+
+Inicia autenticación OAuth2 con Facebook (crea usuario beta tester).
 
 ### GET `/login/oauth2/code/{registrationId}`
 
-Callback OAuth2; en éxito retorna JWT.
+Callback OAuth2; en éxito retorna JWT. El `type` del JWT (`USER` o `BETA`) se determina por el registrationId (si termina en `-beta`).
 
 ---
 
@@ -168,11 +209,26 @@ Callback OAuth2; en éxito retorna JWT.
 
 ### GET `/api/users`
 
-Lista usuarios.
+Lista usuarios (incluye campo `betaTester`).
 
 ### GET `/api/users/{email}`
 
-Consulta usuario por email.
+Consulta usuario por email. Retorna `UserResponseDTO`:
+
+```json
+{
+  "email": "user@nodo.com",
+  "fullName": "Usuario Demo",
+  "provider": "FORM",
+  "providerId": null,
+  "country": "CO",
+  "identification": "123456789",
+  "mobileNumber": "3001234567",
+  "dateOfBirth": "1998-10-20",
+  "profileComplete": true,
+  "betaTester": false
+}
+```
 
 ### POST `/api/users`
 
@@ -194,91 +250,7 @@ Respuestas comunes:
 
 ---
 
-## 4) Beta Testers - `/api/beta-testers`
-
-### Públicas (GET)
-
-- `GET /api/beta-testers`
-- `GET /api/beta-testers/{email}`
-
-### Protegidas (escritura)
-
-- `POST /api/beta-testers`
-- `PUT /api/beta-testers/{email}`
-- `DELETE /api/beta-testers/{email}`
-
-### GET `/api/beta-testers`
-
-Lista todos los beta testers registrados.
-
-```json
-[
-  {
-    "email": "beta@nodo.com",
-    "country": "CO",
-    "dateOfBirth": "1995-06-15",
-    "identification": "1234567890",
-    "fullName": "Beta Tester",
-    "mobileNumber": "3001234567",
-    "dateOfAdmission": "2026-07-23",
-    "provider": "FORM",
-    "providerId": null
-  }
-]
-```
-
-### GET `/api/beta-testers/{email}`
-
-Consulta un beta tester por email.
-
-- `200 OK`: beta tester encontrado
-- `404 Not Found`: email inexistente
-
-### POST `/api/beta-testers`
-
-Registra un nuevo beta tester. La contraseña se encripta automáticamente. `dateOfAdmission` se asigna con la fecha actual.
-
-Body:
-
-```json
-{
-  "email": "beta@nodo.com",
-  "password": "Secret123!",
-  "country": "CO",
-  "dateOfBirth": "1995-06-15",
-  "identification": "1234567890",
-  "fullName": "Beta Tester",
-  "mobileNumber": "3001234567"
-}
-```
-
-Respuesta `201 Created`: beta tester creado (sin contraseña en claro).
-
-### PUT `/api/beta-testers/{email}`
-
-Actualiza un beta tester existente. La contraseña se re-encripta.
-
-Body: mismo formato que POST.
-
-- `200 OK`: beta tester actualizado
-- `404 Not Found`: email inexistente
-
-### DELETE `/api/beta-testers/{email}`
-
-Elimina un beta tester por email.
-
-- `204 No Content`: eliminado correctamente
-- `404 Not Found`: email inexistente
-
-Respuestas comunes del módulo:
-
-- `200 OK`, `201 Created`, `204 No Content`
-- `401 Unauthorized` sin token o con token inválido
-- `404 Not Found` para recursos inexistentes
-
----
-
-## 5) Extensions - `/api/extensions`
+## 4) Extensions - `/api/extensions`
 
 ### Públicas (GET)
 
@@ -328,7 +300,7 @@ Respuestas comunes:
 
 ---
 
-## 6) Cart - `/api/cart` (todas protegidas + ownership)
+## 5) Cart - `/api/cart` (todas protegidas + ownership)
 
 ### GET `/api/cart/{email}`
 
@@ -387,7 +359,7 @@ Respuestas comunes del módulo:
 
 ---
 
-## 7) Buys - `/api/buys` (todas protegidas)
+## 6) Buys - `/api/buys` (todas protegidas)
 
 ### GET `/api/buys`
 
@@ -495,8 +467,8 @@ Respuestas comunes del módulo:
 
 - `POST /api/auth/register`
 - `POST /api/auth/login`
-- `POST /api/auth/beta/**`
-- `GET /api/beta-testers/**`
+- `POST /api/auth/beta/register`
+- `POST /api/auth/beta/login`
 - `GET /api/extensions/**`
 - `GET /oauth2/authorization/{provider}`
 - `GET /login/oauth2/code/{registrationId}`
@@ -508,4 +480,3 @@ Respuestas comunes del módulo:
 - `POST/PUT/DELETE /api/extensions/**`
 - `GET/POST/DELETE /api/cart/**`
 - `GET/POST /api/buys/**`
-- `POST/PUT/DELETE /api/beta-testers/**`
