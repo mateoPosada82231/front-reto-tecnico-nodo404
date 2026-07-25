@@ -4,6 +4,10 @@ import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  build: {
+    target: 'es2022',
+    cssMinify: 'lightningcss',
+  },
   server: {
     proxy: {
       '/api': 'http://localhost:8080',
