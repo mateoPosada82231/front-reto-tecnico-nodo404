@@ -12,6 +12,7 @@ async function request(url, options = {}) {
     try { data = JSON.parse(text) } catch { data = text }
     throw new Error(data.message || data || `Error ${res.status}`)
   }
+  if (res.status === 204) return null
   return res.json()
 }
 
@@ -21,4 +22,11 @@ export function getUsers() {
 
 export function getUserByEmail(email) {
   return request(`${BASE_URL}/${email}`)
+}
+
+export function updateUser(email, data) {
+  return request(`${BASE_URL}/${email}`, {
+    method: 'PUT',
+    body: JSON.stringify(data),
+  })
 }

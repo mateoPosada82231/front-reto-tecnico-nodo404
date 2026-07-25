@@ -2,6 +2,7 @@ import { NavLink } from 'react-router-dom'
 import { LogOut, Beaker, Menu, X, AlertCircle } from 'lucide-react'
 import Logo from './Logo'
 import ThemeToggle from './ThemeToggle'
+import BetaTesterModal from './BetaTesterModal'
 import useHeader from '../hooks/useHeader'
 
 const navLinkClass = ({ isActive }) =>
@@ -19,14 +20,20 @@ function Header() {
     isBetaTester,
     profileComplete,
     isLoggedIn,
-    betaCount,
     mobileOpen,
+    modalOpen,
+    betaLoading,
+    betaSuccess,
+    betaError,
     showBetaButton,
     theme,
     toggleTheme,
     handleLogout,
     toggleMobile,
     closeMobile,
+    openModal,
+    closeModal,
+    becomeBetaTester,
   } = useHeader()
 
   return (
@@ -60,18 +67,13 @@ function Header() {
           )}
 
           {showBetaButton && (
-            <NavLink
-              to="/beta-tester"
-              className="relative inline-flex items-center gap-1.5 rounded-full bg-plumbob/10 border border-plumbob/30 px-3.5 py-1.5 text-xs font-semibold text-plumbob transition-all duration-300 hover:bg-plumbob/20 hover:border-plumbob/50 hover:shadow-lg hover:shadow-plumbob/20 beta-glow"
+            <button
+              onClick={openModal}
+              className="relative inline-flex items-center gap-1.5 rounded-full bg-plumbob/10 border border-plumbob/30 px-3.5 py-1.5 text-xs font-semibold text-plumbob transition-all duration-300 hover:bg-plumbob/20 hover:border-plumbob/50 hover:shadow-lg hover:shadow-plumbob/20 beta-glow cursor-pointer"
             >
               <Beaker className="w-3.5 h-3.5" />
               Ser Beta Tester
-              {betaCount !== null && betaCount > 0 && (
-                <span className="ml-1 inline-flex items-center justify-center rounded-full bg-plumbob text-white px-1.5 py-0.5 text-[0.625rem] font-bold leading-none">
-                  {betaCount}
-                </span>
-              )}
-            </NavLink>
+            </button>
           )}
 
           {isLoggedIn && (
@@ -130,14 +132,13 @@ function Header() {
           )}
 
           {showBetaButton && (
-            <NavLink
-              to="/beta-tester"
-              onClick={closeMobile}
-              className="flex items-center gap-2 text-sm font-medium text-plumbob py-2"
+            <button
+              onClick={() => { closeMobile(); openModal() }}
+              className="flex items-center gap-2 text-sm font-medium text-plumbob py-2 cursor-pointer"
             >
               <Beaker className="w-4 h-4" />
               Ser Beta Tester
-            </NavLink>
+            </button>
           )}
 
           {isLoggedIn && (
@@ -154,6 +155,15 @@ function Header() {
           )}
         </div>
       )}
+
+      <BetaTesterModal
+        open={modalOpen}
+        loading={betaLoading}
+        success={betaSuccess}
+        error={betaError}
+        onConfirm={becomeBetaTester}
+        onClose={closeModal}
+      />
     </header>
   )
 }
