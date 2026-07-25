@@ -7,16 +7,44 @@ export default function HeroSection() {
 
   if (loading) {
     return (
-      <section className="relative w-full h-[var(--hero-height)] overflow-hidden flex items-center justify-center bg-bg">
-        <div className="w-12 h-12 border-4 border-plumbob/30 border-t-plumbob rounded-full animate-spin" />
+      <section className="relative w-full h-[var(--hero-height)] overflow-hidden rounded-2xl mx-auto max-w-7xl">
+        <img
+          src="https://drop-assets.ea.com/images/3HA9acuR0WKaLXXxHzSnVI/06d535194d8b18f42fd68c07dfbe94d5/TS4_Horse-Ranch_Media-Hero-Tile_16x9_03.jpg?im=Resize=(1280)&q=80"
+          alt=""
+          width={1280}
+          height={720}
+          fetchPriority="high"
+          decoding="async"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 hero-overlay z-0" />
+        <div className="relative z-10 w-full max-w-5xl px-8 md:px-16 text-center md:text-left flex flex-col md:items-start items-center gap-5">
+          <div className="bg-surface/90 backdrop-blur-sm rounded-2xl p-6 md:p-10 w-full md:w-auto md:max-w-3xl">
+            <div className="h-8 md:h-12 bg-hover rounded-lg w-3/4 animate-pulse" />
+            <div className="mt-4 h-4 bg-hover rounded w-full animate-pulse" />
+            <div className="mt-2 h-4 bg-hover rounded w-5/6 animate-pulse" />
+            <div className="mt-6 h-10 bg-plumbob/30 rounded-xl w-36 animate-pulse" />
+          </div>
+        </div>
       </section>
     )
   }
 
   if (error) {
     return (
-      <section className="relative w-full h-[var(--hero-height)] overflow-hidden flex items-center justify-center bg-bg">
-        <p className="text-red-400 text-sm">Error al cargar extensiones: {error}</p>
+      <section className="relative w-full h-[var(--hero-height)] overflow-hidden rounded-2xl mx-auto max-w-7xl">
+        <img
+          src="https://drop-assets.ea.com/images/3HA9acuR0WKaLXXxHzSnVI/06d535194d8b18f42fd68c07dfbe94d5/TS4_Horse-Ranch_Media-Hero-Tile_16x9_03.jpg?im=Resize=(1280)&q=80"
+          alt=""
+          width={1280}
+          height={720}
+          decoding="async"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 hero-overlay z-0" />
+        <div className="relative z-10 flex items-center justify-center w-full h-full">
+          <p className="text-red-400 text-sm bg-surface/80 px-4 py-2 rounded-lg">Error al cargar extensiones: {error}</p>
+        </div>
       </section>
     )
   }
@@ -27,13 +55,27 @@ export default function HeroSection() {
         className="absolute inset-0 flex transition-transform duration-700 ease-[cubic-bezier(0.25,0.1,0.25,1)]"
         style={{ transform: `translateX(-${currentIndex * 100}%)` }}
       >
-        {packs.map((pack) => (
-          <div
-            key={pack.id}
-            className="relative w-full h-full flex-shrink-0 flex items-center justify-center bg-cover bg-center"
-            style={{ backgroundImage: `url('${pack.image || pack.imagen || ''}')` }}
-          >
-            <div className="absolute inset-0 hero-overlay z-0" />
+        {packs.map((pack, index) => {
+          const isCurrent = index === currentIndex
+          const isNext = index === currentIndex + 1 || (currentIndex === packs.length - 1 && index === 0)
+          const isActive = isCurrent || isNext
+
+          return (
+            <div
+              key={pack.id}
+              className="relative w-full h-full flex-shrink-0 flex items-center justify-center"
+            >
+              <img
+                src={isActive ? (pack.image || pack.imagen || '') : undefined}
+                alt={pack.name}
+                width={1280}
+                height={720}
+                fetchPriority={isCurrent ? 'high' : undefined}
+                loading={isNext ? 'lazy' : undefined}
+                decoding="async"
+                className="absolute inset-0 w-full h-full object-cover bg-center"
+              />
+              <div className="absolute inset-0 hero-overlay z-0" />
 
             <div className="relative z-10 w-full max-w-5xl px-8 md:px-16 text-center md:text-left flex flex-col md:items-start items-center gap-5">
               <div className="bg-surface/90 backdrop-blur-sm rounded-2xl p-6 md:p-10 w-full md:w-auto md:max-w-3xl">
@@ -55,8 +97,9 @@ export default function HeroSection() {
                 </a>
               </div>
             </div>
-          </div>
-        ))}
+            </div>
+          )
+        })}
       </div>
 
       <button

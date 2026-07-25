@@ -1,7 +1,6 @@
-import useExtensions from './useExtensions'
-import { getExtensions } from '../../../shared/services/extensions'
+import useExtensionsData from './useExtensionsData'
 
 export default function useExpansionGrid() {
-  const { data, loading, error } = useExtensions(getExtensions)
+  const { data, loading, error } = useExtensionsData()
   return { extensions: data, loading, error }
 }

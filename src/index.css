@@ -1,9 +1,21 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  font-style: normal;
+  font-weight: 300 800;
+  font-display: swap;
+  src: url("/fonts/PlusJakartaSans-latin.woff2") format("woff2");
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212,
+    U+2215, U+FEFF, U+FFFD;
+}
+
 @theme {
-  --color-plumbob: #10b981;
-  --color-plumbob-light: #34d399;
-  --color-plumbob-dark: #059669;
+  --color-plumbob: #0f9d74;
+  --color-plumbob-light: #2ca67f;
+  --color-plumbob-dark: #0b6b4f;
 
   --color-azure: #3b82f6;
   --color-azure-light: #60a5fa;
@@ -48,9 +60,9 @@
   --color-text-main: #0f172a;
   --color-text-sub: #475569;
   --color-text-dim: #94a3b8;
-  --color-plumbob: #059669;
-  --color-plumbob-light: #10b981;
-  --color-plumbob-dark: #047857;
+  --color-plumbob: #0e7a5f;
+  --color-plumbob-light: #1f8f6d;
+  --color-plumbob-dark: #0a5a45;
   --color-azure: #2563eb;
   --color-azure-light: #3b82f6;
   --color-azure-dark: #1d4ed8;
@@ -61,48 +73,94 @@
 
 /* ─── Keyframes ─── */
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes slideUp {
-  from { opacity: 0; transform: translateY(1.5rem); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(1.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes slideDown {
-  from { opacity: 0; transform: translateY(-0.75rem); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-0.75rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes scaleIn {
-  from { opacity: 0; transform: scale(0.92); }
-  to { opacity: 1; transform: scale(1); }
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 @keyframes glowPulse {
-  0%, 100% { box-shadow: 0 0 0.5rem var(--color-plumbob), 0 0 1.25rem var(--color-plumbob); }
-  50% { box-shadow: 0 0 1rem var(--color-plumbob), 0 0 2.5rem var(--color-plumbob); }
+  0%,
+  100% {
+    filter: drop-shadow(0 0 0.375rem var(--color-plumbob));
+  }
+  50% {
+    filter: drop-shadow(0 0 0.75rem var(--color-plumbob));
+  }
 }
 
 @keyframes betaShimmer {
-  0% { background-position: -200% center; }
-  100% { background-position: 200% center; }
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
 }
 
 @keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-0.25rem); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-0.25rem);
+  }
 }
 
 @keyframes modalBackdrop {
-  from { opacity: 0; backdrop-filter: blur(0); }
-  to { opacity: 1; backdrop-filter: blur(0.5rem); }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes modalContent {
-  from { opacity: 0; transform: scale(0.9) translateY(1rem); }
-  to { opacity: 1; transform: scale(1) translateY(0); }
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(1rem);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
 
 /* ─── Base layer ─── */
@@ -117,7 +175,9 @@
     background-color: var(--color-bg);
     color: var(--color-text-main);
     font-family: var(--font-sans);
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease;
   }
 
   ::selection {
@@ -145,7 +205,9 @@
 
 /* ─── Utilities ─── */
 @utility beta-glow {
-  animation: glowPulse 2.5s ease-in-out infinite, float 3s ease-in-out infinite;
+  animation:
+    glowPulse 2.5s ease-in-out infinite,
+    float 3s ease-in-out infinite;
 }
 
 @utility beta-shimmer {

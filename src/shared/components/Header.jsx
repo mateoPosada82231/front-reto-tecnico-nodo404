@@ -30,7 +30,7 @@ function Header() {
   } = useHeader()
 
   return (
-    <header className="w-full glass-strong sticky top-0 z-50">
+    <header className="w-full sticky top-0 z-50 bg-glass-bg border-b border-glass-border">
       {isLoggedIn && !profileComplete && (
         <div className="bg-azure/10 border-b border-azure/20 px-4 py-2 md:px-8">
           <div className="max-w-7xl mx-auto flex items-center justify-center gap-2 text-xs md:text-sm text-azure">
