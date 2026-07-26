@@ -1,5 +1,6 @@
 import { Beaker, X, CheckCircle, Loader2 } from 'lucide-react'
 import Alert from '../../features/auth/components/Alert'
+import useContent from '../hooks/useContent'
 
 export default function BetaTesterModal({
   open,
@@ -9,6 +10,8 @@ export default function BetaTesterModal({
   onConfirm,
   onClose,
 }) {
+  const { content } = useContent('beta_modal')
+
   if (!open) return null
 
   return (
@@ -27,7 +30,7 @@ export default function BetaTesterModal({
         <button
           onClick={onClose}
           className="absolute top-4 right-4 p-2 rounded-lg text-text-dim hover:text-text-main hover:bg-hover transition-all duration-200 cursor-pointer"
-          aria-label="Cerrar"
+          aria-label={content.close_aria}
         >
           <X className="w-5 h-5" />
         </button>
@@ -41,18 +44,18 @@ export default function BetaTesterModal({
             </div>
 
             <h2 className="text-xl font-extrabold mb-3 tracking-tight text-text-main">
-              Ya eres Beta Tester
+              {content.already_title}
             </h2>
 
             <p className="text-text-sub mb-6 leading-relaxed text-sm">
-              Ahora tienes acceso anticipado a nuevas extensiones y funciones exclusivas.
+              {content.already_description}
             </p>
 
             <button
               onClick={onClose}
               className="px-8 py-3 bg-plumbob hover:bg-plumbob-light text-white font-semibold rounded-xl shadow-lg shadow-plumbob/20 hover:shadow-plumbob/40 active:scale-[0.97] transition-all duration-200 cursor-pointer"
             >
-              Entendido
+              {content.already_cta}
             </button>
           </>
         ) : (
@@ -64,11 +67,11 @@ export default function BetaTesterModal({
             </div>
 
             <h2 className="text-xl font-extrabold mb-3 tracking-tight text-text-main">
-              Ser Beta Tester
+              {content.confirm_title}
             </h2>
 
             <p className="text-text-sub mb-6 leading-relaxed text-sm">
-              ¿Seguro que quieres unirte al programa beta? Tendrás acceso anticipado a nuevas extensiones antes que nadie.
+              {content.confirm_description}
             </p>
 
             {error && (
@@ -83,7 +86,7 @@ export default function BetaTesterModal({
                 disabled={loading}
                 className="px-6 py-2.5 rounded-xl border border-border/50 text-text-sub hover:text-text-main hover:bg-hover transition-all duration-200 cursor-pointer disabled:opacity-50"
               >
-                Cancelar
+                {content.cancel_text}
               </button>
               <button
                 onClick={onConfirm}
@@ -93,10 +96,10 @@ export default function BetaTesterModal({
                 {loading ? (
                   <>
                     <Loader2 className="w-4 h-4 animate-spin" />
-                    Procesando
+                    {content.processing_text}
                   </>
                 ) : (
-                  'Sí, quiero ser beta'
+                  content.confirm_cta
                 )}
               </button>
             </div>

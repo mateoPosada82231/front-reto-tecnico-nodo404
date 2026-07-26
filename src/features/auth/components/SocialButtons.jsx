@@ -1,6 +1,8 @@
 import Button from '../../../shared/components/Button'
+import useContent from '../../../shared/hooks/useContent'
 
 function SocialButtons({ mode = 'register' }) {
+  const { content } = useContent('auth.social')
   const handleOAuthClick = (provider) => {
     window.location.href = `/oauth2/authorization/${provider}`
   }
@@ -8,7 +10,7 @@ function SocialButtons({ mode = 'register' }) {
   return (
     <div className="mt-6 border-t border-border/50 pt-6">
       <p className="mb-4 text-center text-sm text-text-dim">
-        {mode === 'login' ? 'O inicia sesión con' : 'O regístrate con'}
+        {mode === 'login' ? content.divider_login : content.divider_register}
       </p>
 
       <div className="flex flex-col gap-3 sm:flex-row">

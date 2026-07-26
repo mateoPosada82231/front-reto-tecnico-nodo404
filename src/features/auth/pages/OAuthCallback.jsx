@@ -1,9 +1,11 @@
 import { useEffect } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
+import useContent from '../../../shared/hooks/useContent'
 
 function OAuthCallback() {
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
+  const { content } = useContent('auth.oauth')
 
   useEffect(() => {
     const token = searchParams.get('token')
@@ -23,7 +25,7 @@ function OAuthCallback() {
     <section className="flex flex-col items-center justify-center min-h-[50vh] animate-fade-in">
       <div className="text-center">
         <div className="w-12 h-12 border-4 border-plumbob/30 border-t-plumbob rounded-full animate-spin mx-auto mb-4" />
-        <p className="text-text-sub text-sm">Iniciando sesión...</p>
+        <p className="text-text-sub text-sm">{content.loading_text}</p>
       </div>
     </section>
   )

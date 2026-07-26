@@ -4,6 +4,7 @@ import Logo from './Logo'
 import ThemeToggle from './ThemeToggle'
 import BetaTesterModal from './BetaTesterModal'
 import useHeader from '../hooks/useHeader'
+import useContent from '../hooks/useContent'
 
 const navLinkClass = ({ isActive }) =>
   `text-sm font-medium transition-colors duration-200 md:text-base ${
@@ -14,6 +15,7 @@ const mobileLinkClass = ({ isActive }) =>
   `block text-sm font-medium py-2 ${isActive ? 'text-plumbob' : 'text-text-sub'}`
 
 function Header() {
+  const { content } = useContent('header')
   const {
     user,
     email,
@@ -42,7 +44,7 @@ function Header() {
         <div className="bg-azure/10 border-b border-azure/20 px-4 py-2 md:px-8">
           <div className="max-w-7xl mx-auto flex items-center justify-center gap-2 text-xs md:text-sm text-azure">
             <AlertCircle className="w-4 h-4 shrink-0" />
-            <span>Completa tu información en el perfil</span>
+            <span>{content.profile_warning}</span>
           </div>
         </div>
       )}
@@ -52,16 +54,16 @@ function Header() {
 
         <nav className="hidden md:flex items-center gap-6">
           <NavLink to="/" end className={navLinkClass}>
-            Inicio
+            {content.nav_home}
           </NavLink>
 
           {!isLoggedIn && (
             <>
               <NavLink to="/registro" className={navLinkClass}>
-                Registro
+                {content.nav_register}
               </NavLink>
               <NavLink to="/login" className={navLinkClass}>
-                Login
+                {content.nav_login}
               </NavLink>
             </>
           )}
@@ -72,7 +74,7 @@ function Header() {
               className="relative inline-flex items-center gap-1.5 rounded-full bg-plumbob/10 border border-plumbob/30 px-3.5 py-1.5 text-xs font-semibold text-plumbob transition-all duration-300 hover:bg-plumbob/20 hover:border-plumbob/50 hover:shadow-lg hover:shadow-plumbob/20 beta-glow cursor-pointer"
             >
               <Beaker className="w-3.5 h-3.5" />
-              Ser Beta Tester
+              {content.beta_cta}
             </button>
           )}
 
@@ -90,7 +92,7 @@ function Header() {
               <button
                 onClick={handleLogout}
                 className="p-2 rounded-lg text-text-dim hover:text-red-400 hover:bg-red-500/10 transition-all duration-200 cursor-pointer"
-                aria-label="Cerrar sesión"
+                aria-label={content.logout_aria}
               >
                 <LogOut className="w-4 h-4" />
               </button>
@@ -103,7 +105,7 @@ function Header() {
           <button
             onClick={toggleMobile}
             className="p-2 rounded-lg text-text-sub hover:text-text-main hover:bg-surface/50 transition-colors cursor-pointer"
-            aria-label="Menú"
+            aria-label={content.menu_aria}
           >
             {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
@@ -117,16 +119,16 @@ function Header() {
       {mobileOpen && (
         <div className="md:hidden border-t border-border/50 px-4 py-4 space-y-3 animate-slide-down">
           <NavLink to="/" end onClick={closeMobile} className={mobileLinkClass}>
-            Inicio
+            {content.nav_home}
           </NavLink>
 
           {!isLoggedIn && (
             <>
               <NavLink to="/registro" onClick={closeMobile} className={mobileLinkClass}>
-                Registro
+                {content.nav_register}
               </NavLink>
               <NavLink to="/login" onClick={closeMobile} className={mobileLinkClass}>
-                Login
+                {content.nav_login}
               </NavLink>
             </>
           )}
@@ -137,7 +139,7 @@ function Header() {
               className="flex items-center gap-2 text-sm font-medium text-plumbob py-2 cursor-pointer"
             >
               <Beaker className="w-4 h-4" />
-              Ser Beta Tester
+              {content.beta_cta}
             </button>
           )}
 
@@ -149,7 +151,7 @@ function Header() {
                 className="flex items-center gap-2 text-sm text-red-400 hover:text-red-300 transition-colors cursor-pointer"
               >
                 <LogOut className="w-4 h-4" />
-                Cerrar sesión
+                {content.logout_aria}
               </button>
             </div>
           )}

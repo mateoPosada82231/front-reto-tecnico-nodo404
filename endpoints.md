@@ -20,6 +20,8 @@ Content-Type: application/json
 - `POST /api/auth/login`
 - `POST /api/auth/beta/**`
 - `GET /api/extensions/**`
+- `GET /api/content/**`
+- `GET /api/config/**`
 - `GET /oauth2/authorization/google`
 - `GET /oauth2/authorization/facebook`
 - `GET /login/oauth2/code/{registrationId}`
@@ -30,6 +32,8 @@ Content-Type: application/json
 - `POST /api/auth/logout`
 - `GET/POST/PUT/DELETE /api/users/**`
 - `POST/PUT/DELETE /api/extensions/**`
+- `POST/PUT/DELETE /api/content/**`
+- `POST/PUT/DELETE /api/config/**`
 - `GET/POST/DELETE /api/cart/**`
 - `GET/POST /api/buys/**`
 - Cualquier otra ruta no pública
@@ -300,7 +304,211 @@ Respuestas comunes:
 
 ---
 
-## 5) Cart - `/api/cart` (todas protegidas + ownership)
+## 5) Site Content - `/api/content`
+
+Gestión de textos de UI (CMS ligero). Los endpoints de lectura son públicos y incluyen cache de 5 minutos.
+
+### Públicas (GET)
+
+#### GET `/api/content/{sectionKey}`
+
+Obtiene todos los items de una sección.
+
+Query param opcional: `language` (default: `es`)
+
+Respuesta `200 OK`:
+
+```json
+{
+  "section": "auth.login",
+  "items": [
+    { "key": "title", "value": "Iniciar Sesión", "type": "text" },
+    { "key": "subtitle", "value": "Accede con tu cuenta...", "type": "text" }
+  ]
+}
+```
+
+Si la sección no existe retorna items vacío: `{ "section": "...", "items": [] }`
+
+#### GET `/api/content/{sectionKey}/{contentKey}`
+
+Obtiene un valor específico de contenido.
+
+Query param opcional: `language` (default: `es`)
+
+Respuesta `200 OK`:
+
+```json
+{
+  "key": "title",
+  "value": "Iniciar Sesión",
+  "type": "text"
+}
+```
+
+Respuesta `404 Not Found` si no existe.
+
+### Protegidas (escritura, requiere JWT)
+
+#### POST `/api/content`
+
+Crea contenido.
+
+Body:
+
+```json
+{
+  "sectionKey": "auth.login",
+  "contentKey": "title",
+  "contentValue": "Iniciar Sesión",
+  "contentType": "text",
+  "language": "es"
+}
+```
+
+- `sectionKey` y `contentKey`: alfanuméricos con puntos y guiones bajos (`^[a-z0-9_.]+$`)
+- `contentType`: `text` (default), `html`, o `json`
+- `language`: código de idioma (default: `es`)
+
+Respuestas:
+
+- `201 Created`: objeto creado
+- `409 Conflict`: ya existe contenido con misma sección + clave + idioma
+- `400 Bad Request`: validación fallida
+
+#### PUT `/api/content/{id}`
+
+Actualiza contenido por ID.
+
+Body: mismo formato que POST.
+
+- `200 OK`: objeto actualizado
+- `404 Not Found`: ID inexistente
+
+#### DELETE `/api/content/{id}`
+
+Elimina contenido por ID.
+
+- `200 OK`:
+
+```json
+{
+  "message": "Content deleted successfully"
+}
+```
+
+- `404 Not Found`:
+
+```json
+{
+  "message": "Content not found"
+}
+```
+
+### Secciones de contenido disponibles
+
+| Sección           | Items | Descripción                        |
+| ----------------- | ----- | ---------------------------------- |
+| `landing.hero`    | 5     | Textos del carrusel hero           |
+| `landing.grid`    | 3     | Título y CTAs de la grilla         |
+| `landing.welcome` | 4     | Modal de bienvenida                |
+| `auth.login`      | 7     | Formulario de login                |
+| `auth.register`   | 14    | Formulario de registro             |
+| `auth.social`     | 2     | Textos divider de botones sociales |
+| `auth.oauth`      | 1     | Texto de loading OAuth             |
+| `header`          | 6     | Navegación y banner                |
+| `beta_modal`      | 9     | Modal de beta tester               |
+| `footer`          | 1     | Copyright                          |
+| `common`          | 1     | Textos compartidos                 |
+
+---
+
+## 6) Site Config - `/api/config`
+
+Gestión de configuraciones estructuradas (JSON). Los endpoints de lectura son públicos y incluyen cache de 5 minutos.
+
+### Pública (GET)
+
+#### GET `/api/config/{configKey}`
+
+Obtiene configuración por clave.
+
+Respuesta `200 OK`:
+
+```json
+{
+  "key": "countries",
+  "value": [
+    { "code": "CO", "name": "Colombia" },
+    { "code": "MX", "name": "México" }
+  ]
+}
+```
+
+Respuesta `404 Not Found` si no existe.
+
+### Protegidas (escritura, requiere JWT)
+
+#### POST `/api/config`
+
+Crea configuración.
+
+Body:
+
+```json
+{
+  "configKey": "countries",
+  "configValue": "[{\"code\":\"CO\",\"name\":\"Colombia\"}]"
+}
+```
+
+- `configKey`: nombre único de la configuración
+- `configValue`: string con JSON válido
+
+Respuestas:
+
+- `201 Created`: objeto creado
+- `409 Conflict`: ya existe una configuración con esa clave
+- `400 Bad Request`: validación fallida
+
+#### PUT `/api/config/{id}`
+
+Actualiza configuración por ID.
+
+Body: mismo formato que POST.
+
+- `200 OK`: objeto actualizado
+- `404 Not Found`: ID inexistente
+
+#### DELETE `/api/config/{id}`
+
+Elimina configuración por ID.
+
+- `200 OK`:
+
+```json
+{
+  "message": "Config deleted successfully"
+}
+```
+
+- `404 Not Found`:
+
+```json
+{
+  "message": "Config not found"
+}
+```
+
+### Configuraciones disponibles
+
+| Clave       | Descripción                           |
+| ----------- | ------------------------------------- |
+| `countries` | Array de 8 países con código y nombre |
+
+---
+
+## 7) Cart - `/api/cart` (todas protegidas + ownership)
 
 ### GET `/api/cart/{email}`
 
@@ -359,7 +567,7 @@ Respuestas comunes del módulo:
 
 ---
 
-## 6) Buys - `/api/buys` (todas protegidas)
+## 8) Buys - `/api/buys` (todas protegidas)
 
 ### GET `/api/buys`
 
@@ -470,6 +678,8 @@ Respuestas comunes del módulo:
 - `POST /api/auth/beta/register`
 - `POST /api/auth/beta/login`
 - `GET /api/extensions/**`
+- `GET /api/content/**`
+- `GET /api/config/**`
 - `GET /oauth2/authorization/{provider}`
 - `GET /login/oauth2/code/{registrationId}`
 
@@ -478,5 +688,7 @@ Respuestas comunes del módulo:
 - `POST /api/auth/logout`
 - `GET/POST/PUT/DELETE /api/users/**`
 - `POST/PUT/DELETE /api/extensions/**`
+- `POST/PUT/DELETE /api/content/**`
+- `POST/PUT/DELETE /api/config/**`
 - `GET/POST/DELETE /api/cart/**`
 - `GET/POST /api/buys/**`
