@@ -1,11 +1,14 @@
 import MainLayout from '../shared/components/MainLayout'
+import { ContentProvider } from '../shared/context/ContentProvider'
 import AppRouter from './router'
 
 function App() {
   return (
-    <MainLayout>
-      <AppRouter />
-    </MainLayout>
+    <ContentProvider>
+      <MainLayout>
+        <AppRouter />
+      </MainLayout>
+    </ContentProvider>
   )
 }
 

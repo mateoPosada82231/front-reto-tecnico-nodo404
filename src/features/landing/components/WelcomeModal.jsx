@@ -1,8 +1,10 @@
 import { useState } from 'react'
 import { X } from 'lucide-react'
+import useContent from '../../../shared/hooks/useContent'
 
 export default function WelcomeModal() {
   const [open, setOpen] = useState(true)
+  const { content } = useContent('landing.welcome')
 
   if (!open) return null
 
@@ -17,7 +19,7 @@ export default function WelcomeModal() {
         <button
           onClick={() => setOpen(false)}
           className="absolute top-4 right-4 p-2 rounded-lg text-text-dim hover:text-text-main hover:bg-hover transition-all duration-200 cursor-pointer"
-          aria-label="Cerrar"
+          aria-label={content.close_aria}
         >
           <X className="w-5 h-5" />
         </button>
@@ -31,18 +33,18 @@ export default function WelcomeModal() {
         </div>
 
         <h2 className="text-2xl font-extrabold mb-3 tracking-tight text-text-main">
-          ¡Bienvenido a Los Sims 4!
+          {content.title}
         </h2>
 
         <p className="text-text-sub mb-8 leading-relaxed text-sm md:text-base">
-          Explora todos los paquetes de expansión y descubre nuevas aventuras para tus Sims.
+          {content.subtitle}
         </p>
 
         <button
           onClick={() => setOpen(false)}
           className="px-8 py-3 bg-plumbob hover:bg-plumbob-light text-white font-semibold rounded-xl shadow-lg shadow-plumbob/20 hover:shadow-plumbob/40 active:scale-[0.97] transition-all duration-200 cursor-pointer"
         >
-          Explorar
+          {content.cta_text}
         </button>
       </div>
     </div>

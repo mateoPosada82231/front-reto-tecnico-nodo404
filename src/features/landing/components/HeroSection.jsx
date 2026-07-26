@@ -1,9 +1,11 @@
 import React from 'react'
 import useHeroSection from '../hooks/useHeroSection'
+import useContent from '../../../shared/hooks/useContent'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 
 export default function HeroSection() {
   const { packs, currentIndex, setCurrentIndex, prevSlide, nextSlide, loading, error } = useHeroSection()
+  const { content } = useContent('landing.hero')
 
   if (loading) {
     return (
@@ -43,7 +45,7 @@ export default function HeroSection() {
         />
         <div className="absolute inset-0 hero-overlay z-0" />
         <div className="relative z-10 flex items-center justify-center w-full h-full">
-          <p className="text-red-400 text-sm bg-surface/80 px-4 py-2 rounded-lg">Error al cargar extensiones: {error}</p>
+          <p className="text-red-400 text-sm bg-surface/80 px-4 py-2 rounded-lg">{content.error_prefix}{error}</p>
         </div>
       </section>
     )
@@ -93,7 +95,7 @@ export default function HeroSection() {
                   rel="noopener noreferrer"
                   className="mt-6 inline-block px-8 py-3.5 bg-plumbob hover:bg-plumbob-light text-white font-bold rounded-xl shadow-lg shadow-plumbob/25 hover:shadow-plumbob/40 active:scale-[0.97] transition-all duration-200 text-sm md:text-base cursor-pointer text-center"
                 >
-                  Comprar ahora
+                  {content.cta_text}
                 </a>
               </div>
             </div>
@@ -106,7 +108,7 @@ export default function HeroSection() {
         type="button"
         onClick={prevSlide}
         className="absolute left-4 md:left-8 z-20 p-3 glass rounded-full active:scale-95 transition-all duration-200 cursor-pointer flex items-center justify-center text-text-sub hover:text-text-main hover:border-plumbob/30"
-        aria-label="Paquete anterior"
+        aria-label={content.prev_aria}
       >
         <ChevronLeft className="w-5 h-5" />
       </button>
@@ -115,7 +117,7 @@ export default function HeroSection() {
         type="button"
         onClick={nextSlide}
         className="absolute right-4 md:right-8 z-20 p-3 glass rounded-full active:scale-95 transition-all duration-200 cursor-pointer flex items-center justify-center text-text-sub hover:text-text-main hover:border-plumbob/30"
-        aria-label="Paquete siguiente"
+        aria-label={content.next_aria}
       >
         <ChevronRight className="w-5 h-5" />
       </button>
@@ -130,7 +132,7 @@ export default function HeroSection() {
                 ? 'w-8 bg-plumbob shadow-lg shadow-plumbob/40'
                 : 'w-2 bg-white/30 hover:bg-white/50'
             }`}
-            aria-label={`Ir al paquete ${index + 1}`}
+            aria-label={`${content.slide_aria_prefix} ${index + 1}`}
           />
         ))}
       </div>
