@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react'
 import { login } from '../../../shared/services/auth'
+import { getFriendlyError } from '../../../shared/utils/errors'
 
 export default function useLoginForm({ onSuccess } = {}) {
   const [form, setForm] = useState({ email: '', password: '' })
@@ -43,7 +44,7 @@ export default function useLoginForm({ onSuccess } = {}) {
       setSuccess(true)
       if (onSuccess) onSuccess()
     } catch (err) {
-      setServerError(err.message)
+      setServerError(getFriendlyError(err))
     } finally {
       setLoading(false)
     }

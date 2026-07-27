@@ -12,6 +12,90 @@ Authorization: Bearer <JWT>
 Content-Type: application/json
 ```
 
+## Cifrado end-to-end (AES-256-GCM)
+
+Los endpoints marcados como **sensibles** soportan cifrado opcional del payload en tránsito.
+
+### Request cifrado (cliente → servidor)
+
+El cliente envía el body cifrado en el header en lugar del body HTTP:
+
+| Header                | Valor                                     | Obligatorio                        |
+| --------------------- | ----------------------------------------- | ---------------------------------- |
+| `X-Encrypted-Payload` | `base64(IV(12 bytes) + ciphertext + tag)` | Solo si se desea cifrar            |
+| `X-Encrypted`         | `true`                                    | Solo si se desea respuesta cifrada |
+
+Si no se envía `X-Encrypted-Payload`, el servidor procesa el body como plain-text (fallback).
+
+Formato del payload cifrado: `Base64(IV(12 bytes) || ciphertext || GCM tag(16 bytes))`
+
+### Response cifrado (servidor → cliente)
+
+Si el cliente envía `X-Encrypted: true`, el servidor responde con:
+
+| Header                | Valor                                     |
+| --------------------- | ----------------------------------------- |
+| `X-Encrypted-Payload` | `base64(IV(12 bytes) + ciphertext + tag)` |
+| `Content-Type`        | `application/octet-stream`                |
+
+Si no se envía `X-Encrypted`, la respuesta es plain-text normal.
+
+### Endpoints con cifrado disponible
+
+| Endpoint                            | Cifrado request | Cifrado response          |
+| ----------------------------------- | --------------- | ------------------------- |
+| `POST /api/auth/register`           | ✅ Opcional     | ✅ Si `X-Encrypted: true` |
+| `POST /api/auth/login`              | ✅ Opcional     | ✅ Si `X-Encrypted: true` |
+| `POST /api/auth/logout`             | ❌              | ✅ Si `X-Encrypted: true` |
+| `GET/POST/PUT/DELETE /api/users/**` | ✅ Opcional     | ✅ Si `X-Encrypted: true` |
+| `GET/POST/DELETE /api/cart/**`      | ✅ Opcional     | ✅ Si `X-Encrypted: true` |
+| `GET/POST /api/buys/**`             | ✅ Opcional     | ✅ Si `X-Encrypted: true` |
+
+Los endpoints públicos (`/api/extensions`, `/api/content`, `/api/config`) **no** soportan cifrado.
+
+### Algoritmo
+
+- **Cifrado**: AES-256-GCM (AES/GCM/NoPadding)
+- **IV**: 12 bytes aleatorios por operación
+- **Tag**: 128 bits (16 bytes)
+- **Clave**: 32 bytes (256 bits), precompartida vía variable de entorno
+- **Límite**: Payload descifrado máximo 1MB (anti-bomb)
+
+### Ejemplo de integración (Web Crypto API)
+
+```javascript
+const ENCRYPTION_KEY = import.meta.env.VITE_ENCRYPTION_KEY; // Base64 32 bytes
+
+async function encrypt(plaintext) {
+  const keyData = Uint8Array.from(atob(ENCRYPTION_KEY), (c) => c.charCodeAt(0));
+  const key = await crypto.subtle.importKey(
+    "raw",
+    keyData,
+    { name: "AES-GCM" },
+    false,
+    ["encrypt"],
+  );
+  const iv = crypto.getRandomValues(new Uint8Array(12));
+  const encoded = new TextEncoder().encode(plaintext);
+  const ciphertext = await crypto.subtle.encrypt(
+    { name: "AES-GCM", iv },
+    key,
+    encoded,
+  );
+  const combined = new Uint8Array(iv.length + ciphertext.byteLength);
+  combined.set(iv);
+  combined.set(new Uint8Array(ciphertext), iv.length);
+  return btoa(String.fromCharCode(...combined));
+}
+```
+
+### Configuración de clave
+
+```
+# .env (frontend y backend deben usar la misma clave)
+ENCRYPTION_KEY=R4VhZzxNzz9gTs3CJ23LH0ZpCvCm74EScFsvgvtMOss=
+```
+
 ## Seguridad global
 
 ### Endpoints públicos
@@ -66,7 +150,7 @@ Sin autenticación válida:
 
 ### POST `/api/auth/register`
 
-Crea usuario local (`provider=FORM`, `betaTester=false`).
+Crea usuario local (`provider=FORM`, `betaTester=false`). Soporta cifrado end-to-end (ver § Cifrado).
 
 Body:
 
@@ -89,7 +173,7 @@ Respuestas comunes:
 
 ### POST `/api/auth/login`
 
-Autentica con email/password y retorna JWT con `type=USER`.
+Autentica con email/password y retorna JWT con `type=USER`. Soporta cifrado end-to-end (ver § Cifrado).
 
 Body:
 
@@ -666,6 +750,34 @@ Respuestas comunes del módulo:
 - `401 Unauthorized`
 - `403 Forbidden`
 - `404 Not Found` (consulta por id inexistente)
+
+---
+
+---
+
+## 9) Rate Limiting
+
+Protección contra abuso en endpoints de autenticación, configurable via `rate-limit.enabled` en `application.yaml`.
+
+| Endpoint                       | Límite     | Ventana    | Excede                  |
+| ------------------------------ | ---------- | ---------- | ----------------------- |
+| `POST /api/auth/login`         | 5 intentos | 5 minutos  | `429 Too Many Requests` |
+| `POST /api/auth/register`      | 3 intentos | 10 minutos | `429 Too Many Requests` |
+| `POST /api/auth/beta/register` | 3 intentos | 10 minutos | `429 Too Many Requests` |
+
+La ventana se mide por IP del cliente (`X-Forwarded-For` o remote address).
+
+Se puede deshabilitar completamente con `rate-limit.enabled: false`.
+
+Respuesta `429 Too Many Requests`:
+
+```json
+{
+  "status": 429,
+  "error": "Demasiadas solicitudes",
+  "message": "Demasiados intentos de login. Intenta de nuevo en 5 minutos."
+}
+```
 
 ---
 
