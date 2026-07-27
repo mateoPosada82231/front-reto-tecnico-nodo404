@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { register } from '../../../shared/services/auth'
+import { getFriendlyError } from '../../../shared/utils/errors'
 
 export default function useRegisterForm() {
   const navigate = useNavigate()
@@ -70,7 +71,7 @@ export default function useRegisterForm() {
       setSuccess(true)
       setTimeout(() => navigate('/login'), 3000)
     } catch (err) {
-      setServerError(err.message)
+      setServerError(getFriendlyError(err))
     } finally {
       setLoading(false)
     }
