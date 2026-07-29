@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom'
-import { LogOut, Beaker, Menu, X, AlertCircle } from 'lucide-react'
+import { LogOut, Beaker, Menu, X, AlertCircle, User } from 'lucide-react'
 import Logo from './Logo'
 import ThemeToggle from './ThemeToggle'
 import BetaTesterModal from './BetaTesterModal'
@@ -80,6 +80,13 @@ function Header() {
 
           {isLoggedIn && (
             <div className="flex items-center gap-3 ml-2 pl-4 border-l border-border/50">
+              <NavLink
+                to="/perfil"
+                className="p-2 rounded-lg text-text-dim hover:text-plumbob hover:bg-plumbob/10 transition-all duration-200 cursor-pointer"
+                aria-label="Ver perfil"
+              >
+                <User className="w-4 h-4" />
+              </NavLink>
               <span className="text-sm font-medium text-text-sub truncate max-w-[8.75rem]">
                 {user?.fullName || email}
               </span>
@@ -146,6 +153,14 @@ function Header() {
           {isLoggedIn && (
             <div className="pt-3 border-t border-border/50">
               <p className="text-sm text-text-sub mb-3">{user?.fullName || email}</p>
+              <NavLink
+                to="/perfil"
+                onClick={closeMobile}
+                className="flex items-center gap-2 text-sm text-text-sub hover:text-text-main py-2 cursor-pointer"
+              >
+                <User className="w-4 h-4" />
+                Perfil
+              </NavLink>
               <button
                 onClick={handleLogout}
                 className="flex items-center gap-2 text-sm text-red-400 hover:text-red-300 transition-colors cursor-pointer"
