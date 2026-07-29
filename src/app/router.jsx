@@ -5,6 +5,7 @@ import LandingPage from '../features/landing/pages/LandingPage'
 const RegisterPage = lazy(() => import('../features/auth/pages/RegisterPage'))
 const LoginPage = lazy(() => import('../features/auth/pages/LoginPage'))
 const OAuthCallback = lazy(() => import('../features/auth/pages/OAuthCallback'))
+const ProfilePage = lazy(() => import('../features/profile/pages/ProfilePage'))
 
 function AppRouter() {
   return (
@@ -14,6 +15,7 @@ function AppRouter() {
         <Route path="/registro" element={<RegisterPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/oauth2/callback" element={<OAuthCallback />} />
+        <Route path="/perfil" element={<ProfilePage />} />
       </Routes>
     </Suspense>
   )
