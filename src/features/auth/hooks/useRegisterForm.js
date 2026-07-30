@@ -2,9 +2,12 @@ import { useState, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { register } from '../../../shared/services/auth'
 import { getFriendlyError } from '../../../shared/utils/errors'
+import useContent from '../../../shared/hooks/useContent'
 
 export default function useRegisterForm() {
   const navigate = useNavigate()
+  const { content: validation } = useContent('validation.register')
+  const { content: errorsContent } = useContent('errors.common')
   const [form, setForm] = useState({
     fullName: '',
     email: '',
@@ -29,29 +32,29 @@ export default function useRegisterForm() {
 
   const validate = useCallback(() => {
     const newErrors = {}
-    if (!form.fullName.trim()) newErrors.fullName = 'El nombre es obligatorio'
-    if (!form.email.trim()) newErrors.email = 'El correo es obligatorio'
+    if (!form.fullName.trim()) newErrors.fullName = validation.name_required
+    if (!form.email.trim()) newErrors.email = validation.email_required
     else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(form.email))
-      newErrors.email = 'Correo inválido'
-    if (!form.country) newErrors.country = 'Seleccione un país'
-    if (!form.birthDate) newErrors.birthDate = 'Seleccione una fecha'
-    if (!form.identification.trim()) newErrors.identification = 'Ingrese su identificación'
-    if (!form.phone.trim()) newErrors.phone = 'Ingrese su celular'
-    if (!form.password) newErrors.password = 'Ingrese una contraseña'
-    else if (form.password.length < 8) newErrors.password = 'La contraseña debe tener mínimo 8 caracteres'
-    else if (!/[A-Z]/.test(form.password)) newErrors.password = 'Debe contener al menos una mayúscula'
-    else if (!/[0-9]/.test(form.password)) newErrors.password = 'Debe contener al menos un número'
-    else if (!/[$@$!%*?&#]/.test(form.password)) newErrors.password = 'Debe contener al menos un carácter especial'
-    if (!form.confirmPassword) newErrors.confirmPassword = 'Confirme su contraseña'
-    else if (form.password !== form.confirmPassword) newErrors.confirmPassword = 'Las contraseñas no coinciden'
+      newErrors.email = validation.email_invalid
+    if (!form.country) newErrors.country = validation.country_required
+    if (!form.birthDate) newErrors.birthDate = validation.birthdate_required
+    if (!form.identification.trim()) newErrors.identification = validation.id_required
+    if (!form.phone.trim()) newErrors.phone = validation.phone_required
+    if (!form.password) newErrors.password = validation.password_required
+    else if (form.password.length < 8) newErrors.password = validation.password_min_length
+    else if (!/[A-Z]/.test(form.password)) newErrors.password = validation.password_uppercase
+    else if (!/[0-9]/.test(form.password)) newErrors.password = validation.password_number
+    else if (!/[$@$!%*?&#]/.test(form.password)) newErrors.password = validation.password_special
+    if (!form.confirmPassword) newErrors.confirmPassword = validation.confirm_required
+    else if (form.password !== form.confirmPassword) newErrors.confirmPassword = validation.confirm_match
     return newErrors
-  }, [form])
+  }, [form, validation])
 
   const handleSubmit = useCallback(async (e) => {
     e.preventDefault()
-    const validation = validate()
-    if (Object.keys(validation).length > 0) {
-      setErrors(validation)
+    const validationResult = validate()
+    if (Object.keys(validationResult).length > 0) {
+      setErrors(validationResult)
       return
     }
 
@@ -71,11 +74,11 @@ export default function useRegisterForm() {
       setSuccess(true)
       setTimeout(() => navigate('/login'), 3000)
     } catch (err) {
-      setServerError(getFriendlyError(err))
+      setServerError(getFriendlyError(errorsContent, err))
     } finally {
       setLoading(false)
     }
-  }, [form, validate, navigate])
+  }, [form, validate, navigate, errorsContent])
 
   return { form, errors, serverError, loading, success, handleChange, handleSubmit }
 }

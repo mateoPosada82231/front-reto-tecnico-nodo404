@@ -1,13 +1,15 @@
 import { Sun, Moon } from 'lucide-react'
+import useContent from '../hooks/useContent'
 
 function ThemeToggle({ theme, onToggle }) {
   const isDark = theme === 'dark'
+  const { content } = useContent('theme.toggle')
 
   return (
     <button
       onClick={onToggle}
       className="relative p-2 rounded-lg text-text-dim hover:text-text-primary hover:bg-slate-surface/50 transition-all duration-200 cursor-pointer"
-      aria-label={isDark ? 'Cambiar a tema claro' : 'Cambiar a tema oscuro'}
+      aria-label={isDark ? content.light_aria : content.dark_aria}
     >
       <span className="relative block w-5 h-5">
         <Sun

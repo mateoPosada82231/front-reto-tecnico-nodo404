@@ -1,5 +1,6 @@
 import React from 'react'
 import Card from './Card'
+import Skeleton from '../../../shared/components/Skeleton'
 import useExpansionGrid from '../hooks/useExpansionGrid'
 import useContent from '../../../shared/hooks/useContent'
 
@@ -15,12 +16,12 @@ export default function ExpansionGrid() {
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {Array.from({ length: 8 }).map((_, i) => (
-            <div key={i} className="animate-pulse rounded-2xl border border-border/30 overflow-hidden bg-surface">
-              <div className="aspect-video bg-hover" />
+            <div key={i} className="rounded-2xl border border-border/30 overflow-hidden">
+              <Skeleton className="aspect-video rounded-none" />
               <div className="p-5 space-y-3">
-                <div className="h-2.5 bg-hover rounded w-1/3" />
-                <div className="h-4 bg-hover rounded w-3/4" />
-                <div className="h-3 bg-hover rounded w-full" />
+                <Skeleton className="h-2.5 w-1/3" />
+                <Skeleton className="h-4 w-3/4" />
+                <Skeleton className="h-3 w-full" />
               </div>
             </div>
           ))}

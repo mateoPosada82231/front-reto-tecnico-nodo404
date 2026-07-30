@@ -1,12 +1,14 @@
-import { Navigate } from 'react-router-dom'
-import { Pencil, X, Check } from 'lucide-react'
-import Button from '../../shared/components/Button'
-import InputField from '../../shared/components/InputField'
-import Skeleton from '../../shared/components/Skeleton'
-import ProfileAvatar from '../components/ProfileAvatar'
-import useProfile from '../hooks/useProfile'
+import { Navigate } from "react-router-dom";
+import { Pencil, X, Check } from "lucide-react";
+import Button from "../../../shared/components/Button";
+import InputField from "../../../shared/components/InputField";
+import Skeleton from "../../../shared/components/Skeleton";
+import ProfileAvatar from "../components/ProfileAvatar";
+import useProfile from "../hooks/useProfile";
+import useContent from "../../../shared/hooks/useContent";
 
 function ProfilePage() {
+  const { content } = useContent("profile.page");
   const {
     user,
     email,
@@ -21,7 +23,7 @@ function ProfilePage() {
     startEditing,
     cancelEditing,
     saveProfile,
-  } = useProfile()
+  } = useProfile();
 
   if (loading) {
     return (
@@ -31,11 +33,11 @@ function ProfilePage() {
         <Skeleton className="h-10 w-full" />
         <Skeleton className="h-10 w-full" />
       </div>
-    )
+    );
   }
 
   if (!isLoggedIn) {
-    return <Navigate to="/login" replace />
+    return <Navigate to="/login" replace />;
   }
 
   return (
@@ -45,13 +47,13 @@ function ProfilePage() {
           <ProfileAvatar name={user?.fullName} />
           <div>
             <h1 className="text-xl font-semibold text-text-main md:text-2xl">
-              {user?.fullName || 'Sin nombre'}
+              {user?.fullName || content.name_fallback}
             </h1>
             <p className="text-sm text-text-sub">{email}</p>
           </div>
           {user?.betaTester && (
             <span className="inline-flex items-center rounded-full bg-plumbob/15 border border-plumbob/30 px-2.5 py-0.5 text-xs font-semibold text-plumbob">
-              Beta tester
+              {content.beta_badge}
             </span>
           )}
         </div>
@@ -59,9 +61,9 @@ function ProfilePage() {
         {feedback && (
           <div
             className={`mb-6 rounded-xl border px-4 py-3 text-sm ${
-              feedback.type === 'success'
-                ? 'border-plumbob/30 bg-plumbob/10 text-plumbob'
-                : 'border-red-500/30 bg-red-500/10 text-red-400'
+              feedback.type === "success"
+                ? "border-plumbob/30 bg-plumbob/10 text-plumbob"
+                : "border-red-500/30 bg-red-500/10 text-red-400"
             }`}
           >
             {feedback.message}
@@ -70,7 +72,7 @@ function ProfilePage() {
 
         <form onSubmit={saveProfile} className="space-y-5">
           <InputField
-            label="Nombre completo"
+            label={content.fullname_label}
             name="fullName"
             value={form.fullName}
             onChange={handleChange}
@@ -81,7 +83,7 @@ function ProfilePage() {
 
           <div className="grid gap-5 md:grid-cols-2">
             <InputField
-              label="País"
+              label={content.country_label}
               name="country"
               value={form.country}
               onChange={handleChange}
@@ -89,7 +91,7 @@ function ProfilePage() {
               disabled={!editing}
             />
             <InputField
-              label="Número de identificación"
+              label={content.identification_label}
               name="identification"
               value={form.identification}
               onChange={handleChange}
@@ -100,7 +102,7 @@ function ProfilePage() {
 
           <div className="grid gap-5 md:grid-cols-2">
             <InputField
-              label="Número de celular"
+              label={content.phone_label}
               name="mobileNumber"
               value={form.mobileNumber}
               onChange={handleChange}
@@ -108,7 +110,7 @@ function ProfilePage() {
               disabled={!editing}
             />
             <InputField
-              label="Fecha de nacimiento"
+              label={content.birthdate_label}
               name="dateOfBirth"
               type="date"
               value={form.dateOfBirth}
@@ -122,17 +124,22 @@ function ProfilePage() {
             {!editing ? (
               <Button type="button" variant="secondary" onClick={startEditing}>
                 <Pencil className="h-4 w-4" />
-                Editar perfil
+                {content.edit_button}
               </Button>
             ) : (
               <>
-                <Button type="button" variant="ghost" onClick={cancelEditing} disabled={saving}>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  onClick={cancelEditing}
+                  disabled={saving}
+                >
                   <X className="h-4 w-4" />
-                  Cancelar
+                  {content.cancel_button}
                 </Button>
                 <Button type="submit" variant="primary" loading={saving}>
                   <Check className="h-4 w-4" />
-                  Guardar cambios
+                  {content.save_button}
                 </Button>
               </>
             )}
@@ -140,7 +147,7 @@ function ProfilePage() {
         </form>
       </div>
     </div>
-  )
+  );
 }
 
-export default ProfilePage
+export default ProfilePage;

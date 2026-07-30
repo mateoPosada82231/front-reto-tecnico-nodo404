@@ -83,7 +83,7 @@ function Header() {
               <NavLink
                 to="/perfil"
                 className="p-2 rounded-lg text-text-dim hover:text-plumbob hover:bg-plumbob/10 transition-all duration-200 cursor-pointer"
-                aria-label="Ver perfil"
+                aria-label={content.profile_link_aria}
               >
                 <User className="w-4 h-4" />
               </NavLink>
@@ -93,7 +93,7 @@ function Header() {
               {isBetaTester && (
                 <span className="inline-flex items-center gap-1 rounded-full bg-plumbob/15 border border-plumbob/30 px-2.5 py-0.5 text-xs font-semibold text-plumbob">
                   <Beaker className="w-3 h-3" />
-                  Beta
+                  {content.beta_badge_label}
                 </span>
               )}
               <button
@@ -159,7 +159,7 @@ function Header() {
                 className="flex items-center gap-2 text-sm text-text-sub hover:text-text-main py-2 cursor-pointer"
               >
                 <User className="w-4 h-4" />
-                Perfil
+                {content.mobile_profile_link}
               </NavLink>
               <button
                 onClick={handleLogout}

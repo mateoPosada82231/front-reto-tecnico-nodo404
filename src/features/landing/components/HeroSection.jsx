@@ -1,6 +1,7 @@
 import React from 'react'
 import useHeroSection from '../hooks/useHeroSection'
 import useContent from '../../../shared/hooks/useContent'
+import Button from '../../../shared/components/Button'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 
 export default function HeroSection() {
@@ -89,14 +90,14 @@ export default function HeroSection() {
                   {pack.description || pack.aboutGame}
                 </p>
 
-                <a
+                <Button
                   href={pack.link || '#'}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-6 inline-block px-8 py-3.5 bg-plumbob hover:bg-plumbob-light text-white font-bold rounded-xl shadow-lg shadow-plumbob/25 hover:shadow-plumbob/40 active:scale-[0.97] transition-all duration-200 text-sm md:text-base cursor-pointer text-center"
+                  className="mt-6 px-8 py-3.5 font-bold md:text-base shadow-plumbob/25 hover:shadow-plumbob/40"
                 >
                   {content.cta_text}
-                </a>
+                </Button>
               </div>
             </div>
             </div>

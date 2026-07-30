@@ -1,8 +1,11 @@
 import { useState, useCallback } from 'react'
 import { login } from '../../../shared/services/auth'
 import { getFriendlyError } from '../../../shared/utils/errors'
+import useContent from '../../../shared/hooks/useContent'
 
 export default function useLoginForm({ onSuccess } = {}) {
+  const { content: validation } = useContent('validation.login')
+  const { content: errorsContent } = useContent('errors.common')
   const [form, setForm] = useState({ email: '', password: '' })
   const [errors, setErrors] = useState({})
   const [serverError, setServerError] = useState('')
@@ -18,18 +21,18 @@ export default function useLoginForm({ onSuccess } = {}) {
 
   const validate = useCallback(() => {
     const newErrors = {}
-    if (!form.email.trim()) newErrors.email = 'El correo es obligatorio'
+    if (!form.email.trim()) newErrors.email = validation.email_required
     else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(form.email))
-      newErrors.email = 'Correo inválido'
-    if (!form.password) newErrors.password = 'Ingrese una contraseña'
+      newErrors.email = validation.email_invalid
+    if (!form.password) newErrors.password = validation.password_required
     return newErrors
-  }, [form])
+  }, [form, validation])
 
   const handleSubmit = useCallback(async (e) => {
     e.preventDefault()
-    const validation = validate()
-    if (Object.keys(validation).length > 0) {
-      setErrors(validation)
+    const validationResult = validate()
+    if (Object.keys(validationResult).length > 0) {
+      setErrors(validationResult)
       return
     }
 
@@ -44,11 +47,11 @@ export default function useLoginForm({ onSuccess } = {}) {
       setSuccess(true)
       if (onSuccess) onSuccess()
     } catch (err) {
-      setServerError(getFriendlyError(err))
+      setServerError(getFriendlyError(errorsContent, err))
     } finally {
       setLoading(false)
     }
-  }, [form, validate, onSuccess])
+  }, [form, validate, onSuccess, errorsContent])
 
   return { form, errors, serverError, loading, success, handleChange, handleSubmit }
 }
