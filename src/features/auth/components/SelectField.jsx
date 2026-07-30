@@ -1,3 +1,5 @@
+import useContent from '../../../shared/hooks/useContent'
+
 function SelectField({
   label,
   name,
@@ -6,7 +8,11 @@ function SelectField({
   options = [],
   error,
   required = false,
+  defaultPlaceholder,
 }) {
+  const { content: selectDefault } = useContent('select.default')
+  const placeholder = defaultPlaceholder ?? selectDefault.placeholder
+
   return (
     <div className="flex flex-col gap-1.5">
       {label && (
@@ -26,7 +32,7 @@ function SelectField({
             : 'border-border hover:border-text-dim'
         }`}
       >
-        <option value="">Seleccione...</option>
+        <option value="">{placeholder}</option>
 
         {options.map((option) => (
           <option key={option.value} value={option.value}>

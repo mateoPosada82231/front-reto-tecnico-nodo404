@@ -1,4 +1,5 @@
-import { Beaker, X, CheckCircle, Loader2 } from 'lucide-react'
+import { Beaker, X, CheckCircle } from 'lucide-react'
+import Button from './Button'
 import Alert from '../../features/auth/components/Alert'
 import useContent from '../hooks/useContent'
 
@@ -51,12 +52,9 @@ export default function BetaTesterModal({
               {content.already_description}
             </p>
 
-            <button
-              onClick={onClose}
-              className="px-8 py-3 bg-plumbob hover:bg-plumbob-light text-white font-semibold rounded-xl shadow-lg shadow-plumbob/20 hover:shadow-plumbob/40 active:scale-[0.97] transition-all duration-200 cursor-pointer"
-            >
+            <Button onClick={onClose}>
               {content.already_cta}
-            </button>
+            </Button>
           </>
         ) : (
           <>
@@ -81,27 +79,12 @@ export default function BetaTesterModal({
             )}
 
             <div className="flex gap-3 justify-center">
-              <button
-                onClick={onClose}
-                disabled={loading}
-                className="px-6 py-2.5 rounded-xl border border-border/50 text-text-sub hover:text-text-main hover:bg-hover transition-all duration-200 cursor-pointer disabled:opacity-50"
-              >
+              <Button variant="ghost" onClick={onClose} disabled={loading}>
                 {content.cancel_text}
-              </button>
-              <button
-                onClick={onConfirm}
-                disabled={loading}
-                className="px-6 py-2.5 bg-plumbob hover:bg-plumbob-light text-white font-semibold rounded-xl shadow-lg shadow-plumbob/20 hover:shadow-plumbob/40 active:scale-[0.97] transition-all duration-200 cursor-pointer disabled:opacity-50 inline-flex items-center gap-2"
-              >
-                {loading ? (
-                  <>
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                    {content.processing_text}
-                  </>
-                ) : (
-                  content.confirm_cta
-                )}
-              </button>
+              </Button>
+              <Button onClick={onConfirm} loading={loading}>
+                {content.confirm_cta}
+              </Button>
             </div>
           </>
         )}

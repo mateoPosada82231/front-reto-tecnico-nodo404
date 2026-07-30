@@ -1,6 +1,21 @@
-# Los Sims 4 - Expansion Store
+# Los Sims 4 — Expansion Store
 
-Tienda de expansiones de Los Sims 4. Frontend en React consumiendo una API REST en Spring Boot.
+Tienda de expansiones de Los Sims 4. Frontend en React 19 + Vite consumiendo una API REST en Spring Boot (`localhost:8080`), con un CMS ligero para textos de UI orientado a internacionalización futura.
+
+---
+
+## Tabla de contenidos
+
+- [Stack](#stack)
+- [Scripts](#scripts)
+- [Estructura del proyecto](#estructura-del-proyecto)
+- [Rutas](#rutas)
+- [Servicios API](#servicios-api)
+- [Sistema de contenido dinámico](#sistema-de-contenido-dinámico)
+- [Manejo de errores amigables](#manejo-de-errores-amigables)
+- [Convenciones](#convenciones)
+- [Variables de entorno](#variables-de-entorno)
+- [Buenas prácticas de Git](#buenas-prácticas-de-git)
 
 ---
 
@@ -11,10 +26,21 @@ Tienda de expansiones de Los Sims 4. Frontend en React consumiendo una API REST 
 | **React** | 19 | UI library |
 | **Vite** | 8 | Build tool + dev server |
 | **Tailwind CSS** | v4 | Utility-first CSS |
-| **pnpm** | - | Gestor de paquetes |
-| **react-router-dom** | 7 | Enrutamiento SPA |
-| **lucide-react** | - | Iconografía |
-| **oxlint** | - | Linter |
+| **pnpm** | — | Gestor de paquetes |
+| **react-router-dom** | 7 | Enrutamiento SPA (lazy + Suspense) |
+| **lucide-react** | — | Iconografía |
+| **oxlint** | — | Linter (Oxidation compiler) |
+
+---
+
+## Scripts
+
+```bash
+pnpm dev       # Servidor de desarrollo (Vite)
+pnpm build     # Build producción (Vite)
+pnpm preview   # Preview del build
+pnpm lint      # Ejecutar oxlint
+```
 
 ---
 
@@ -22,137 +48,253 @@ Tienda de expansiones de Los Sims 4. Frontend en React consumiendo una API REST 
 
 ```
 src/
-├── app/                        # Configuración de app y router
-│   ├── App.jsx                 # Root component, envuelve en ContentProvider + MainLayout
-│   └── router.jsx              # Definición de rutas (lazy loading)
+├── app/                              # Configuración de app
+│   ├── App.jsx                       # Root: envuelve en ContentProvider + MainLayout
+│   └── router.jsx                   # Definición de rutas (lazy loading)
 │
-├── features/                   # Agrupación por funcionalidad (Folder Feature)
-│   ├── auth/                   # Autenticación
-│   │   ├── components/         # LoginForm, RegisterForm, SocialButtons, etc.
-│   │   ├── hooks/              # useLoginForm, useRegisterForm
-│   │   └── pages/              # LoginPage, RegisterPage, OAuthCallback
+├── features/                         # Folder Feature (lógica por dominio)
+│   ├── auth/
+│   │   ├── components/               # InputField, SelectField, Alert, SocialButtons, LoginForm, RegisterForm
+│   │   ├── hooks/                    # useLoginForm, useRegisterForm
+│   │   └── pages/                    # LoginPage, RegisterPage, OAuthCallback
 │   │
-│   └── landing/                # Landing page
-│       ├── components/         # HeroSection, ExpansionGrid, Card, WelcomeModal
-│       ├── context/            # ExtensionsContext (datos de extensiones)
-│       ├── hooks/              # useExtensionsData, useHeroSection, useExpansionGrid
-│       └── pages/              # LandingPage
+│   ├── landing/
+│   │   ├── components/               # HeroSection, ExpansionGrid, Card, WelcomeModal
+│   │   ├── context/                  # ExtensionsContext (datos de extensiones)
+│   │   ├── hooks/                    # useExtensionsData, useHeroSection, useExpansionGrid
+│   │   └── pages/                    # LandingPage
+│   │
+│   └── profile/
+│       ├── components/               # ProfileAvatar
+│       ├── hooks/                    # useProfile
+│       └── pages/                    # ProfilePage
 │
-├── shared/                     # Componentes, hooks y servicios compartidos
-│   ├── components/             # Header, Footer, Button, InputField, Logo, etc.
-│   ├── context/                # ContentContext (sistema de contenido dinámico)
-│   ├── hooks/                  # useAuth, useHeader, useTheme, useContent, useConfig
-│   └── services/               # Llamadas API: auth.js, users.js, extensions.js, content.js
+├── shared/                           # Código compartido entre features
+│   ├── components/                   # Header, Footer, Button, InputField, Checkbox, Skeleton,
+│   │                                 # Logo, ThemeToggle, BetaTesterModal, MainLayout, SocialIcons
+│   ├── context/                      # ContentContext + ContentProvider
+│   ├── hooks/                        # useAuth, useHeader, useTheme, useContent, useConfig
+│   ├── services/                     # auth, users, extensions, content, httpClient
+│   └── utils/                        # errors (getFriendlyError), crypto
 │
-├── data/                       # Datos mock/estáticos (expansionPacks.js, packMedia.js)
-│
-└── assets/                     # Imágenes estáticas
+├── data/                             # Datos mock/seed (expansionPacks.js, packMedia.js)
+└── assets/                           # Imágenes estáticas
 ```
+
+### Componentes reutilizables (en `shared/components/`)
+
+| Componente | Variantes / props clave | Notas |
+|---|---|---|
+| `Button` | `primary` \| `secondary` \| `ghost`, `loading`, `href`, `disabled` | Soporta `<a>` cuando se pasa `href`. Internamente incluye todos los estilos base. |
+| `InputField` | `label`, `error`, `required`, `className` | Wrapper `<div className="flex flex-col gap-1.5">`. Usado por login, registro y perfil. |
+| `Checkbox` | `label`, `checked`, `error` | Misma estructura que InputField. |
+| `Skeleton` | `className` | Incluye `animate-pulse rounded-xl bg-surface` + `loading_aria` desde `common.loading_aria`. |
+| `Alert` | `success` \| `error` \| `info` | Icono + color ya incluidos. |
+| `BetaTesterModal` | `open`, `loading`, `success`, `error` | Modal controlado; usa `useContent('beta_modal')` y `Button` internamente. |
+| `ThemeToggle` | `theme`, `onToggle` | ARIA labels desde `theme.toggle`. |
+| `Logo` / `Header` / `Footer` / `MainLayout` / `SocialIcons` | — | Wrappers/layout. |
+
+> **Convención**: cualquier estilo base (color, padding, transición, focus) debe vivir dentro del componente. Las páginas solo agregan clases de layout (grid, flex, spacing, max-w, mx-auto, etc.) o estilos estrictamente únicos de esa pantalla.
+
+---
+
+## Rutas
+
+| Path | Componente | Acceso | Lazy |
+|---|---|---|---|
+| `/` | `LandingPage` | Público | No |
+| `/registro` | `RegisterPage` | Público | Sí |
+| `/login` | `LoginPage` | Público | Sí |
+| `/oauth2/callback` | `OAuthCallback` | Público | Sí |
+| `/perfil` | `ProfilePage` | Protegido (redirige a `/login` si no hay sesión) | Sí |
+
+Las páginas perezosas se envuelven en `<Suspense>` dentro de `app/router.jsx`.
+
+---
+
+## Servicios API
+
+Todos los servicios viven en `src/shared/services/`. Usan `httpClient.js` que añade `Authorization: Bearer <JWT>` cuando hay token en `localStorage`.
+
+| Servicio | Archivo | Funciones | Auth |
+|---|---|---|---|
+| Auth | `auth.js` | `register(data)`, `login(email, password)`, `logout()` | Mixto |
+| Users | `users.js` | `getUsers()`, `getUserByEmail(email)`, `updateUser(email, data)` | Bearer |
+| Extensions | `extensions.js` | `getExtensions`, `getExtensionById`, `getByCategory`, `getByDistributor`, `getByAge`, `getTrending`, `getRandom` | Público |
+| Content (CMS) | `content.js` | `getContentBySection`, `getContentByKey`, `createContent`, `updateContent`, `deleteContent` | GET público / escritura Bearer |
+| Config (CMS) | `content.js` | `getConfig`, `createConfig`, `updateConfig`, `deleteConfig` | GET público / escritura Bearer |
+
+Detalle de cada endpoint en [`endpoints.md`](./endpoints.md).
 
 ---
 
 ## Sistema de contenido dinámico
 
-Todos los textos de UI (títulos, labels, botones, mensajes) provienen de la base de datos a través de la API `/api/content`. El frontend usa un **ContentProvider** global que carga todas las secciones al iniciar la app.
+**Regla de oro**: ningún texto visible para el usuario se hardcodea en componentes ni hooks (incluidos mensajes de validación y errores del servidor). Todo proviene de la base de datos a través del CMS o de mensajes internacionales listos para i18n.
 
 ### Arquitectura
 
 ```
-API /api/content/{section}  ──►  ContentContext  ──►  useContent('section.key')  ──►  Componente
-API /api/config/{key}       ──►  ContentContext  ──►  useConfig('key')           ──►  Componente
+┌─────────────────────────────────────────────────────────┐
+│                    ContentProvider                       │
+│  (carga TODAS las secciones + configs al iniciar la app)│
+├─────────────────────────────────────────────────────────┤
+│  useContent('auth.login')  →  { title, subtitle, ... }  │
+│  useConfig('countries')    →  [{ value, label }, ...]   │
+└─────────────────────────────────────────────────────────┘
+                         │
+              ┌──────────┴──────────┐
+              │                     │
+     GET /api/content/{section}   GET /api/config/{key}
+              │                     │
+              └──────────┬──────────┘
+                         │
+                    Backend API
+                    (localhost:8080)
 ```
+
+- Al iniciar, `ContentProvider` hace `Promise.allSettled` de `getContentBySection(section)` para todas las secciones registradas, y `getConfig(key)` para todas las configs. Si una sección falla, se conserva el fallback local.
+- El merge `FALLBACK ∪ backend` se hace sección por sección (`FALLBACK` manda si la API no devuelve la clave).
+- `useContent()` y `useConfig()` leen de un `Context` (no hacen requests por separado). Esto evita waterfall y mantiene el contenido sincronizado.
 
 ### Hooks disponibles
 
-| Hook | Uso | Retorna |
+| Hook | Retorna | Uso |
 |---|---|---|
-| `useContent(sectionKey)` | Obtener textos de una sección | `{ content, loading, error }` |
-| `useConfig(configKey)` | Obtener configuración (ej: países) | `{ config, loading, error }` |
+| `useContent(sectionKey)` | `{ content, loading, error }` | Textos editoriales (títulos, labels, placeholders, mensajes). |
+| `useConfig(configKey)` | `{ config, loading, error }` | Listas estructuradas (ej: `countries`). |
 
-### Ejemplo de uso
+### Ejemplo
 
 ```jsx
 import useContent from '../shared/hooks/useContent'
 
 function LoginPage() {
-  const { content, loading } = useContent('auth.login')
-
-  return (
-    <div>
-      <h1>{content.title}</h1>
-      <p>{content.subtitle}</p>
-    </div>
-  )
+  const { content } = useContent('auth.login')
+  return <h1>{content.title}</h1>
 }
 ```
 
-### Secciones de contenido
+### Secciones de contenido registradas
 
 | Sección | Keys | Descripción |
 |---|---|---|
 | `landing.hero` | `cta_text`, `error_prefix`, `prev_aria`, `next_aria`, `slide_aria_prefix` | Carrusel hero |
 | `landing.grid` | `title`, `error_prefix`, `cta_text` | Grilla de productos |
 | `landing.welcome` | `title`, `subtitle`, `cta_text`, `close_aria` | Modal de bienvenida |
-| `auth.login` | `title`, `subtitle`, `email_label`, `password_label`, `submit_text`, `loading_text`, `success_message` | Formulario login |
-| `auth.register` | `title`, `subtitle`, labels, placeholders, `submit_text`, `loading_text`, `success_message` | Formulario registro |
+| `auth.login` | `title`, `subtitle`, `email_label`, `password_label`, `submit_text`, `loading_text`, `success_message` | Formulario de login |
+| `auth.register` | `title`, `subtitle`, `fullname_label`, `fullname_placeholder`, `email_label`, `country_label`, `birthdate_label`, `id_label`, `phone_label`, `password_label`, `password_placeholder`, `confirm_password_label`, `confirm_password_placeholder`, `submit_text`, `loading_text`, `success_message` | Formulario de registro |
 | `auth.social` | `divider_login`, `divider_register` | Botones OAuth |
 | `auth.oauth` | `loading_text` | Callback OAuth |
-| `header` | `profile_warning`, `nav_home`, `nav_register`, `nav_login`, `beta_cta`, `logout_aria`, `menu_aria` | Navegación |
+| `header` | `profile_warning`, `nav_home`, `nav_register`, `nav_login`, `beta_cta`, `logout_aria`, `menu_aria`, `profile_link_aria`, `beta_badge_label`, `mobile_profile_link` | Navegación |
 | `beta_modal` | `close_aria`, `already_title`, `already_description`, `already_cta`, `confirm_title`, `confirm_description`, `cancel_text`, `processing_text`, `confirm_cta` | Modal beta tester |
 | `footer` | `copyright` | Footer |
 | `common` | `loading_aria` | Textos compartidos |
+| `profile.page` | `name_fallback`, `beta_badge`, `fullname_label`, `country_label`, `identification_label`, `phone_label`, `birthdate_label`, `edit_button`, `cancel_button`, `save_button`, `success_message`, `error_message` | Página `/perfil` |
+| `theme.toggle` | `light_aria`, `dark_aria` | Botón de tema claro/oscuro |
+| `validation.login` | `email_required`, `email_invalid`, `password_required` | Validaciones del formulario de login |
+| `validation.register` | `name_required`, `email_required`, `email_invalid`, `country_required`, `birthdate_required`, `id_required`, `phone_required`, `password_required`, `password_min_length`, `password_uppercase`, `password_number`, `password_special`, `confirm_required`, `confirm_match` | Validaciones del registro |
+| `validation.profile` | `name_required` | Validaciones del perfil |
+| `errors.common` | `duplicate_email`, `invalid_credentials`, `session_expired`, `unauthorized`, `required_field`, `validation_failed`, `server_error`, `service_unavailable`, `bad_request`, `not_found`, `network_error`, `unexpected_error` | Mensajes de error amigables |
+| `placeholders` | `email`, `password`, `id`, `phone` | Placeholders de inputs |
+| `select.default` | `placeholder` | Opción por defecto de `<SelectField>` |
 
 ### Configuraciones
 
 | Key | Contenido |
 |---|---|
-| `countries` | Lista de países `[{ value, label }]` |
+| `countries` | Lista de países `[{ value, label }]` (usado en formulario de registro y perfil) |
 
-### Fallback
+### Cómo agregar una nueva sección
 
-Si la API no está disponible, el sistema usa valores por defecto hardcodeados en `ContentContext.jsx` para que la app siga funcionando.
+1. **Agregar fallback en `FALLBACK`** dentro de `ContentProvider.jsx`.
+2. **Agregar la clave al array `SECTIONS`** del mismo archivo.
+3. **Insertar los registros** en la base de datos (`INSERT INTO site_content ...` con `section_key`, `content_key`, `content_value`).
+4. **Consumir** en el componente con `useContent('nueva.seccion')`.
+
+### Cómo agregar una nueva configuración
+
+1. Agregar el fallback en `FALLBACK_CONFIG` y la clave al array `CONFIG_KEYS`.
+2. Insertar en BD (`INSERT INTO site_config ...`).
+3. Consumir con `useConfig('clave')`.
+
+---
+
+## Manejo de errores amigables
+
+El módulo `src/shared/utils/errors.js` mapea los mensajes crudos del backend (español o inglés) y los códigos HTTP a mensajes amigables **traducibles desde el CMS**.
+
+### API
+
+```js
+import { getFriendlyError } from '../shared/utils/errors'
+
+getFriendlyError(messages, err) // -> string
+```
+
+- `messages`: objeto con las claves de la sección `errors.common` (ej: `{ duplicate_email, invalid_credentials, ... }`).
+- `err`: el `Error` lanzado por `httpClient` o por el servicio.
+
+### Estrategia de mapeo
+
+1. **Lookup por keyword** en `ERROR_KEYS`: si el `message` del error contiene alguna de las palabras clave registradas (case-insensitive), retorna `messages[key]`.
+2. **Lookup por código HTTP** en el string (`'400'`, `'401'`, etc.).
+3. **Lookup por error de red** (`Failed to fetch`, `NetworkError`).
+4. **Fallback**: si el mensaje es muy largo (>100 chars) usa `messages.unexpected_error`; si no, devuelve el mensaje crudo.
+
+### Uso en hooks
+
+Los hooks `useLoginForm`, `useRegisterForm`, `useProfile` y `useHeader` leen `errors.common` con `useContent` y lo pasan a `getFriendlyError`:
+
+```js
+const { content: errorsContent } = useContent('errors.common')
+// ...
+setServerError(getFriendlyError(errorsContent, err))
+```
+
+Esto permite traducir los mensajes de error del backend sin tocar el `httpClient` ni los servicios.
 
 ---
 
 ## Convenciones
 
-- **Mobile First**: CSS base para mobile, `@media (min-width: ...)` para desktop
-- **BEM**: solo cuando no se use Tailwind (`Bloque__Elemento--Modificador`)
-- **User Feedback obligatorio**: loading, empty, error states y transiciones en toda interacción
-- **Folder Feature**: usar la estructura folder feature y desacoplar la lógica de los componentes
-- **Contenido dinámico**: todos los textos de UI deben usar `useContent()` o `useConfig()`, nunca hardcodear strings
+- **Mobile First**: CSS base para mobile, `@media (min-width: ...)` para desktop.
+- **BEM**: solo cuando no se use Tailwind (`Bloque__Elemento--Modificador`).
+- **User Feedback obligatorio**: loading, empty, error states y transiciones en toda interacción.
+- **Folder Feature**: agrupar por dominio (`features/auth/`, `features/profile/`, etc.) y desacoplar la lógica en `hooks/`.
+- **Contenido dinámico**: TODO texto visible para el usuario pasa por `useContent()` / `useConfig()`. Esto incluye:
+  - Títulos, subtítulos, labels, placeholders.
+  - Mensajes de éxito/error de operaciones.
+  - Mensajes de validación de formularios.
+  - Mensajes de error amigables del servidor.
+  - ARIA labels (accesibilidad es contenido editorial).
+- **Componentes reutilizables**: nunca redefinir estilos que ya existen en el componente (`Button`, `InputField`, etc.). Solo agregar clases de layout.
+- **No comentarios** salvo que se pidan explícitamente.
+- **Sin emojis** en código salvo petición explícita.
+
+---
+
+## Variables de entorno
+
+```bash
+# .env (raíz del proyecto)
+VITE_ENCRYPTION_KEY=<Base64 32 bytes>
+```
+
+Esta clave se usa en `src/shared/utils/crypto.js` para cifrar payloads sensibles (AES-256-GCM). Debe coincidir con la del backend.
 
 ---
 
 ## API
 
-Documentación completa de endpoints en `endpoints.md`.
-
-- **Auth**: registro/login local + OAuth2 (Google, Facebook)
-- **Content CMS** (`/api/content`): CRUD de textos de UI (lectura pública, escritura admin)
-- **Config CMS** (`/api/config`): CRUD de configuraciones (lectura pública, escritura admin)
-- **Extensions** (`/api/extensions`): catálogo de productos (lectura pública, escritura admin)
-- **Users** (`/api/users`): gestión de usuario (protegido)
-- **Cart** (`/api/cart`): carrito de compras (protegido + ownership)
-- **Buys** (`/api/buys`): historial de compras (protegido)
-
----
-
-## Scripts
-
-```bash
-pnpm dev        # Servidor de desarrollo
-pnpm build      # Build producción
-pnpm preview    # Preview del build
-pnpm lint       # Ejecutar oxlint
-```
+Documentación completa de endpoints, autenticación, cifrado y rate limiting en [`endpoints.md`](./endpoints.md).
 
 ---
 
 ## Buenas prácticas de Git
 
-- **Ramas**: `feature/`, `fix/`, `refactor/` como prefijos
-- **Commits atómicos**: un commit por cambio lógico
-- **Conventional Commits**: `feat:`, `fix:`, `refactor:`, `chore:`
-- **PRs pequeños**: mantener Pull Requests enfocadas en un solo propósito
-- **No commitear secrets**: usar `.env` local y `.gitignore`
+- **Ramas**: `feature/`, `fix/`, `refactor/`, `chore/` como prefijos.
+- **Commits atómicos**: un commit por cambio lógico.
+- **Conventional Commits**: `feat:`, `fix:`, `refactor:`, `chore:`, `docs:`.
+- **PRs pequeños**: mantener Pull Requests enfocadas en un solo propósito.
+- **No commitear secrets**: usar `.env` local y mantenerlo en `.gitignore`.

@@ -2,12 +2,15 @@ import { useState, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import useAuth from './useAuth'
 import useTheme from './useTheme'
+import useContent from './useContent'
+import { getFriendlyError } from '../utils/errors'
 import { updateUser } from '../services/users'
 
 export default function useHeader() {
   const navigate = useNavigate()
   const { user, email, isBetaTester, profileComplete, isLoggedIn, logout } = useAuth()
   const { theme, toggleTheme } = useTheme()
+  const { content: errorsContent } = useContent('errors.common')
   const [mobileOpen, setMobileOpen] = useState(false)
   const [modalOpen, setModalOpen] = useState(false)
   const [betaLoading, setBetaLoading] = useState(false)
@@ -56,11 +59,11 @@ export default function useHeader() {
       window.dispatchEvent(new Event('token-changed'))
     } catch (err) {
       console.error('becomeBetaTester error:', err)
-      setBetaError(err.message || 'Error al actualizar')
+      setBetaError(getFriendlyError(errorsContent, err))
     } finally {
       setBetaLoading(false)
     }
-  }, [email, user])
+  }, [email, user, errorsContent])
 
   const showBetaButton = isLoggedIn && !isBetaTester
 

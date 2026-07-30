@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { X } from 'lucide-react'
+import Button from '../../../shared/components/Button'
 import useContent from '../../../shared/hooks/useContent'
 
 export default function WelcomeModal() {
@@ -40,12 +41,9 @@ export default function WelcomeModal() {
           {content.subtitle}
         </p>
 
-        <button
-          onClick={() => setOpen(false)}
-          className="px-8 py-3 bg-plumbob hover:bg-plumbob-light text-white font-semibold rounded-xl shadow-lg shadow-plumbob/20 hover:shadow-plumbob/40 active:scale-[0.97] transition-all duration-200 cursor-pointer"
-        >
+        <Button onClick={() => setOpen(false)}>
           {content.cta_text}
-        </button>
+        </Button>
       </div>
     </div>
   )
