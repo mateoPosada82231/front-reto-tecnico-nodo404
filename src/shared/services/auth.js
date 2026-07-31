@@ -1,6 +1,10 @@
-import { post } from './httpClient'
+import { get, post } from './httpClient'
 
 const BASE_URL = '/api/auth'
+
+export function getRegisteredEmails() {
+  return get(`${BASE_URL}/emails`)
+}
 
 export function register(data) {
   return post(BASE_URL + '/register', data)

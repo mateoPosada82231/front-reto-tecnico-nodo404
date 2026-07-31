@@ -1,30 +1,40 @@
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import InputField from "../../../shared/components/InputField";
 import SelectField from "./SelectField";
 import Button from "../../../shared/components/Button";
 import Alert from "./Alert";
 import SocialButtons from "./SocialButtons";
-import useRegisterForm from "../hooks/useRegisterForm";
+import useRegisterFormStore from "../stores/useRegisterFormStore";
+import useUsersStore from "../../../shared/stores/useUsersStore";
 import useContent from "../../../shared/hooks/useContent";
 import useConfig from "../../../shared/hooks/useConfig";
 
 function RegisterForm() {
+  const navigate = useNavigate();
   const { content } = useContent("auth.register");
   const { content: placeholders } = useContent("placeholders");
   const { content: selectDefault } = useContent("select.default");
+  const { content: validation } = useContent("validation.register");
+  const { content: errorsContent } = useContent("errors.common");
   const { config: countries } = useConfig("countries");
-  const {
-    form,
-    errors,
-    serverError,
-    loading,
-    success,
-    handleChange,
-    handleSubmit,
-  } = useRegisterForm();
+  const { form, errors, serverError, loading, success, handleChange, handleSubmit } =
+    useRegisterFormStore();
+
+  useEffect(() => {
+    useUsersStore.getState().loadEmails();
+  }, []);
+
+  const submit = (e) =>
+    handleSubmit(e, {
+      validation,
+      errorsContent,
+      onSuccess: () => setTimeout(() => navigate("/login"), 3000),
+    });
 
   return (
     <form
-      onSubmit={handleSubmit}
+      onSubmit={submit}
       className="w-full max-w-2xl space-y-5 rounded-2xl bg-surface border border-border/50 p-8 shadow-2xl shadow-black/20 animate-scale-in"
     >
       {success && <Alert variant="success">{content.success_message}</Alert>}

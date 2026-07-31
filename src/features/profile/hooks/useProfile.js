@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import useAuth from "../../../shared/hooks/useAuth";
+import useAuthStore from "../../../shared/stores/useAuthStore";
 import useContent from "../../../shared/hooks/useContent";
 import { getFriendlyError } from "../../../shared/utils/errors";
 import { updateUser } from "../../../shared/services/users";
@@ -20,7 +20,7 @@ function buildFormState(user) {
 }
 
 export default function useProfile() {
-  const { user, email, loading, isLoggedIn } = useAuth();
+  const { user, email, loading, isLoggedIn } = useAuthStore();
   const { content } = useContent("profile.page");
   const { content: validation } = useContent("validation.profile");
   const { content: errorsContent } = useContent("errors.common");
@@ -67,8 +67,9 @@ export default function useProfile() {
       setSaving(true);
       setFeedback(null);
       try {
-        await updateUser(email, form);
-        window.dispatchEvent(new Event("token-changed"));
+        const payload = { ...form, provider: user?.provider, betaTester: user?.betaTester ?? false };
+        await updateUser(email, payload);
+        await useAuthStore.getState().fetchUser();
         setFeedback({
           type: "success",
           message: content.success_message,
@@ -83,7 +84,7 @@ export default function useProfile() {
         setSaving(false);
       }
     },
-    [email, form, validate, content, errorsContent],
+    [email, form, validate, content, errorsContent, user],
   );
 
   return {

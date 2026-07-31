@@ -28,6 +28,7 @@ Tienda de expansiones de Los Sims 4. Frontend en React 19 + Vite consumiendo una
 | **Tailwind CSS** | v4 | Utility-first CSS |
 | **pnpm** | — | Gestor de paquetes |
 | **react-router-dom** | 7 | Enrutamiento SPA (lazy + Suspense) |
+| **zustand** | 5 | State management (con `persist` para sesión) |
 | **lucide-react** | — | Iconografía |
 | **oxlint** | — | Linter (Oxidation compiler) |
 
@@ -73,8 +74,9 @@ src/
 │   ├── components/                   # Header, Footer, Button, InputField, Checkbox, Skeleton,
 │   │                                 # Logo, ThemeToggle, BetaTesterModal, MainLayout, SocialIcons
 │   ├── context/                      # ContentContext + ContentProvider
-│   ├── hooks/                        # useAuth, useHeader, useTheme, useContent, useConfig
+│   ├── hooks/                        # useHeader, useTheme, useContent, useConfig
 │   ├── services/                     # auth, users, extensions, content, httpClient
+│   ├── stores/                       # useAuthStore (sesión con persist), useUsersStore (emails para validación)
 │   └── utils/                        # errors (getFriendlyError), crypto
 │
 ├── data/                             # Datos mock/seed (expansionPacks.js, packMedia.js)
@@ -114,17 +116,46 @@ Las páginas perezosas se envuelven en `<Suspense>` dentro de `app/router.jsx`.
 
 ## Servicios API
 
-Todos los servicios viven en `src/shared/services/`. Usan `httpClient.js` que añade `Authorization: Bearer <JWT>` cuando hay token en `localStorage`.
+Todos los servicios viven en `src/shared/services/`. Usan `httpClient.js` que añade `Authorization: Bearer <JWT>` a las peticiones no públicas, leyendo el token desde `useAuthStore` (zustand persist) — no se usa `localStorage` directamente.
 
 | Servicio | Archivo | Funciones | Auth |
 |---|---|---|---|
-| Auth | `auth.js` | `register(data)`, `login(email, password)`, `logout()` | Mixto |
+| Auth | `auth.js` | `getRegisteredEmails()`, `register(data)`, `login(email, password)`, `logout()` | Mixto |
 | Users | `users.js` | `getUsers()`, `getUserByEmail(email)`, `updateUser(email, data)` | Bearer |
 | Extensions | `extensions.js` | `getExtensions`, `getExtensionById`, `getByCategory`, `getByDistributor`, `getByAge`, `getTrending`, `getRandom` | Público |
 | Content (CMS) | `content.js` | `getContentBySection`, `getContentByKey`, `createContent`, `updateContent`, `deleteContent` | GET público / escritura Bearer |
 | Config (CMS) | `content.js` | `getConfig`, `createConfig`, `updateConfig`, `deleteConfig` | GET público / escritura Bearer |
 
 Detalle de cada endpoint en [`endpoints.md`](./endpoints.md).
+
+### Endpoints públicos (sin token)
+
+El `httpClient` marca como públicos (sin `Authorization` ni `X-Encrypted`) los patrones: `/api/extensions`, `/api/content`, `/api/config` y `/api/auth/emails`. Los endpoints de `register`/`login`/`beta` sí soportan cifrado aunque sean públicos.
+
+---
+
+## State management (zustand)
+
+| Store | Archivo | Propósito |
+|---|---|---|
+| `useAuthStore` | `shared/stores/useAuthStore.js` | Sesión del usuario. Persiste `token`, `email`, `user`, `profileComplete`, `isBetaTester` en `localStorage` (key `auth-storage`) vía `persist`. El flag `isLoggedIn` se **deriva** del token en la hidratación (`merge` en el middleware). Acciones: `setAuth`, `fetchUser`, `logout`, `setUser`. |
+| `useUsersStore` | `shared/stores/useUsersStore.js` | Lista de emails ya registrados, cargados una sola vez desde `GET /api/auth/emails`. `isEmailRegistered(email)` valida duplicados en memoria (sin hits a la BD). `addEmail` tras registros exitosos. |
+| `useLoginFormStore` | `features/auth/stores/useLoginFormStore.js` | Estado del form de login (campos, errors, loading, success). Llama a `useAuthStore.setAuth` tras login OK. |
+| `useRegisterFormStore` | `features/auth/stores/useRegisterFormStore.js` | Estado del form de registro. Valida email duplicado contra `useUsersStore` antes de enviar al backend. Tras éxito, hace `addEmail` al store para mantener sincronizada la lista. |
+
+> **Nota sobre auth**: el token vive únicamente en `useAuthStore` (persist). El `httpClient` lo lee vía `useAuthStore.getState().token`. No hay escrituras manuales a `localStorage` ni se usa el key suelto `token`. Headers, servicios y el header UI consumen el store; tras login por formulario (`useLoginFormStore`) o OAuth (`OAuthCallback.jsx` → `useAuthStore.setAuth`) la sesión se refleja reactivamente.
+
+### Flujo de autenticación
+
+**Login por formulario** (`features/auth/pages/LoginPage.jsx` → `useLoginFormStore` → `login(email, password)` de `auth.js`): el backend devuelve `{ token }`. El store llama a `useAuthStore.setAuth(token, email)`, que setea `token`/`email`/`isLoggedIn` y dispara `fetchUser()` (`GET /api/users/{email}`) para poblar `user`, `profileComplete` y `isBetaTester`. El Header (`useHeader`) ya muestra la sesión reactivamente.
+
+**Login por OAuth2** (`SocialButtons` redirige a `/oauth2/authorization/{provider}`): el backend completa el flujo OAuth2 y `OAuth2SuccessHandler` redirige a `${FRONTEND_URL}/oauth2/callback?token=...&email=...`. `OAuthCallback.jsx` lee los query params y llama a `useAuthStore.setAuth(token, email)` — mismo camino que el formulario.
+
+**Validación de email en registro**: `RegisterForm.jsx` monta y dispara `useUsersStore.loadEmails()` (`GET /api/auth/emails`). El validator de `useRegisterFormStore` consulta `isEmailRegistered(email)` en memoria — sin peticiones a la BD por cada intento. El mensaje de error usa la key `validation.register.email_already_registered` del CMS. Tras un registro exitoso, `addEmail(email)` mantiene la cache en sincronía.
+
+### Actualización de perfil
+
+`ProfilePage.jsx` → `useProfile.saveProfile` envía un payload que **combina los campos editables** del form con `provider` y `betaTester` del usuario existente, para que el backend pueda deserializar el body a la entidad `Users` sin romper (los campos primitivos no pueden venir null).
 
 ---
 
@@ -193,7 +224,7 @@ function LoginPage() {
 | `profile.page` | `name_fallback`, `beta_badge`, `fullname_label`, `country_label`, `identification_label`, `phone_label`, `birthdate_label`, `edit_button`, `cancel_button`, `save_button`, `success_message`, `error_message` | Página `/perfil` |
 | `theme.toggle` | `light_aria`, `dark_aria` | Botón de tema claro/oscuro |
 | `validation.login` | `email_required`, `email_invalid`, `password_required` | Validaciones del formulario de login |
-| `validation.register` | `name_required`, `email_required`, `email_invalid`, `country_required`, `birthdate_required`, `id_required`, `phone_required`, `password_required`, `password_min_length`, `password_uppercase`, `password_number`, `password_special`, `confirm_required`, `confirm_match` | Validaciones del registro |
+| `validation.register` | `name_required`, `email_required`, `email_invalid`, `email_already_registered`, `country_required`, `birthdate_required`, `id_required`, `phone_required`, `password_required`, `password_min_length`, `password_uppercase`, `password_number`, `password_special`, `confirm_required`, `confirm_match` | Validaciones del registro |
 | `validation.profile` | `name_required` | Validaciones del perfil |
 | `errors.common` | `duplicate_email`, `invalid_credentials`, `session_expired`, `unauthorized`, `required_field`, `validation_failed`, `server_error`, `service_unavailable`, `bad_request`, `not_found`, `network_error`, `unexpected_error` | Mensajes de error amigables |
 | `placeholders` | `email`, `password`, `id`, `phone` | Placeholders de inputs |
@@ -281,7 +312,9 @@ Esto permite traducir los mensajes de error del backend sin tocar el `httpClient
 VITE_ENCRYPTION_KEY=<Base64 32 bytes>
 ```
 
-Esta clave se usa en `src/shared/utils/crypto.js` para cifrar payloads sensibles (AES-256-GCM). Debe coincidir con la del backend.
+Esta clave se usa en `src/shared/utils/crypto.js` para cifrar payloads sensibles (AES-256-GCM). Debe coincidir con la del backend (`ENCRYPTION_KEY`).
+
+El proxy de Vite (`vite.config.js`) reenvía `/api`, `/oauth2/authorization` y `/login/oauth2/code` a `http://localhost:8080`, evitando problemas de CORS en desarrollo.
 
 ---
 

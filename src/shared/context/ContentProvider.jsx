@@ -80,7 +80,8 @@ const FALLBACK = {
     loading_text: 'Iniciando sesión...',
   },
   header: {
-    profile_warning: 'Completa tu información en el perfil',
+    profile_warning_prefix: 'Completa tu información',
+    profile_warning_link: 'aquí',
     nav_home: 'Inicio',
     nav_register: 'Registro',
     nav_login: 'Login',
@@ -135,6 +136,7 @@ const FALLBACK = {
     name_required: 'El nombre es obligatorio',
     email_required: 'El correo es obligatorio',
     email_invalid: 'Correo inválido',
+    email_already_registered: 'Este correo ya está registrado',
     country_required: 'Seleccione un país',
     birthdate_required: 'Seleccione una fecha',
     id_required: 'Ingrese su identificación',
