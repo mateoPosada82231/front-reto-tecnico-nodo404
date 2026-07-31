@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import useContent from '../../../shared/hooks/useContent'
+import useAuthStore from '../../../shared/stores/useAuthStore'
 
 function OAuthCallback() {
   const [searchParams] = useSearchParams()
@@ -12,9 +13,7 @@ function OAuthCallback() {
     const email = searchParams.get('email')
 
     if (token && email) {
-      localStorage.setItem('token', token)
-      localStorage.setItem('userEmail', email)
-      window.dispatchEvent(new CustomEvent('token-changed'))
+      useAuthStore.getState().setAuth(token, email)
       navigate('/')
     } else {
       navigate('/login')

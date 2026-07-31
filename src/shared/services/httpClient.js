@@ -1,4 +1,5 @@
 import { encrypt, decrypt } from '../utils/crypto'
+import useAuthStore from '../stores/useAuthStore'
 
 const requestInterceptors = []
 const responseInterceptors = []
@@ -37,7 +38,7 @@ export function onResponseInterceptor(fn) {
 }
 
 function getAuthToken() {
-  return localStorage.getItem('token')
+  return useAuthStore.getState().token
 }
 
 function isPublicEndpoint(url) {
@@ -45,6 +46,7 @@ function isPublicEndpoint(url) {
     /^\/api\/extensions/,
     /^\/api\/content/,
     /^\/api\/config/,
+    /^\/api\/auth\/emails$/,
   ]
   return publicPatterns.some((pattern) => pattern.test(url))
 }

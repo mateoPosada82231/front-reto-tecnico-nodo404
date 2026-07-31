@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { LogOut, Beaker, Menu, X, AlertCircle, User } from 'lucide-react'
 import Logo from './Logo'
 import ThemeToggle from './ThemeToggle'
@@ -15,7 +15,9 @@ const mobileLinkClass = ({ isActive }) =>
   `block text-sm font-medium py-2 ${isActive ? 'text-plumbob' : 'text-text-sub'}`
 
 function Header() {
+  const navigate = useNavigate()
   const { content } = useContent('header')
+  const goProfile = () => navigate('/perfil')
   const {
     user,
     email,
@@ -42,9 +44,16 @@ function Header() {
     <header className="w-full sticky top-0 z-50 bg-glass-bg border-b border-glass-border">
       {isLoggedIn && !profileComplete && (
         <div className="bg-azure/10 border-b border-azure/20 px-4 py-2 md:px-8">
-          <div className="max-w-7xl mx-auto flex items-center justify-center gap-2 text-xs md:text-sm text-azure">
+          <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-center gap-x-1 gap-y-0.5 text-xs md:text-sm text-azure">
             <AlertCircle className="w-4 h-4 shrink-0" />
-            <span>{content.profile_warning}</span>
+            <span>{content.profile_warning_prefix}</span>
+            <button
+              type="button"
+              onClick={goProfile}
+              className="underline decoration-azure underline-offset-2 hover:text-azure/80 transition-colors cursor-pointer"
+            >
+              {content.profile_warning_link}
+            </button>
           </div>
         </div>
       )}

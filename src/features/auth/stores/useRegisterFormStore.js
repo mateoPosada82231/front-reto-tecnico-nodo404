@@ -1,41 +1,43 @@
-import { useState, useCallback } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { create } from 'zustand'
 import { register } from '../../../shared/services/auth'
 import { getFriendlyError } from '../../../shared/utils/errors'
-import useContent from '../../../shared/hooks/useContent'
+import useUsersStore from '../../../shared/stores/useUsersStore'
 
-export default function useRegisterForm() {
-  const navigate = useNavigate()
-  const { content: validation } = useContent('validation.register')
-  const { content: errorsContent } = useContent('errors.common')
-  const [form, setForm] = useState({
-    fullName: '',
-    email: '',
-    country: '',
-    birthDate: '',
-    identification: '',
-    phone: '',
-    password: '',
-    confirmPassword: '',
-  })
-  const [errors, setErrors] = useState({})
-  const [serverError, setServerError] = useState('')
-  const [success, setSuccess] = useState(false)
-  const [loading, setLoading] = useState(false)
+const INITIAL_FORM = {
+  fullName: '',
+  email: '',
+  country: '',
+  birthDate: '',
+  identification: '',
+  phone: '',
+  password: '',
+  confirmPassword: '',
+}
 
-  const handleChange = useCallback((e) => {
+const useRegisterFormStore = create((set, get) => ({
+  form: { ...INITIAL_FORM },
+  errors: {},
+  serverError: '',
+  loading: false,
+  success: false,
+
+  handleChange: (e) => {
     const { name, value } = e.target
-    setForm((prev) => ({ ...prev, [name]: value }))
-    setErrors((prev) => ({ ...prev, [name]: '' }))
-    setServerError('')
-  }, [])
+    set((state) => ({
+      form: { ...state.form, [name]: value },
+      errors: { ...state.errors, [name]: '' },
+      serverError: '',
+    }))
+  },
 
-  const validate = useCallback(() => {
+  validate: (form, validation) => {
     const newErrors = {}
     if (!form.fullName.trim()) newErrors.fullName = validation.name_required
     if (!form.email.trim()) newErrors.email = validation.email_required
     else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(form.email))
       newErrors.email = validation.email_invalid
+    else if (useUsersStore.getState().isEmailRegistered(form.email))
+      newErrors.email = validation.email_already_registered
     if (!form.country) newErrors.country = validation.country_required
     if (!form.birthDate) newErrors.birthDate = validation.birthdate_required
     if (!form.identification.trim()) newErrors.identification = validation.id_required
@@ -48,18 +50,19 @@ export default function useRegisterForm() {
     if (!form.confirmPassword) newErrors.confirmPassword = validation.confirm_required
     else if (form.password !== form.confirmPassword) newErrors.confirmPassword = validation.confirm_match
     return newErrors
-  }, [form, validation])
+  },
 
-  const handleSubmit = useCallback(async (e) => {
+  handleSubmit: async (e, { validation, errorsContent, onSuccess } = {}) => {
     e.preventDefault()
-    const validationResult = validate()
+    const { form, validate } = get()
+    await useUsersStore.getState().loadEmails()
+    const validationResult = validate(form, validation)
     if (Object.keys(validationResult).length > 0) {
-      setErrors(validationResult)
+      set({ errors: validationResult })
       return
     }
 
-    setLoading(true)
-    setServerError('')
+    set({ loading: true, serverError: '' })
 
     try {
       await register({
@@ -71,14 +74,25 @@ export default function useRegisterForm() {
         mobileNumber: form.phone,
         dateOfBirth: form.birthDate,
       })
-      setSuccess(true)
-      setTimeout(() => navigate('/login'), 3000)
+      useUsersStore.getState().addEmail(form.email)
+      set({ success: true })
+      if (onSuccess) onSuccess()
     } catch (err) {
-      setServerError(getFriendlyError(errorsContent, err))
+      set({ serverError: getFriendlyError(errorsContent, err), success: false })
     } finally {
-      setLoading(false)
+      set({ loading: false })
     }
-  }, [form, validate, navigate, errorsContent])
+  },
 
-  return { form, errors, serverError, loading, success, handleChange, handleSubmit }
-}
+  reset: () => {
+    set({
+      form: { ...INITIAL_FORM },
+      errors: {},
+      serverError: '',
+      loading: false,
+      success: false,
+    })
+  },
+}))
+
+export default useRegisterFormStore

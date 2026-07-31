@@ -3,28 +3,28 @@ import InputField from "../../../shared/components/InputField";
 import Button from "../../../shared/components/Button";
 import Alert from "./Alert";
 import SocialButtons from "./SocialButtons";
-import useLoginForm from "../hooks/useLoginForm";
+import useLoginFormStore from "../stores/useLoginFormStore";
 import useContent from "../../../shared/hooks/useContent";
 
 function LoginForm() {
   const navigate = useNavigate();
   const { content } = useContent("auth.login");
   const { content: placeholders } = useContent("placeholders");
-  const {
-    form,
-    errors,
-    serverError,
-    loading,
-    success,
-    handleChange,
-    handleSubmit,
-  } = useLoginForm({
-    onSuccess: () => setTimeout(() => navigate("/"), 1500),
-  });
+  const { content: validation } = useContent("validation.login");
+  const { content: errorsContent } = useContent("errors.common");
+  const { form, errors, serverError, loading, success, handleChange, handleSubmit } =
+    useLoginFormStore();
+
+  const submit = (e) =>
+    handleSubmit(e, {
+      validation,
+      errorsContent,
+      onSuccess: () => setTimeout(() => navigate("/"), 1500),
+    });
 
   return (
     <form
-      onSubmit={handleSubmit}
+      onSubmit={submit}
       className="w-full max-w-md space-y-5 rounded-2xl bg-surface border border-border/50 p-8 shadow-2xl shadow-black/20 animate-scale-in"
     >
       {success && <Alert variant="success">{content.success_message}</Alert>}

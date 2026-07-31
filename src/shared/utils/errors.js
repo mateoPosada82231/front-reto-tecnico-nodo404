@@ -1,6 +1,7 @@
 const ERROR_KEYS = {
   duplicate_email: [
     'El correo ya está registrado',
+    'El email ya está registrado',
     'Email already registered',
     'Usuario ya existe',
     'User already exists',

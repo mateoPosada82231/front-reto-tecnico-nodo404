@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
-import useAuth from './useAuth'
+import useAuthStore from '../stores/useAuthStore'
 import useTheme from './useTheme'
 import useContent from './useContent'
 import { getFriendlyError } from '../utils/errors'
@@ -8,7 +8,7 @@ import { updateUser } from '../services/users'
 
 export default function useHeader() {
   const navigate = useNavigate()
-  const { user, email, isBetaTester, profileComplete, isLoggedIn, logout } = useAuth()
+  const { user, email, isBetaTester, profileComplete, isLoggedIn } = useAuthStore()
   const { theme, toggleTheme } = useTheme()
   const { content: errorsContent } = useContent('errors.common')
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -18,10 +18,10 @@ export default function useHeader() {
   const [betaError, setBetaError] = useState(null)
 
   const handleLogout = useCallback(() => {
-    logout()
+    useAuthStore.getState().logout()
     navigate('/')
     setMobileOpen(false)
-  }, [logout, navigate])
+  }, [navigate])
 
   const toggleMobile = useCallback(() => {
     setMobileOpen((prev) => !prev)
@@ -56,7 +56,7 @@ export default function useHeader() {
       console.log('PUT body:', body)
       await updateUser(email, body)
       setBetaSuccess(true)
-      window.dispatchEvent(new Event('token-changed'))
+      useAuthStore.getState().fetchUser()
     } catch (err) {
       console.error('becomeBetaTester error:', err)
       setBetaError(getFriendlyError(errorsContent, err))

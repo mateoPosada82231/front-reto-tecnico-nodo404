@@ -102,6 +102,7 @@ ENCRYPTION_KEY=R4VhZzxNzz9gTs3CJ23LH0ZpCvCm74EScFsvgvtMOss=
 
 - `POST /api/auth/register`
 - `POST /api/auth/login`
+- `GET /api/auth/emails`
 - `POST /api/auth/beta/**`
 - `GET /api/extensions/**`
 - `GET /api/content/**`
@@ -148,6 +149,16 @@ Sin autenticación válida:
 
 ## 1) Auth - `/api/auth`
 
+### GET `/api/auth/emails`
+
+Devuelve la lista de todos los emails ya registrados (público, sin cifrado). Pensado para validación de duplicados en el cliente (store de Zustand) sin tocar la BD por cada intento de registro.
+
+Respuesta `200 OK`:
+
+```json
+["user1@nodo.com", "user2@nodo.com"]
+```
+
 ### POST `/api/auth/register`
 
 Crea usuario local (`provider=FORM`, `betaTester=false`). Soporta cifrado end-to-end (ver § Cifrado).
@@ -169,7 +180,13 @@ Body:
 Respuestas comunes:
 
 - `200 OK`: `"Usuario creado con éxito"`
-- `400 Bad Request`: `"El email ya está registrado"`
+- `400 Bad Request`:
+
+```json
+{
+  "message": "El email ya está registrado"
+}
+```
 
 ### POST `/api/auth/login`
 
@@ -787,6 +804,7 @@ Respuesta `429 Too Many Requests`:
 
 - `POST /api/auth/register`
 - `POST /api/auth/login`
+- `GET /api/auth/emails`
 - `POST /api/auth/beta/register`
 - `POST /api/auth/beta/login`
 - `GET /api/extensions/**`
