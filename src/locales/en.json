@@ -1,0 +1,104 @@
+{
+  "nav": {
+    "home": "Home",
+    "register": "Register",
+    "login": "Login"
+  },
+  "footer": {
+    "rights": "MiApp. All rights reserved."
+  },
+  "hero": {
+    "buyNow": "Buy now",
+    "prevPack": "Previous pack",
+    "nextPack": "Next pack",
+    "goToPack": "Go to pack {{index}}"
+  },
+  "carousel": {
+    "buyStore": "Buy in EA Store",
+    "prevPack": "Previous pack",
+    "nextPack": "Next pack",
+    "goToPack": "Go to pack {{index}}",
+    "imageLabel": "[ Image {{index}} ]"
+  },
+  "grid": {
+    "title": "Expansion Packs",
+    "seeMore": "See more"
+  },
+  "registerForm": {
+    "title": "Beta Testers Registration",
+    "subtitle": "Register to test the latest expansion packs.",
+    "success": "Registration successful!",
+    "nameLabel": "Full Name",
+    "namePlaceholder": "e.g. John Doe",
+    "emailLabel": "Email Address",
+    "emailPlaceholder": "your@email.com",
+    "packLabel": "Pack of Interest",
+    "selectOption": "Select an option",
+    "submit": "Submit",
+    "options": {
+      "urbanitas": "The Sims 4: City Living",
+      "universidad": "The Sims 4: Discover University",
+      "pueblo": "The Sims 4: Cottage Living"
+    }
+  },
+  "registerPage": {
+    "title": "Join as a Beta Tester",
+    "subtitle": "Help us test new expansions for The Sims before anyone else."
+  },
+  "loginPage": {
+    "title": "Login",
+    "subtitle": "Login form coming soon."
+  },
+  "packs": {
+    "featured-1": {
+      "name": "The Sims 4: Horse Ranch",
+      "category": "Expansion Pack",
+      "description": "Craft your own rustic life. Raise and train horses, bond with mini-goats and mini-sheep, and brew your own homemade nectar to sell or share."
+    },
+    "pack-1": {
+      "name": "The Sims 4: Discover University",
+      "category": "Expansion Pack",
+      "description": "Enroll in university, explore academic experiences, and attend extracurricular activities."
+    },
+    "pack-2": {
+      "name": "The Sims 4: City Living",
+      "category": "Expansion Pack",
+      "description": "Take your Sims to the big city and experience everything it offers, from noisy street life to unique apartment living."
+    },
+    "pack-3": {
+      "name": "The Sims 4: Seasons",
+      "category": "Expansion Pack",
+      "description": "Add weather to your Sims' lives to tell new stories, enjoy seasonal activities, and celebrate holidays."
+    },
+    "pack-4": {
+      "name": "The Sims 4: Get to Work!",
+      "category": "Expansion Pack",
+      "description": "Actively control your Sims in their workplaces and determine whether they head towards a big promotion or become a menace."
+    },
+    "pack-5": {
+      "name": "The Sims 4: Cats & Dogs",
+      "category": "Expansion Pack",
+      "description": "Create a variety of dogs and cats, add them to your Sims' homes to change their lives forever, and care for neighborhood pets."
+    },
+    "pack-6": {
+      "name": "The Sims 4: Island Living",
+      "category": "Expansion Pack",
+      "description": "Escape routine and enjoy a laid-back lifestyle surrounded by beaches in Sulani, where the sun shines bright and nights are cool."
+    },
+    "pack-7": {
+      "name": "The Sims 4: Snowy Escape",
+      "category": "Expansion Pack",
+      "description": "Gear up for winter sports, relax in hot springs, and design your Japanese-style home."
+    },
+    "pack-8": {
+      "name": "The Sims 4: For Rent",
+      "category": "Expansion Pack",
+      "description": "Experience multi-family neighborhood life as a tenant or owner of residential rental properties."
+    }
+  },
+  "language": {
+    "toggle": "Change language",
+    "es": "Spanish",
+    "en": "English"
+  }
+}

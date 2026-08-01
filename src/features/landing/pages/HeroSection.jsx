@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { expansionPacks } from '../../../data/expansionPacks.js';
 
 export default function HeroSection() {
+  const { t } = useTranslation();
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const prevSlide = () => {
@@ -11,8 +13,6 @@ export default function HeroSection() {
   const nextSlide = () => {
     setCurrentIndex((prev) => (prev === expansionPacks.length - 1 ? 0 : prev + 1));
   };
-
-  const currentPack = expansionPacks[currentIndex];
 
   return (
     <section className="relative w-full h-[80vh] overflow-hidden flex items-center justify-center">
@@ -30,11 +30,11 @@ export default function HeroSection() {
 
             <div className="relative z-10 w-full max-w-5xl px-12 md:px-16 text-center md:text-left flex flex-col md:items-start items-center gap-4 text-white">
               <h1 className="text-3xl sm:text-4xl md:text-6xl font-black tracking-tight leading-tight max-w-3xl drop-shadow-md">
-                {pack.name}
+                {t(`packs.${pack.id}.name`, pack.name)}
               </h1>
 
               <p className="text-sm sm:text-base md:text-lg text-gray-200 max-w-2xl leading-relaxed font-light">
-                {pack.description}
+                {t(`packs.${pack.id}.description`, pack.description)}
               </p>
 
               <a 
@@ -43,7 +43,7 @@ export default function HeroSection() {
                 rel="noopener noreferrer"
                 className="mt-4 px-8 py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-lg shadow-lg shadow-emerald-500/20 active:scale-95 transition-all duration-200 text-sm md:text-base cursor-pointer inline-block text-center"
               >
-                Comprar ahora
+                {t('hero.buyNow')}
               </a>
             </div>
           </div>
@@ -54,7 +54,7 @@ export default function HeroSection() {
         type="button"
         onClick={prevSlide}
         className="absolute left-4 md:left-8 z-20 p-3 bg-black/30 hover:bg-black/50 border border-white/20 hover:border-white/50 text-white rounded-full active:scale-95 transition-all duration-200 cursor-pointer flex items-center justify-center"
-        aria-label="Paquete anterior"
+        aria-label={t('hero.prevPack')}
       >
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
           <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
@@ -65,7 +65,7 @@ export default function HeroSection() {
         type="button"
         onClick={nextSlide}
         className="absolute right-4 md:right-8 z-20 p-3 bg-black/30 hover:bg-black/50 border border-white/20 hover:border-white/50 text-white rounded-full active:scale-95 transition-all duration-200 cursor-pointer flex items-center justify-center"
-        aria-label="Paquete siguiente"
+        aria-label={t('hero.nextPack')}
       >
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
           <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
@@ -82,7 +82,7 @@ export default function HeroSection() {
                 ? 'bg-emerald-400 border-emerald-400 scale-110'
                 : 'bg-white/40 border-white/20 hover:bg-white/60'
             }`}
-            aria-label={`Ir al paquete ${index + 1}`}
+            aria-label={t('hero.goToPack', { index: index + 1 })}
           />
         ))}
       </div>

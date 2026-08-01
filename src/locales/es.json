@@ -1,0 +1,104 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "register": "Registro",
+    "login": "Login"
+  },
+  "footer": {
+    "rights": "MiApp. Todos los derechos reservados."
+  },
+  "hero": {
+    "buyNow": "Comprar ahora",
+    "prevPack": "Paquete anterior",
+    "nextPack": "Paquete siguiente",
+    "goToPack": "Ir al paquete {{index}}"
+  },
+  "carousel": {
+    "buyStore": "Comprar en EA Store",
+    "prevPack": "Paquete anterior",
+    "nextPack": "Paquete siguiente",
+    "goToPack": "Ir al paquete {{index}}",
+    "imageLabel": "[ Imagen {{index}} ]"
+  },
+  "grid": {
+    "title": "Paquetes de Expansión",
+    "seeMore": "Ver más"
+  },
+  "registerForm": {
+    "title": "Inscripción Beta Testers",
+    "subtitle": "Regístrate para probar las últimas expansiones.",
+    "success": "¡Inscripción exitosa!",
+    "nameLabel": "Nombre Completo",
+    "namePlaceholder": "Ej. Juan Pérez",
+    "emailLabel": "Correo Electrónico",
+    "emailPlaceholder": "tu@email.com",
+    "packLabel": "Pack de Interés",
+    "selectOption": "Selecciona una opción",
+    "submit": "Enviar",
+    "options": {
+      "urbanitas": "Los Sims 4: Urbanitas",
+      "universidad": "Los Sims 4: Días de Universidad",
+      "pueblo": "Los Sims 4: Vida en el Pueblo"
+    }
+  },
+  "registerPage": {
+    "title": "Únete como Beta Tester",
+    "subtitle": "Ayúdanos a probar las nuevas expansiones de Los Sims antes que nadie."
+  },
+  "loginPage": {
+    "title": "Login",
+    "subtitle": "Formulario de login próximamente."
+  },
+  "packs": {
+    "featured-1": {
+      "name": "Los Sims 4: Vida en el Rancho",
+      "category": "Expansion Pack",
+      "description": "Crea tu propia vida rústica. Cría y entrena caballos, entabla amistad con mini-cabras y mini-ovejas, y elabora tu propio néctar casero para vender o compartir."
+    },
+    "pack-1": {
+      "name": "Los Sims 4: Días de Universidad",
+      "category": "Expansion Pack",
+      "description": "Inscríbete en la universidad, explora experiencias académicas y asiste a actividades extracurriculares."
+    },
+    "pack-2": {
+      "name": "Los Sims 4: Urbanitas",
+      "category": "Expansion Pack",
+      "description": "Lleva a tus Sims a la gran ciudad y experimenta todo lo que ofrece, desde el bullicio exterior hasta situaciones exclusivas de los apartamentos."
+    },
+    "pack-3": {
+      "name": "Los Sims 4: Y Las Cuatro Estaciones",
+      "category": "Expansion Pack",
+      "description": "Añade el clima a la vida de tus Sims para contar nuevas historias, disfrutar de actividades estacionales y celebrar festividades."
+    },
+    "pack-4": {
+      "name": "Los Sims 4: ¡A Trabajar!",
+      "category": "Expansion Pack",
+      "description": "Controla activamente a tus Sims en sus lugares de trabajo y determina si se dirigen hacia un gran ascenso o se convierten en una amenaza."
+    },
+    "pack-5": {
+      "name": "Los Sims 4: Perros y Gatos",
+      "category": "Expansion Pack",
+      "description": "Crea una variedad de perros y gatos, añádelos a los hogares de tus Sims para cambiar sus vidas para siempre y cuida de las mascotas del vecindario."
+    },
+    "pack-6": {
+      "name": "Los Sims 4: Vida Isleña",
+      "category": "Expansion Pack",
+      "description": "Escapa de la rutina y disfruta de un estilo de vida relajado rodeado de playas en Sulani, donde el sol brilla con fuerza y las noches son refrescantes."
+    },
+    "pack-7": {
+      "name": "Los Sims 4: Escapada en la Nieve",
+      "category": "Expansion Pack",
+      "description": "Equípate para los deportes de invierno, relájate en aguas termales y diseña tu hogar de estilo japonés."
+    },
+    "pack-8": {
+      "name": "Los Sims 4: Se Alquila",
+      "category": "Expansion Pack",
+      "description": "Experimenta la vida en vecindarios multifamiliares como inquilino o propietario de propiedades residenciales en alquiler."
+    }
+  },
+  "language": {
+    "toggle": "Cambiar idioma",
+    "es": "Español",
+    "en": "English"
+  }
+}
