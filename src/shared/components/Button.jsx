@@ -1,4 +1,5 @@
 import { Loader2 } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 const VARIANT_CLASSES = {
   primary:
@@ -31,10 +32,14 @@ function Button({
   )
 
   if (href && !isDisabled) {
-    return (
-      <a href={href} className={classes} {...props}>
-        {content}
-      </a>
+  return (
+    <Link
+      to={href}
+      className={classes}
+      {...props}
+    >
+      {content}
+    </Link>
     )
   }
 

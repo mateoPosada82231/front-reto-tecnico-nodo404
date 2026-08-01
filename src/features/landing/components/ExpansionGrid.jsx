@@ -60,7 +60,7 @@ export default function ExpansionGrid() {
               description={pack.description || pack.aboutGame || ''}
               price={pack.price ? pack.price.toLocaleString('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }) : ''}
               ctaLabel={content.cta_text}
-              href={pack.link || '#'}
+              href={`/expansion/${pack.id}`}
             />
           </div>
         ))}
