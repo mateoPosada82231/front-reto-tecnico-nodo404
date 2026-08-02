@@ -1,12 +1,14 @@
 import { useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { expansionPacks } from "../../../data/expansionPacks";
 
 function ExpansionDetailPage() {
+  const { t } = useTranslation();
   const { id } = useParams();
   const pack = expansionPacks.find((p) => p.id === id);
 
   if (!pack) {
-    return <p>Expansión no encontrada.</p>;
+    return <p>{t('landing.detail.not_found', 'Expansión no encontrada.')}</p>;
   }
 
   return (

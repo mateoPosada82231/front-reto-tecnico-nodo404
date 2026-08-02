@@ -198,6 +198,23 @@ function mapItemsToObj(items) {
   return obj
 }
 
+import i18n from '../../i18n'
+
+function getSectionFallback(sectionKey, lang) {
+  const bundle = i18n.getResourceBundle(lang, 'translation') || {}
+  const keys = sectionKey.split('.')
+  let current = bundle
+  for (const k of keys) {
+    if (current && typeof current === 'object' && k in current) {
+      current = current[k]
+    } else {
+      current = null
+      break
+    }
+  }
+  return { ...(FALLBACK[sectionKey] || {}), ...(current && typeof current === 'object' ? current : {}) }
+}
+
 export function ContentProvider({ children }) {
   const [sections, setSections] = useState(FALLBACK)
   const [configs, setConfigs] = useState(FALLBACK_CONFIG)
@@ -207,22 +224,25 @@ export function ContentProvider({ children }) {
   useEffect(() => {
     let cancelled = false
 
-    async function loadAll() {
+    async function loadAll(lang = i18n.language || 'es') {
       try {
         const sectionResults = await Promise.allSettled(
-          SECTIONS.map((key) => getContentBySection(key))
+          SECTIONS.map((key) => getContentBySection(key, lang))
         )
 
         if (cancelled) return
 
-        const mergedSections = { ...FALLBACK }
-        sectionResults.forEach((result, i) => {
-          if (result.status === 'fulfilled' && result.value?.items) {
-            const mapped = mapItemsToObj(result.value.items)
-            mergedSections[SECTIONS[i]] = {
-              ...FALLBACK[SECTIONS[i]],
-              ...mapped,
-            }
+        const mergedSections = {}
+        SECTIONS.forEach((sectionKey, i) => {
+          const sectionFallback = getSectionFallback(sectionKey, lang)
+          const result = sectionResults[i]
+          let mapped = {}
+          if (result && result.status === 'fulfilled' && result.value?.items) {
+            mapped = mapItemsToObj(result.value.items)
+          }
+          mergedSections[sectionKey] = {
+            ...sectionFallback,
+            ...mapped,
           }
         })
         setSections(mergedSections)
@@ -248,8 +268,18 @@ export function ContentProvider({ children }) {
       }
     }
 
-    loadAll()
-    return () => { cancelled = true }
+    loadAll(i18n.language || 'es')
+
+    const handleLangChange = (newLang) => {
+      if (!cancelled) loadAll(newLang)
+    }
+
+    i18n.on('languageChanged', handleLangChange)
+
+    return () => {
+      cancelled = true
+      i18n.off('languageChanged', handleLangChange)
+    }
   }, [])
 
   const value = useMemo(() => ({
