@@ -19,7 +19,28 @@
       "close_aria": "Close"
     },
     "detail": {
-      "not_found": "Expansion pack not found."
+      "loading_text": "Loading expansion...",
+      "not_found": "Expansion pack not found.",
+      "back_text": "Back",
+      "category_label": "Category",
+      "price_label": "Price",
+      "about_label": "About the game",
+      "platforms_label": "Platforms",
+      "languages_label": "Languages",
+      "distributor_label": "Distributor",
+      "publication_date_label": "Publication date",
+      "required_age_label": "Required age",
+      "years_text": "years",
+      "buy_button": "Buy",
+      "login_required": "You must log in to buy.",
+      "login_link": "Go to login",
+      "success_message": "Purchase successful!",
+      "payment_method_label": "Payment method",
+      "language_label": "Language",
+      "platform_label": "Platform",
+      "confirm_button": "Confirm purchase",
+      "cancel_button": "Cancel",
+      "processing_text": "Processing..."
     }
   },
   "auth": {

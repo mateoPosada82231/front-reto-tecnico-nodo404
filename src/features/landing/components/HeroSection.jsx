@@ -91,9 +91,7 @@ export default function HeroSection() {
                 </p>
 
                 <Button
-                  href={pack.link || '#'}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href={`/expansion/${pack.id}`}
                   className="mt-6 px-8 py-3.5 font-bold md:text-base shadow-plumbob/25 hover:shadow-plumbob/40"
                 >
                   {content.cta_text}
