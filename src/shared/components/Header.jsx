@@ -1,5 +1,6 @@
 import { NavLink, useNavigate } from 'react-router-dom'
-import { LogOut, Beaker, Menu, X, AlertCircle, User } from 'lucide-react'
+import { LogOut, Beaker, Menu, X, AlertCircle, User, Globe } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import Logo from './Logo'
 import ThemeToggle from './ThemeToggle'
 import BetaTesterModal from './BetaTesterModal'
@@ -16,6 +17,11 @@ const mobileLinkClass = ({ isActive }) =>
 
 function Header() {
   const navigate = useNavigate()
+  const { i18n } = useTranslation()
+  const currentLang = i18n.language || 'es'
+  const toggleLanguage = () => {
+    i18n.changeLanguage(currentLang.startsWith('es') ? 'en' : 'es')
+  }
   const { content } = useContent('header')
   const goProfile = () => navigate('/perfil')
   const {
@@ -117,6 +123,15 @@ function Header() {
         </nav>
 
         <div className="flex items-center gap-2 md:hidden">
+          <button
+            type="button"
+            onClick={toggleLanguage}
+            className="flex items-center gap-1 px-2.5 py-1 text-xs font-semibold rounded-lg bg-surface border border-border/50 text-text-sub hover:text-text-main transition-colors cursor-pointer"
+            aria-label="Cambiar idioma / Switch language"
+          >
+            <Globe className="w-3.5 h-3.5" />
+            <span>{currentLang.toUpperCase()}</span>
+          </button>
           <ThemeToggle theme={theme} onToggle={toggleTheme} />
           <button
             onClick={toggleMobile}
@@ -127,7 +142,16 @@ function Header() {
           </button>
         </div>
 
-        <div className="hidden md:flex items-center">
+        <div className="hidden md:flex items-center gap-3">
+          <button
+            type="button"
+            onClick={toggleLanguage}
+            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-surface border border-border/50 text-text-sub hover:text-text-main hover:border-plumbob/30 transition-colors cursor-pointer"
+            aria-label="Cambiar idioma / Switch language"
+          >
+            <Globe className="w-3.5 h-3.5" />
+            <span>{currentLang.toUpperCase()}</span>
+          </button>
           <ThemeToggle theme={theme} onToggle={toggleTheme} />
         </div>
       </div>

@@ -3,12 +3,12 @@ import { get, post, put, del } from './httpClient'
 const BASE_URL = '/api/content'
 const CONFIG_URL = '/api/config'
 
-export function getContentBySection(sectionKey) {
-  return get(`${BASE_URL}/${sectionKey}`)
+export function getContentBySection(sectionKey, language = 'es') {
+  return get(`${BASE_URL}/${sectionKey}?language=${language}`)
 }
 
-export function getContentByKey(sectionKey, contentKey) {
-  return get(`${BASE_URL}/${sectionKey}/${contentKey}`)
+export function getContentByKey(sectionKey, contentKey, language = 'es') {
+  return get(`${BASE_URL}/${sectionKey}/${contentKey}?language=${language}`)
 }
 
 export function getConfig(configKey) {

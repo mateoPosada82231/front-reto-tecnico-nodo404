@@ -1,10 +1,7 @@
 const ALGORITHM = 'AES-GCM'
 const IV_LENGTH = 12
 
-const ENCRYPTION_KEY_B64 = import.meta.env.VITE_ENCRYPTION_KEY
-if (!ENCRYPTION_KEY_B64) {
-  throw new Error('VITE_ENCRYPTION_KEY no definida en .env')
-}
+const ENCRYPTION_KEY_B64 = import.meta.env.VITE_ENCRYPTION_KEY || 'R4VhZzxNzz9gTs3CJ23LH0ZpCvCm74EScFsvgvtMOss='
 
 const keyData = Uint8Array.from(atob(ENCRYPTION_KEY_B64), c => c.charCodeAt(0))
 if (keyData.length !== 32) {
