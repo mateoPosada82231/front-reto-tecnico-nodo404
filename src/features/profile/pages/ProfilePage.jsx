@@ -23,6 +23,8 @@ function ProfilePage() {
     startEditing,
     cancelEditing,
     saveProfile,
+    purchases,
+    loadingPurchases,
   } = useProfile();
 
   if (loading) {
@@ -145,6 +147,44 @@ function ProfilePage() {
             )}
           </div>
         </form>
+
+        <div className="mt-8 pt-6 border-t border-border/60">
+          <h2 className="text-lg font-semibold mb-4">Mis compras</h2>
+
+          {loadingPurchases && (
+            <p className="text-sm text-text-sub">Cargando compras...</p>
+          )}
+
+          {!loadingPurchases && purchases.length === 0 && (
+            <p className="text-sm text-text-sub">Aún no has comprado ninguna expansión.</p>
+          )}
+
+          {!loadingPurchases && purchases.length > 0 && (
+            <div className="space-y-3">
+              {purchases.map((purchase) => (
+                <div
+                  key={purchase.id}
+                  className="flex items-center gap-4 rounded-xl border border-border/60 p-3"
+                >
+                  <img
+                    src={purchase.extension.image}
+                    alt={purchase.extension.name}
+                    className="w-16 h-16 rounded-lg object-cover"
+                  />
+                  <div className="flex-1">
+                    <p className="font-semibold text-text-main">{purchase.extension.name}</p>
+                    <p className="text-xs text-text-sub">
+                      Comprado el {purchase.date} · {purchase.paymentMethod}
+                    </p>
+                  </div>
+                  <p className="font-semibold">
+                    ${purchase.extension.price.toLocaleString("es-CO")}
+                  </p>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
