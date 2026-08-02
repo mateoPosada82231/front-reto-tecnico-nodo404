@@ -3,6 +3,7 @@ import useAuthStore from "../../../shared/stores/useAuthStore";
 import useContent from "../../../shared/hooks/useContent";
 import { getFriendlyError } from "../../../shared/utils/errors";
 import { updateUser } from "../../../shared/services/users";
+import { getUserBuys } from "../../../shared/services/buys";
 
 const EDITABLE_FIELDS = [
   "fullName",
@@ -29,10 +30,35 @@ export default function useProfile() {
   const [editing, setEditing] = useState(false);
   const [saving, setSaving] = useState(false);
   const [feedback, setFeedback] = useState(null);
+  const [purchases, setPurchases] = useState([]);
+  const [loadingPurchases, setLoadingPurchases] = useState(true);
 
   useEffect(() => {
     if (user) setForm(buildFormState(user));
   }, [user]);
+
+  useEffect(() => {
+    if (!email) {
+      setLoadingPurchases(false);
+      return;
+    }
+
+    let cancelled = false;
+
+    setLoadingPurchases(true);
+    getUserBuys(email)
+      .then((result) => {
+        if (!cancelled) setPurchases(result);
+      })
+      .catch(() => {
+        if (!cancelled) setPurchases([]);
+      })
+      .finally(() => {
+        if (!cancelled) setLoadingPurchases(false);
+      });
+
+    return () => { cancelled = true; };
+  }, [email]);
 
   const handleChange = useCallback((e) => {
     const { name, value } = e.target;
@@ -101,5 +127,7 @@ export default function useProfile() {
     startEditing,
     cancelEditing,
     saveProfile,
+    purchases,
+    loadingPurchases,
   };
 }
