@@ -10,7 +10,7 @@ const ProfilePage = lazy(() => import('../features/profile/pages/ProfilePage'))
 
 function AppRouter() {
   return (
-    <Suspense>
+    <Suspense fallback={<div className="flex justify-center items-center h-screen">Cargando…</div>}>
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/registro" element={<RegisterPage />} />
