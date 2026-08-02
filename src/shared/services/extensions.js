@@ -2,12 +2,12 @@ import { get } from './httpClient'
 
 const BASE_URL = '/api/extensions'
 
-export function getExtensions() {
-  return get(BASE_URL)
+export function getExtensions(language = 'es') {
+  return get(`${BASE_URL}?language=${language}`)
 }
 
-export function getExtensionById(id) {
-  return get(`${BASE_URL}/${id}`)
+export function getExtensionById(id, language = 'es') {
+  return get(`${BASE_URL}/${id}?language=${language}`)
 }
 
 export function getExtensionsByCategory(category) {

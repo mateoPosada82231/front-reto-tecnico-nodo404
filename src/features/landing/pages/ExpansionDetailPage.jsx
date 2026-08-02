@@ -5,6 +5,7 @@ import useAuthStore from "../../../shared/stores/useAuthStore";
 import { buyDirect } from "../../../shared/services/buys";
 
 function ExpansionDetailPage() {
+  const { t } = useTranslation();
   const { id } = useParams();
   const { email, isLoggedIn } = useAuthStore();
   const [pack, setPack] = useState(null);

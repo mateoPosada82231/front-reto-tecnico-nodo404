@@ -1,0 +1,167 @@
+{
+  "landing": {
+    "hero": {
+      "cta_text": "Buy Now",
+      "error_prefix": "Error loading expansion packs: ",
+      "prev_aria": "Previous pack",
+      "next_aria": "Next pack",
+      "slide_aria_prefix": "Go to pack"
+    },
+    "grid": {
+      "title": "Expansion Packs",
+      "error_prefix": "Error loading expansion packs: ",
+      "cta_text": "See More"
+    },
+    "welcome": {
+      "title": "Welcome to The Sims 4!",
+      "subtitle": "Explore all expansion packs and discover new adventures for your Sims.",
+      "cta_text": "Explore",
+      "close_aria": "Close"
+    },
+    "detail": {
+      "not_found": "Expansion pack not found."
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Log In",
+      "subtitle": "Log in with your account to manage your purchases.",
+      "email_label": "Email Address",
+      "password_label": "Password",
+      "submit_text": "Log In",
+      "loading_text": "Logging in...",
+      "success_message": "Login successful. Redirecting..."
+    },
+    "register": {
+      "title": "Create Account",
+      "subtitle": "Sign up to access all features.",
+      "fullname_label": "Full Name",
+      "fullname_placeholder": "John Doe",
+      "email_label": "Email Address",
+      "country_label": "Country",
+      "birthdate_label": "Date of Birth",
+      "id_label": "ID Number",
+      "phone_label": "Phone Number",
+      "password_label": "Password",
+      "password_placeholder": "Uppercase, number, and special character",
+      "confirm_password_label": "Confirm Password",
+      "confirm_password_placeholder": "Repeat your password",
+      "submit_text": "Create Account",
+      "loading_text": "Creating account...",
+      "success_message": "Account created successfully. You can now log in."
+    },
+    "social": {
+      "divider_login": "Or log in with",
+      "divider_register": "Or sign up with"
+    },
+    "oauth": {
+      "loading_text": "Logging in..."
+    }
+  },
+  "header": {
+    "profile_warning_prefix": "Complete your profile information",
+    "profile_warning_link": "here",
+    "nav_home": "Home",
+    "nav_register": "Register",
+    "nav_login": "Log In",
+    "beta_cta": "Become a Beta Tester",
+    "logout_aria": "Log Out",
+    "menu_aria": "Menu",
+    "profile_link_aria": "View profile",
+    "beta_badge_label": "Beta",
+    "mobile_profile_link": "Profile"
+  },
+  "beta_modal": {
+    "close_aria": "Close",
+    "already_title": "You are already a Beta Tester",
+    "already_description": "You now have early access to new expansion packs and exclusive features.",
+    "already_cta": "Got it",
+    "confirm_title": "Become a Beta Tester",
+    "confirm_description": "Are you sure you want to join the beta program? You will get early access to new expansion packs before anyone else.",
+    "cancel_text": "Cancel",
+    "processing_text": "Processing",
+    "confirm_cta": "Yes, I want to join"
+  },
+  "footer": {
+    "copyright": "All rights reserved."
+  },
+  "common": {
+    "loading_aria": "Loading"
+  },
+  "profile": {
+    "page": {
+      "name_fallback": "No name",
+      "beta_badge": "Beta tester",
+      "fullname_label": "Full Name",
+      "country_label": "Country",
+      "identification_label": "ID Number",
+      "phone_label": "Phone Number",
+      "birthdate_label": "Date of Birth",
+      "edit_button": "Edit profile",
+      "cancel_button": "Cancel",
+      "save_button": "Save changes",
+      "success_message": "Profile updated successfully",
+      "error_message": "Failed to update profile"
+    }
+  },
+  "theme": {
+    "toggle": {
+      "light_aria": "Switch to light theme",
+      "dark_aria": "Switch to dark theme"
+    }
+  },
+  "validation": {
+    "login": {
+      "email_required": "Email is required",
+      "email_invalid": "Invalid email",
+      "password_required": "Please enter a password"
+    },
+    "register": {
+      "name_required": "Name is required",
+      "email_required": "Email is required",
+      "email_invalid": "Invalid email",
+      "email_already_registered": "This email is already registered",
+      "country_required": "Please select a country",
+      "birthdate_required": "Please select a date",
+      "id_required": "Enter your ID",
+      "phone_required": "Enter your phone number",
+      "password_required": "Enter a password",
+      "password_min_length": "Password must be at least 8 characters",
+      "password_uppercase": "Must contain at least one uppercase letter",
+      "password_number": "Must contain at least one number",
+      "password_special": "Must contain at least one special character",
+      "confirm_required": "Confirm your password",
+      "confirm_match": "Passwords do not match"
+    },
+    "profile": {
+      "name_required": "Name is required"
+    }
+  },
+  "errors": {
+    "common": {
+      "duplicate_email": "This email is already registered",
+      "invalid_credentials": "Incorrect email or password",
+      "session_expired": "Session expired, please log in again",
+      "unauthorized": "You do not have permission for this action",
+      "required_field": "Please fill in all required fields",
+      "validation_failed": "Please check the entered data",
+      "server_error": "Server error, please try again later",
+      "service_unavailable": "Service unavailable, please try again later",
+      "bad_request": "Invalid data",
+      "not_found": "Resource not found",
+      "network_error": "No connection to server",
+      "unexpected_error": "Unexpected error, please try again"
+    }
+  },
+  "placeholders": {
+    "email": "your@email.com",
+    "password": "••••••••",
+    "id": "123456789",
+    "phone": "+1 555 123 4567"
+  },
+  "select": {
+    "default": {
+      "placeholder": "Select..."
+    }
+  }
+}
