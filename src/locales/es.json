@@ -40,7 +40,11 @@
       "platform_label": "Plataforma",
       "confirm_button": "Confirmar compra",
       "cancel_button": "Cancelar",
-      "processing_text": "Comprando..."
+      "processing_text": "Comprando...",
+      "add_to_cart_button": "Agregar al carrito",
+      "add_to_cart_confirm": "Agregar",
+      "adding_to_cart_text": "Agregando...",
+      "add_to_cart_success": "Agregado al carrito correctamente"
     }
   },
   "auth": {
@@ -171,7 +175,8 @@
       "bad_request": "Datos inválidos",
       "not_found": "Recurso no encontrado",
       "network_error": "Sin conexión al servidor",
-      "unexpected_error": "Error inesperado, intenta de nuevo"
+      "unexpected_error": "Error inesperado, intenta de nuevo",
+      "already_purchased": "Ya has comprado esta extensión"
     }
   },
   "placeholders": {
@@ -198,7 +203,17 @@
   "checkout_cta": "Proceder al pago",
   "checkout_processing": "Procesando compra...",
   "checkout_success": "¡Compra realizada con éxito!",
-  "login_required": "Inicia sesión para ver tu carrito",
+  "checkout_success_title": "¡Gracias por tu compra!",
+  "checkout_success_subtitle": "Tus paquetes de expansión ya están disponibles.",
+  "checkout_success_items": "{{count}} paquete(s) comprado(s)",
+  "checkout_success_total": "Total pagado",
+  "checkout_success_close": "Cerrar",
+"checkout_success_explore": "Seguir explorando",
+      "checkout_error_title": "Error en la compra",
+      "checkout_error_subtitle": "No se pudo completar el pedido.",
+      "checkout_error_retry": "Reintentar",
+      "checkout_error_continue": "Seguir comprando",
+      "login_required": "Inicia sesión para ver tu carrito",
   "login_link": "Ir a login",
   "platform_label": "Plataforma",
   "language_label": "Idioma"

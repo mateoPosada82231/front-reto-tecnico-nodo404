@@ -60,6 +60,8 @@ async function executeRequest(url, options = {}) {
   const isPublic = isPublicEndpoint(url)
   const token = getAuthToken()
 
+  let body = options.body
+
   if (!isPublic) {
     headers['X-Encrypted'] = 'true'
     if (token) {
@@ -67,11 +69,11 @@ async function executeRequest(url, options = {}) {
     }
   }
 
-  const body = options.body
-
   if (!isPublic && body && typeof body === 'object') {
     const encrypted = await encrypt(body)
     headers['X-Encrypted-Payload'] = encrypted
+    // Don't send body when using encrypted payload - backend reads from header
+    body = undefined
   }
 
   for (const interceptor of requestInterceptors) {
@@ -79,11 +81,16 @@ async function executeRequest(url, options = {}) {
     if (result?.headers) Object.assign(headers, result.headers)
   }
 
+  // Build fetch options without original body to avoid conflict with encrypted header
+  const fetchOptions = { ...options }
+  delete fetchOptions.body
+
   logRequest(url, options, headers, body)
 
   const res = await fetch(url, {
-    ...options,
+    ...fetchOptions,
     headers,
+    body,
   })
 
   for (const interceptor of responseInterceptors) {
@@ -98,7 +105,16 @@ async function executeRequest(url, options = {}) {
   const encryptedResponse = res.headers.get('X-Encrypted-Payload')
   let data
   if (encryptedResponse) {
-    data = await decrypt(encryptedResponse)
+    try {
+      data = await decrypt(encryptedResponse)
+    } catch {
+      const text = await res.text()
+      try {
+        data = JSON.parse(text)
+      } catch {
+        data = text
+      }
+    }
   } else {
     const text = await res.text()
     try {

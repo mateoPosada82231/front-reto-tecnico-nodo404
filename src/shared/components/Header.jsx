@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { LogOut, Beaker, Menu, X, AlertCircle, User, ShoppingCart } from 'lucide-react'
 import Logo from './Logo'
 import ThemeToggle from './ThemeToggle'
+import LanguageToggle from './LanguageToggle'
 import BetaTesterModal from './BetaTesterModal'
 import useHeader from '../hooks/useHeader'
 import useContent from '../hooks/useContent'
@@ -132,7 +133,7 @@ function Header() {
           )}
         </nav>
 
-        <div className="flex items-center gap-2 md:hidden">
+        <div className="flex items-center gap-1 md:hidden">
           {isLoggedIn && (
             <button
               onClick={cartOpen}
@@ -147,6 +148,7 @@ function Header() {
               )}
             </button>
           )}
+          <LanguageToggle />
           <ThemeToggle theme={theme} onToggle={toggleTheme} />
           <button
             onClick={toggleMobile}
@@ -157,7 +159,8 @@ function Header() {
           </button>
         </div>
 
-        <div className="hidden md:flex items-center">
+        <div className="hidden md:flex items-center gap-1">
+          <LanguageToggle />
           <ThemeToggle theme={theme} onToggle={toggleTheme} />
         </div>
       </div>

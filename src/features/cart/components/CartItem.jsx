@@ -4,8 +4,10 @@ import { useTranslation } from 'react-i18next'
 function CartItem({ item, onRemove, removing }) {
   const { t } = useTranslation()
   const itemId = item.id ?? item.cartItemId
-  const name = item.name ?? item.extensionName ?? item.title
-  const image = item.image ?? item.extensionImage ?? item.imageUrl
+  const ext = item.extension
+  const name = ext?.name ?? item.name ?? item.extensionName ?? item.title
+  const image = ext?.image ?? item.image ?? item.extensionImage ?? item.imageUrl
+  const price = ext?.price ?? item.price ?? 0
 
   return (
     <div className="flex gap-3 py-4 border-b border-border/50 last:border-b-0">
@@ -22,7 +24,7 @@ function CartItem({ item, onRemove, removing }) {
           {t('cart.platform_label')}: {item.platform} · {t('cart.language_label')}: {item.language}
         </p>
         <span className="text-sm font-bold text-plumbob mt-1">
-          ${Number(item.price ?? 0).toLocaleString('es-CO')}
+          ${Number(price).toLocaleString('es-CO')}
         </span>
       </div>
       <button

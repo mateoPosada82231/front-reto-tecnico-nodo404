@@ -45,6 +45,11 @@ const ERROR_KEYS = {
     'Servicio no disponible',
     'Service unavailable',
   ],
+  already_purchased: [
+    'Ya has comprado',
+    'already purchased',
+    'ya compraste',
+  ],
 }
 
 export function getFriendlyError(messages, err) {

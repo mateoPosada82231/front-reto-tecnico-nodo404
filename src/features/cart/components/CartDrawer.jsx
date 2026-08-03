@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { X, ShoppingBag } from 'lucide-react'
+import { X, ShoppingBag, CheckCircle } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import useCart from '../../../shared/hooks/useCart'
 import useAuthStore from '../../../shared/stores/useAuthStore'
@@ -10,24 +10,32 @@ import Skeleton from '../../../shared/components/Skeleton'
 import { getFriendlyError } from '../../../shared/utils/errors'
 import { checkoutCart } from '../../../shared/services/buys'
 import CartItem from './CartItem'
+import CheckoutForm from './CheckoutForm'
 
 function CartDrawer() {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const { isOpen, close } = useCartUIStore()
   const { email, isLoggedIn } = useAuthStore()
-  const { items, totalPrice, loading, fetchCart, removeItem, clear } = useCart()
+  const { items, itemsCount, totalPrice, loading, fetchCart, removeItem, clear } = useCart()
 
   const [removingId, setRemovingId] = useState(null)
   const [checkingOut, setCheckingOut] = useState(false)
   const [feedback, setFeedback] = useState(null)
+  const [checkoutSuccess, setCheckoutSuccess] = useState(null)
+  const [checkoutError, setCheckoutError] = useState(null)
+  const [showCheckoutForm, setShowCheckoutForm] = useState(false)
 
   useEffect(() => {
     if (isOpen && isLoggedIn && email) fetchCart(email)
   }, [isOpen, isLoggedIn, email, fetchCart])
 
   useEffect(() => {
-    if (!isOpen) setFeedback(null)
+    if (!isOpen) {
+      setFeedback(null)
+      setCheckoutSuccess(null)
+      setCheckoutError(null)
+    }
   }, [isOpen])
 
   const handleRemove = async (cartItemId) => {
@@ -51,18 +59,32 @@ function CartDrawer() {
     }
   }
 
-  const handleCheckout = async () => {
+  const handleCheckout = () => {
+    setShowCheckoutForm(true)
+    setFeedback(null)
+  }
+
+  const handleCheckoutSubmit = async (formData) => {
     setCheckingOut(true)
     setFeedback(null)
+    setCheckoutError(null)
     try {
-      await checkoutCart({ userEmail: email, paymentMethod: 'CARD' })
-      setFeedback({ type: 'success', message: t('cart.checkout_success') })
+      const result = await checkoutCart({ userEmail: email, paymentMethod: formData.paymentMethod })
+      setCheckoutSuccess({
+        itemCount: result.itemsCount ?? itemsCount,
+        totalPrice: result.totalPrice ?? totalPrice,
+      })
+      setShowCheckoutForm(false)
       await fetchCart(email)
     } catch (err) {
-      setFeedback({ type: 'error', message: getFriendlyError(t('errors.common', { returnObjects: true }), err) })
+      setCheckoutError(getFriendlyError(t('errors.common', { returnObjects: true }), err))
     } finally {
       setCheckingOut(false)
     }
+  }
+
+  const handleCheckoutCancel = () => {
+    setShowCheckoutForm(false)
   }
 
   return (
@@ -106,7 +128,7 @@ function CartDrawer() {
             </div>
           )}
 
-          {isLoggedIn && loading && (
+          {isLoggedIn && loading && !checkoutSuccess && (
             <div className="space-y-4 py-4">
               <Skeleton className="h-20 w-full" />
               <Skeleton className="h-20 w-full" />
@@ -114,7 +136,44 @@ function CartDrawer() {
             </div>
           )}
 
-          {isLoggedIn && !loading && items.length === 0 && (
+          {isLoggedIn && checkoutSuccess && (
+            <div className="flex flex-col items-center justify-center h-full gap-4 text-center py-16">
+              <div className="h-16 w-16 rounded-full bg-plumbob/10 flex items-center justify-center">
+                <CheckCircle className="h-10 w-10 text-plumbob" />
+              </div>
+              <h3 className="text-xl font-bold text-text-main">{t('cart.checkout_success_title')}</h3>
+              <p className="text-sm text-text-sub">{t('cart.checkout_success_subtitle')}</p>
+              <p className="text-sm text-text-dim">
+                {t('cart.checkout_success_items', { count: checkoutSuccess.itemCount })}
+              </p>
+              <p className="text-lg font-bold text-plumbob">
+                {t('cart.checkout_success_total')}: ${Number(checkoutSuccess.totalPrice).toLocaleString('es-CO')}
+              </p>
+            </div>
+          )}
+
+          {isLoggedIn && checkoutError && (
+            <div className="flex flex-col items-center justify-center h-full gap-4 text-center py-16 px-6">
+              <div className="h-16 w-16 rounded-full bg-red-500/10 flex items-center justify-center">
+                <X className="h-10 w-10 text-red-400" />
+              </div>
+              <h3 className="text-xl font-bold text-text-main">{t('cart.checkout_error_title')}</h3>
+              <p className="text-sm text-text-sub">{t('cart.checkout_error_subtitle')}</p>
+              <div className="rounded-xl border border-red-500/30 bg-red-500/10 p-4 text-sm text-red-400 max-w-xs">
+                {checkoutError}
+              </div>
+              <div className="flex gap-2">
+                <Button variant="secondary" onClick={() => { setCheckoutError(null); setShowCheckoutForm(true) }} className="flex-1">
+                  {t('cart.checkout_error_retry')}
+                </Button>
+                <Button variant="primary" onClick={() => { setCheckoutError(null); close(); navigate('/') }} className="flex-1">
+                  {t('cart.checkout_error_continue')}
+                </Button>
+              </div>
+            </div>
+          )}
+
+          {isLoggedIn && !loading && !checkoutSuccess && items.length === 0 && (
             <div className="flex flex-col items-center justify-center h-full gap-3 text-center py-16">
               <ShoppingBag className="h-10 w-10 text-text-dim" />
               <p className="text-sm font-medium text-text-main">{t('cart.empty_title')}</p>
@@ -125,21 +184,31 @@ function CartDrawer() {
             </div>
           )}
 
-          {isLoggedIn && !loading && items.length > 0 && (
+          {isLoggedIn && !loading && !checkoutSuccess && items.length > 0 && (
             <div>
-              {items.map((item) => (
-                <CartItem
-                  key={item.id ?? item.cartItemId}
-                  item={item}
-                  onRemove={handleRemove}
-                  removing={removingId === (item.id ?? item.cartItemId)}
+              {showCheckoutForm ? (
+                <CheckoutForm
+                  onSubmit={handleCheckoutSubmit}
+                  onCancel={handleCheckoutCancel}
+                  loading={checkingOut}
                 />
-              ))}
+              ) : (
+                <>
+                  {items.map((item) => (
+                    <CartItem
+                      key={item.id ?? item.cartItemId}
+                      item={item}
+                      onRemove={handleRemove}
+                      removing={removingId === (item.id ?? item.cartItemId)}
+                    />
+                  ))}
+                </>
+              )}
             </div>
           )}
         </div>
 
-        {isLoggedIn && !loading && items.length > 0 && (
+        {isLoggedIn && !loading && !checkoutSuccess && items.length > 0 && !showCheckoutForm && (
           <div className="border-t border-border/50 px-5 py-4 space-y-3">
             {feedback && (
               <div
@@ -170,6 +239,21 @@ function CartDrawer() {
               className="w-full text-center text-xs text-text-dim hover:text-red-400 transition-colors cursor-pointer"
             >
               {t('cart.clear_cta')}
+            </button>
+          </div>
+        )}
+
+        {checkoutSuccess && (
+          <div className="border-t border-border/50 px-5 py-4 space-y-2">
+            <Button variant="primary" className="w-full" onClick={() => { close(); navigate('/') }}>
+              {t('cart.checkout_success_explore')}
+            </Button>
+            <button
+              type="button"
+              onClick={close}
+              className="w-full text-center text-xs text-text-dim hover:text-text-main transition-colors cursor-pointer"
+            >
+              {t('cart.checkout_success_close')}
             </button>
           </div>
         )}
