@@ -1,11 +1,15 @@
-import { NavLink, useNavigate } from 'react-router-dom'
-import { LogOut, Beaker, Menu, X, AlertCircle, User, Globe } from 'lucide-react'
+import { useEffect } from 'react'
+import { NavLink } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import { LogOut, Beaker, Menu, X, AlertCircle, User, ShoppingCart } from 'lucide-react'
 import Logo from './Logo'
 import ThemeToggle from './ThemeToggle'
 import BetaTesterModal from './BetaTesterModal'
 import useHeader from '../hooks/useHeader'
 import useContent from '../hooks/useContent'
+import useCart from '../hooks/useCart'
+import useAuthStore from '../stores/useAuthStore'
+import useCartUIStore from '../stores/useCartUIStore'
 
 const navLinkClass = ({ isActive }) =>
   `text-sm font-medium transition-colors duration-200 md:text-base ${
@@ -16,14 +20,8 @@ const mobileLinkClass = ({ isActive }) =>
   `block text-sm font-medium py-2 ${isActive ? 'text-plumbob' : 'text-text-sub'}`
 
 function Header() {
-  const navigate = useNavigate()
-  const { i18n } = useTranslation()
-  const currentLang = i18n.language || 'es'
-  const toggleLanguage = () => {
-    i18n.changeLanguage(currentLang.startsWith('es') ? 'en' : 'es')
-  }
+  const { t } = useTranslation()
   const { content } = useContent('header')
-  const goProfile = () => navigate('/perfil')
   const {
     user,
     email,
@@ -46,20 +44,20 @@ function Header() {
     becomeBetaTester,
   } = useHeader()
 
+  const { itemsCount, fetchCart } = useCart()
+  const cartOpen = useCartUIStore((state) => state.open)
+
+  useEffect(() => {
+    if (isLoggedIn && email) fetchCart(email)
+  }, [isLoggedIn, email, fetchCart])
+
   return (
     <header className="w-full sticky top-0 z-50 bg-glass-bg border-b border-glass-border">
       {isLoggedIn && !profileComplete && (
         <div className="bg-azure/10 border-b border-azure/20 px-4 py-2 md:px-8">
-          <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-center gap-x-1 gap-y-0.5 text-xs md:text-sm text-azure">
+          <div className="max-w-7xl mx-auto flex items-center justify-center gap-2 text-xs md:text-sm text-azure">
             <AlertCircle className="w-4 h-4 shrink-0" />
-            <span>{content.profile_warning_prefix}</span>
-            <button
-              type="button"
-              onClick={goProfile}
-              className="underline decoration-azure underline-offset-2 hover:text-azure/80 transition-colors cursor-pointer"
-            >
-              {content.profile_warning_link}
-            </button>
+            <span>{content.profile_warning}</span>
           </div>
         </div>
       )}
@@ -95,10 +93,22 @@ function Header() {
 
           {isLoggedIn && (
             <div className="flex items-center gap-3 ml-2 pl-4 border-l border-border/50">
+              <button
+                onClick={cartOpen}
+                aria-label={t('cart.aria_label')}
+                className="relative p-2 rounded-lg text-text-dim hover:text-plumbob hover:bg-plumbob/10 transition-all duration-200 cursor-pointer"
+              >
+                <ShoppingCart className="w-4 h-4" />
+                {itemsCount > 0 && (
+                  <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-plumbob text-[0.625rem] font-bold text-white">
+                    {itemsCount}
+                  </span>
+                )}
+              </button>
               <NavLink
                 to="/perfil"
                 className="p-2 rounded-lg text-text-dim hover:text-plumbob hover:bg-plumbob/10 transition-all duration-200 cursor-pointer"
-                aria-label={content.profile_link_aria}
+                aria-label="Ver perfil"
               >
                 <User className="w-4 h-4" />
               </NavLink>
@@ -108,7 +118,7 @@ function Header() {
               {isBetaTester && (
                 <span className="inline-flex items-center gap-1 rounded-full bg-plumbob/15 border border-plumbob/30 px-2.5 py-0.5 text-xs font-semibold text-plumbob">
                   <Beaker className="w-3 h-3" />
-                  {content.beta_badge_label}
+                  Beta
                 </span>
               )}
               <button
@@ -123,15 +133,20 @@ function Header() {
         </nav>
 
         <div className="flex items-center gap-2 md:hidden">
-          <button
-            type="button"
-            onClick={toggleLanguage}
-            className="flex items-center gap-1 px-2.5 py-1 text-xs font-semibold rounded-lg bg-surface border border-border/50 text-text-sub hover:text-text-main transition-colors cursor-pointer"
-            aria-label="Cambiar idioma / Switch language"
-          >
-            <Globe className="w-3.5 h-3.5" />
-            <span>{currentLang.toUpperCase()}</span>
-          </button>
+          {isLoggedIn && (
+            <button
+              onClick={cartOpen}
+              aria-label={t('cart.aria_label')}
+              className="relative p-2 rounded-lg text-text-sub hover:text-plumbob hover:bg-surface/50 transition-colors cursor-pointer"
+            >
+              <ShoppingCart className="w-5 h-5" />
+              {itemsCount > 0 && (
+                <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-plumbob text-[0.625rem] font-bold text-white">
+                  {itemsCount}
+                </span>
+              )}
+            </button>
+          )}
           <ThemeToggle theme={theme} onToggle={toggleTheme} />
           <button
             onClick={toggleMobile}
@@ -142,16 +157,7 @@ function Header() {
           </button>
         </div>
 
-        <div className="hidden md:flex items-center gap-3">
-          <button
-            type="button"
-            onClick={toggleLanguage}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-surface border border-border/50 text-text-sub hover:text-text-main hover:border-plumbob/30 transition-colors cursor-pointer"
-            aria-label="Cambiar idioma / Switch language"
-          >
-            <Globe className="w-3.5 h-3.5" />
-            <span>{currentLang.toUpperCase()}</span>
-          </button>
+        <div className="hidden md:flex items-center">
           <ThemeToggle theme={theme} onToggle={toggleTheme} />
         </div>
       </div>
@@ -192,7 +198,7 @@ function Header() {
                 className="flex items-center gap-2 text-sm text-text-sub hover:text-text-main py-2 cursor-pointer"
               >
                 <User className="w-4 h-4" />
-                {content.mobile_profile_link}
+                Perfil
               </NavLink>
               <button
                 onClick={handleLogout}

@@ -184,5 +184,23 @@
     "default": {
       "placeholder": "Seleccione..."
     }
-  }
+  },
+  "cart": {
+  "title": "Tu carrito",
+  "close_aria": "Cerrar carrito",
+  "aria_label": "Carrito de compras",
+  "empty_title": "Tu carrito está vacío",
+  "empty_subtitle": "Agrega paquetes de expansión para verlos aquí.",
+  "explore_cta": "Explorar paquetes",
+  "remove_aria": "Quitar producto",
+  "clear_cta": "Vaciar carrito",
+  "total_label": "Total",
+  "checkout_cta": "Proceder al pago",
+  "checkout_processing": "Procesando compra...",
+  "checkout_success": "¡Compra realizada con éxito!",
+  "login_required": "Inicia sesión para ver tu carrito",
+  "login_link": "Ir a login",
+  "platform_label": "Plataforma",
+  "language_label": "Idioma"
+}
 }
