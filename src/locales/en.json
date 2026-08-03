@@ -40,7 +40,11 @@
       "platform_label": "Platform",
       "confirm_button": "Confirm purchase",
       "cancel_button": "Cancel",
-      "processing_text": "Processing..."
+      "processing_text": "Processing...",
+      "add_to_cart_button": "Add to cart",
+      "add_to_cart_confirm": "Add",
+      "adding_to_cart_text": "Adding...",
+      "add_to_cart_success": "Added to cart successfully"
     }
   },
   "auth": {
@@ -171,7 +175,8 @@
       "bad_request": "Invalid data",
       "not_found": "Resource not found",
       "network_error": "No connection to server",
-      "unexpected_error": "Unexpected error, please try again"
+      "unexpected_error": "Unexpected error, please try again",
+      "already_purchased": "You have already purchased this extension"
     }
   },
   "placeholders": {
@@ -184,5 +189,33 @@
     "default": {
       "placeholder": "Select..."
     }
+  },
+  "cart": {
+    "title": "Your cart",
+    "close_aria": "Close cart",
+    "aria_label": "Shopping cart",
+    "empty_title": "Your cart is empty",
+    "empty_subtitle": "Add expansion packs to see them here.",
+    "explore_cta": "Explore packs",
+    "remove_aria": "Remove item",
+    "clear_cta": "Clear cart",
+    "total_label": "Total",
+    "checkout_cta": "Proceed to checkout",
+    "checkout_processing": "Processing purchase...",
+    "checkout_success": "Purchase successful!",
+    "checkout_success_title": "Thank you for your purchase!",
+    "checkout_success_subtitle": "Your expansion packs are now available.",
+    "checkout_success_items": "{{count}} pack(s) purchased",
+    "checkout_success_total": "Total paid",
+    "checkout_success_close": "Close",
+    "checkout_success_explore": "Keep exploring",
+    "checkout_error_title": "Purchase Error",
+    "checkout_error_subtitle": "Could not complete the order.",
+    "checkout_error_retry": "Retry",
+    "checkout_error_continue": "Keep Shopping",
+    "login_required": "Log in to view your cart",
+    "login_link": "Go to login",
+    "platform_label": "Platform",
+    "language_label": "Language"
   }
 }

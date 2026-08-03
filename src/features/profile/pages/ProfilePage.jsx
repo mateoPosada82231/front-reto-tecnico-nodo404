@@ -2,13 +2,17 @@ import { Navigate } from "react-router-dom";
 import { Pencil, X, Check } from "lucide-react";
 import Button from "../../../shared/components/Button";
 import InputField from "../../../shared/components/InputField";
+import SelectField from "../../auth/components/SelectField";
 import Skeleton from "../../../shared/components/Skeleton";
 import ProfileAvatar from "../components/ProfileAvatar";
 import useProfile from "../hooks/useProfile";
 import useContent from "../../../shared/hooks/useContent";
+import useConfig from "../../../shared/hooks/useConfig";
 
 function ProfilePage() {
   const { content } = useContent("profile.page");
+  const { content: selectDefault } = useContent("select.default");
+  const { config: countries } = useConfig("countries");
   const {
     user,
     email,
@@ -84,13 +88,15 @@ function ProfilePage() {
           />
 
           <div className="grid gap-5 md:grid-cols-2">
-            <InputField
+            <SelectField
               label={content.country_label}
               name="country"
               value={form.country}
               onChange={handleChange}
+              options={countries}
               error={errors.country}
               disabled={!editing}
+              defaultPlaceholder={selectDefault.placeholder}
             />
             <InputField
               label={content.identification_label}

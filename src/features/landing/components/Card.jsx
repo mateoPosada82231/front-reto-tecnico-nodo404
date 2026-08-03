@@ -31,7 +31,7 @@ function Card({ image, category, title, description, price, ctaLabel, onCtaClick
             <span className="text-sm font-bold text-plumbob">{price}</span>
           )}
           {ctaLabel && (
-            <Button variant="ghost" href={href} onClick={onCtaClick} target="_blank" rel="noopener noreferrer" className="text-xs">
+            <Button variant="ghost" href={href} onClick={onCtaClick} className="text-xs">
               {ctaLabel} &rarr;
             </Button>
           )}

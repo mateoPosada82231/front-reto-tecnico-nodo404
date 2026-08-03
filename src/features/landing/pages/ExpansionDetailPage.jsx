@@ -1,15 +1,21 @@
+import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { ArrowLeft, CheckCircle } from "lucide-react";
+import { ArrowLeft, ShoppingCart } from "lucide-react";
 import useExpansionDetail from "../hooks/useExpansionDetail";
 import useAuthStore from "../../../shared/stores/useAuthStore";
+import useCart from "../../../shared/hooks/useCart";
+import useCartUIStore from "../../../shared/stores/useCartUIStore";
 import Button from "../../../shared/components/Button";
 import Skeleton from "../../../shared/components/Skeleton";
 import Alert from "../../auth/components/Alert";
 import BuyDirectForm from "../../buys/components/BuyDirectForm";
+import AddToCartForm from "../../cart/components/AddToCartForm";
 
 function ExpansionDetailPage() {
   const { id } = useParams();
   const { email, isLoggedIn } = useAuthStore();
+  const { addItem } = useCart();
+  const { open: openCart } = useCartUIStore();
   const {
     pack,
     loading,
@@ -22,6 +28,11 @@ function ExpansionDetailPage() {
     submitBuy,
     detailContent,
   } = useExpansionDetail(id, email);
+
+  const [showCartForm, setShowCartForm] = useState(false);
+  const [addingToCart, setAddingToCart] = useState(false);
+  const [cartSuccess, setCartSuccess] = useState(false);
+  const [cartError, setCartError] = useState(null);
 
   if (loading) {
     return (
@@ -45,6 +56,26 @@ function ExpansionDetailPage() {
       </div>
     );
   }
+
+  const handleAddToCart = async (formData) => {
+    setAddingToCart(true);
+    setCartError(null);
+    try {
+      await addItem({
+        email,
+        extensionId: pack.id,
+        language: formData.language,
+        platform: formData.platform,
+      });
+      setCartSuccess(true);
+      setShowCartForm(false);
+      openCart();
+    } catch (err) {
+      setCartError(err?.message || "Error al agregar al carrito");
+    } finally {
+      setAddingToCart(false);
+    }
+  };
 
   return (
     <div className="max-w-3xl mx-auto p-6 sm:p-10">
@@ -80,17 +111,23 @@ function ExpansionDetailPage() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 text-sm mb-6">
         <div>
-          <span className="text-text-sub">{detailContent.required_age_label}</span>
+          <span className="text-text-sub">
+            {detailContent.required_age_label}
+          </span>
           <p className="text-text-main">
             {pack.requiredAge}+ {detailContent.years_text}
           </p>
         </div>
         <div>
-          <span className="text-text-sub">{detailContent.distributor_label}</span>
+          <span className="text-text-sub">
+            {detailContent.distributor_label}
+          </span>
           <p className="text-text-main">{pack.distributor}</p>
         </div>
         <div>
-          <span className="text-text-sub">{detailContent.publication_date_label}</span>
+          <span className="text-text-sub">
+            {detailContent.publication_date_label}
+          </span>
           <p className="text-text-main">{pack.publicationDate}</p>
         </div>
         <div>
@@ -122,7 +159,6 @@ function ExpansionDetailPage() {
       {buySuccess && (
         <Alert variant="success" className="mb-4">
           <span className="inline-flex items-center gap-1.5">
-            <CheckCircle className="h-4 w-4" aria-hidden="true" />
             {detailContent.success_message}
           </span>
         </Alert>
@@ -134,13 +170,38 @@ function ExpansionDetailPage() {
         </Alert>
       )}
 
+      {cartSuccess && (
+        <Alert variant="success" className="mb-4">
+          <span className="inline-flex items-center gap-1.5">
+            {detailContent.add_to_cart_success}
+          </span>
+        </Alert>
+      )}
+
+      {cartError && (
+        <Alert variant="error" className="mb-4">
+          {cartError}
+        </Alert>
+      )}
+
       {isLoggedIn && !buySuccess && (
-        <>
-          {!showForm && (
-            <Button onClick={() => setShowForm(true)}>
-              {detailContent.buy_button}
-            </Button>
-          )}
+        <div className="flex flex-col gap-3">
+          <div className="flex flex-wrap gap-2">
+            {!showForm && !showCartForm && (
+              <>
+                <Button onClick={() => setShowForm(true)}>
+                  {detailContent.buy_button}
+                </Button>
+                <Button
+                  variant="secondary"
+                  onClick={() => setShowCartForm(true)}
+                >
+                  <ShoppingCart className="h-4 w-4" />
+                  {detailContent.add_to_cart_button}
+                </Button>
+              </>
+            )}
+          </div>
           {showForm && (
             <BuyDirectForm
               onSubmit={submitBuy}
@@ -148,7 +209,14 @@ function ExpansionDetailPage() {
               buying={buying}
             />
           )}
-        </>
+          {showCartForm && (
+            <AddToCartForm
+              onSubmit={handleAddToCart}
+              onCancel={() => setShowCartForm(false)}
+              loading={addingToCart}
+            />
+          )}
+        </div>
       )}
     </div>
   );
