@@ -24,8 +24,8 @@ function AddToCartForm({ onSubmit, onCancel, loading }) {
 
   const validate = () => {
     const errs = {};
-    if (!formData.language) errs.language = errorsContent.required_field || "Requerido";
-    if (!formData.platform) errs.platform = errorsContent.required_field || "Requerido";
+    if (!formData.language) errs.language = errorsContent.required_field;
+    if (!formData.platform) errs.platform = errorsContent.required_field;
     setErrors(errs);
     return Object.keys(errs).length === 0;
   };
