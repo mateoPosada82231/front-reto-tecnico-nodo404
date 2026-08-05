@@ -1,4 +1,6 @@
+import { changePassword } from "../../../shared/services/users";
 import { Navigate } from "react-router-dom";
+import { useState } from "react";
 import { Pencil, X, Check } from "lucide-react";
 import Button from "../../../shared/components/Button";
 import InputField from "../../../shared/components/InputField";
@@ -30,6 +32,46 @@ function ProfilePage() {
     purchases,
     loadingPurchases,
   } = useProfile();
+
+
+  const [passwordForm, setPasswordForm] = useState({
+    currentPassword: "",
+    newPassword: "",
+    confirmPassword: "",
+  });
+
+  const handlePasswordChange = (e) => {
+    setPasswordForm({
+      ...passwordForm,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+
+  const handleChangePassword = async () => {
+    if (passwordForm.newPassword !== passwordForm.confirmPassword) {
+      alert("Las nuevas contraseñas no coinciden.");
+      return;
+    }
+
+    try {
+      await changePassword({
+        email,
+        currentPassword: passwordForm.currentPassword,
+        newPassword: passwordForm.newPassword,
+      });
+
+      alert("Contraseña cambiada correctamente.");
+
+      setPasswordForm({
+        currentPassword: "",
+        newPassword: "",
+        confirmPassword: "",
+      });
+    } catch (error) {
+      alert(error.message || "Error al cambiar la contraseña.");
+    }
+  };
 
   if (loading) {
     return (
@@ -153,6 +195,46 @@ function ProfilePage() {
             )}
           </div>
         </form>
+
+        <div className="mt-8 pt-6 border-t border-border/60">
+          <h2 className="text-lg font-semibold mb-4">
+            Cambiar contraseña
+          </h2>
+
+          <div className="space-y-4">
+            <InputField
+                label="Contraseña actual"
+                name="currentPassword"
+                type="password"
+                value={passwordForm.currentPassword}
+                onChange={handlePasswordChange}
+            />
+
+            <InputField
+                label="Nueva contraseña"
+                name="newPassword"
+                type="password"
+                value={passwordForm.newPassword}
+                onChange={handlePasswordChange}
+            />
+
+            <InputField
+                label="Confirmar nueva contraseña"
+                name="confirmPassword"
+                type="password"
+                value={passwordForm.confirmPassword}
+                onChange={handlePasswordChange}
+            />
+
+            <Button
+                type="button"
+                variant="primary"
+                onClick={handleChangePassword}
+            >
+              Cambiar contraseña
+            </Button>
+          </div>
+        </div>
 
         <div className="mt-8 pt-6 border-t border-border/60">
           <h2 className="text-lg font-semibold mb-4">Mis compras</h2>
