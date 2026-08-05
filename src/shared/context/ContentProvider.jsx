@@ -23,6 +23,7 @@ const SECTIONS = [
   'errors.common',
   'placeholders',
   'select.default',
+  'cart',
 ]
 
 const CONFIG_KEYS = ['countries']

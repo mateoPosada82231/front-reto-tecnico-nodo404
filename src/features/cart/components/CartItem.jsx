@@ -1,8 +1,8 @@
 import { X } from 'lucide-react'
-import { useTranslation } from 'react-i18next'
+import useContent from '../../../shared/hooks/useContent'
 
 function CartItem({ item, onRemove, removing }) {
-  const { t } = useTranslation()
+  const { content: cartContent } = useContent('cart')
   const itemId = item.id ?? item.cartItemId
   const ext = item.extension
   const name = ext?.name ?? item.name ?? item.extensionName ?? item.title
@@ -21,7 +21,7 @@ function CartItem({ item, onRemove, removing }) {
       <div className="flex flex-1 flex-col gap-1 min-w-0">
         <h4 className="text-sm font-semibold text-text-main truncate">{name}</h4>
         <p className="text-xs text-text-dim">
-          {t('cart.platform_label')}: {item.platform} · {t('cart.language_label')}: {item.language}
+          {cartContent.platform_label}: {item.platform} · {cartContent.language_label}: {item.language}
         </p>
         <span className="text-sm font-bold text-plumbob mt-1">
           ${Number(price).toLocaleString('es-CO')}
@@ -31,7 +31,7 @@ function CartItem({ item, onRemove, removing }) {
         type="button"
         onClick={() => onRemove(itemId)}
         disabled={removing}
-        aria-label={t('cart.remove_aria')}
+        aria-label={cartContent.remove_aria}
         className="self-start p-1.5 rounded-lg text-text-dim hover:text-red-400 hover:bg-red-500/10 transition-colors disabled:opacity-50 cursor-pointer"
       >
         <X className="h-4 w-4" />

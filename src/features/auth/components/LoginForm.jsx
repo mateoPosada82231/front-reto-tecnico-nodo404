@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import InputField from "../../../shared/components/InputField";
 import Button from "../../../shared/components/Button";
-import Alert from "./Alert";
+import Alert from "../../../shared/components/Alert";
 import SocialButtons from "./SocialButtons";
 import useLoginFormStore from "../stores/useLoginFormStore";
 import useContent from "../../../shared/hooks/useContent";

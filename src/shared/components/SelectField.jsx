@@ -1,4 +1,4 @@
-import useContent from '../../../shared/hooks/useContent'
+import useContent from '../hooks/useContent'
 
 function SelectField({
   label,
