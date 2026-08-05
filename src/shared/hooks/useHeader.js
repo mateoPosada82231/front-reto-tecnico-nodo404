@@ -44,21 +44,15 @@ export default function useHeader() {
   }, [])
 
   const becomeBetaTester = useCallback(async () => {
-    console.log('becomeBetaTester called', { email, user })
-    if (!email || !user) {
-      console.warn('becomeBetaTester: early return - missing email or user')
-      return
-    }
+    if (!email || !user) return
     setBetaLoading(true)
     setBetaError(null)
     try {
       const body = { ...user, betaTester: true }
-      console.log('PUT body:', body)
       await updateUser(email, body)
       setBetaSuccess(true)
       useAuthStore.getState().fetchUser()
     } catch (err) {
-      console.error('becomeBetaTester error:', err)
       setBetaError(getFriendlyError(errorsContent, err))
     } finally {
       setBetaLoading(false)

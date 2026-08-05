@@ -1,12 +1,12 @@
-import { changePassword } from "../../../shared/services/users";
 import { Navigate } from "react-router-dom";
 import { useState } from "react";
-import { Pencil, X, Check } from "lucide-react";
+import { Pencil, X, Check, KeyRound } from "lucide-react";
 import Button from "../../../shared/components/Button";
 import InputField from "../../../shared/components/InputField";
-import SelectField from "../../auth/components/SelectField";
+import SelectField from "../../../shared/components/SelectField";
 import Skeleton from "../../../shared/components/Skeleton";
 import ProfileAvatar from "../components/ProfileAvatar";
+import ChangePasswordModal from "../components/ChangePasswordModal";
 import useProfile from "../hooks/useProfile";
 import useContent from "../../../shared/hooks/useContent";
 import useConfig from "../../../shared/hooks/useConfig";
@@ -33,45 +33,7 @@ function ProfilePage() {
     loadingPurchases,
   } = useProfile();
 
-
-  const [passwordForm, setPasswordForm] = useState({
-    currentPassword: "",
-    newPassword: "",
-    confirmPassword: "",
-  });
-
-  const handlePasswordChange = (e) => {
-    setPasswordForm({
-      ...passwordForm,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-
-  const handleChangePassword = async () => {
-    if (passwordForm.newPassword !== passwordForm.confirmPassword) {
-      alert("Las nuevas contraseñas no coinciden.");
-      return;
-    }
-
-    try {
-      await changePassword({
-        email,
-        currentPassword: passwordForm.currentPassword,
-        newPassword: passwordForm.newPassword,
-      });
-
-      alert("Contraseña cambiada correctamente.");
-
-      setPasswordForm({
-        currentPassword: "",
-        newPassword: "",
-        confirmPassword: "",
-      });
-    } catch (error) {
-      alert(error.message || "Error al cambiar la contraseña.");
-    }
-  };
+  const [passwordModalOpen, setPasswordModalOpen] = useState(false);
 
   if (loading) {
     return (
@@ -197,40 +159,19 @@ function ProfilePage() {
         </form>
 
         <div className="mt-8 pt-6 border-t border-border/60">
-          <h2 className="text-lg font-semibold mb-4">
-            Cambiar contraseña
-          </h2>
-
-          <div className="space-y-4">
-            <InputField
-                label="Contraseña actual"
-                name="currentPassword"
-                type="password"
-                value={passwordForm.currentPassword}
-                onChange={handlePasswordChange}
-            />
-
-            <InputField
-                label="Nueva contraseña"
-                name="newPassword"
-                type="password"
-                value={passwordForm.newPassword}
-                onChange={handlePasswordChange}
-            />
-
-            <InputField
-                label="Confirmar nueva contraseña"
-                name="confirmPassword"
-                type="password"
-                value={passwordForm.confirmPassword}
-                onChange={handlePasswordChange}
-            />
-
+          <div className="flex items-center justify-between gap-3">
+            <div>
+              <h2 className="text-lg font-semibold">Seguridad</h2>
+              <p className="text-sm text-text-sub">
+                Actualiza tu contraseña periódicamente para mantener tu cuenta protegida.
+              </p>
+            </div>
             <Button
-                type="button"
-                variant="primary"
-                onClick={handleChangePassword}
+              type="button"
+              variant="secondary"
+              onClick={() => setPasswordModalOpen(true)}
             >
+              <KeyRound className="h-4 w-4" />
               Cambiar contraseña
             </Button>
           </div>
@@ -274,6 +215,11 @@ function ProfilePage() {
           )}
         </div>
       </div>
+
+      <ChangePasswordModal
+        open={passwordModalOpen}
+        onClose={() => setPasswordModalOpen(false)}
+      />
     </div>
   );
 }

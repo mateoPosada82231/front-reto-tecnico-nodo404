@@ -1,7 +1,7 @@
 import { useState } from "react";
 import useContent from "../../../shared/hooks/useContent";
 import Button from "../../../shared/components/Button";
-import SelectField from "../../auth/components/SelectField";
+import SelectField from "../../../shared/components/SelectField";
 
 const PAYMENT_OPTIONS = [
   { value: "CARD", label: "Tarjeta" },

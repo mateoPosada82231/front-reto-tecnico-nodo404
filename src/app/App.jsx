@@ -1,5 +1,6 @@
 import MainLayout from '../shared/components/MainLayout'
 import { ContentProvider } from '../shared/context/ContentProvider'
+import CartDrawer from '../features/cart/components/CartDrawer'
 import AppRouter from './router'
 
 function App() {
@@ -8,6 +9,7 @@ function App() {
       <MainLayout>
         <AppRouter />
       </MainLayout>
+      <CartDrawer />
     </ContentProvider>
   )
 }

@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { X, ShoppingBag, CheckCircle } from 'lucide-react'
-import useContent from '../../../shared/hooks/useContent'
-import useCart from '../../../shared/hooks/useCart'
+import useCartStore from '../../../shared/stores/useCartStore'
 import useAuthStore from '../../../shared/stores/useAuthStore'
 import useCartUIStore from '../../../shared/stores/useCartUIStore'
+import useContent from '../../../shared/hooks/useContent'
 import Button from '../../../shared/components/Button'
 import Skeleton from '../../../shared/components/Skeleton'
 import { getFriendlyError } from '../../../shared/utils/errors'
@@ -13,12 +13,12 @@ import CartItem from './CartItem'
 import CheckoutForm from './CheckoutForm'
 
 function CartDrawer() {
+  const navigate = useNavigate()
   const { content: cartContent } = useContent('cart')
   const { content: errorsContent } = useContent('errors.common')
-  const navigate = useNavigate()
   const { isOpen, close } = useCartUIStore()
   const { email, isLoggedIn } = useAuthStore()
-  const { items, itemsCount, totalPrice, loading, fetchCart, removeItem, clear } = useCart()
+  const { items, itemsCount, totalPrice, loading, fetchCart, removeItem, clear } = useCartStore()
 
   const [removingId, setRemovingId] = useState(null)
   const [checkingOut, setCheckingOut] = useState(false)
@@ -145,7 +145,7 @@ function CartDrawer() {
               <h3 className="text-xl font-bold text-text-main">{cartContent.checkout_success_title}</h3>
               <p className="text-sm text-text-sub">{cartContent.checkout_success_subtitle}</p>
               <p className="text-sm text-text-dim">
-                {(cartContent.checkout_success_items || '{{count}}').replace('{{count}}', checkoutSuccess.itemCount)}
+                {cartContent.checkout_success_items?.replace('{{count}}', checkoutSuccess.itemCount) ?? `${checkoutSuccess.itemCount} paquete(s) comprado(s)`}
               </p>
               <p className="text-lg font-bold text-plumbob">
                 {cartContent.checkout_success_total}: ${Number(checkoutSuccess.totalPrice).toLocaleString('es-CO')}

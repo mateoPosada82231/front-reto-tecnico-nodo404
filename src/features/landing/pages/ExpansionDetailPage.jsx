@@ -3,11 +3,11 @@ import { useParams, Link } from "react-router-dom";
 import { ArrowLeft, ShoppingCart } from "lucide-react";
 import useExpansionDetail from "../hooks/useExpansionDetail";
 import useAuthStore from "../../../shared/stores/useAuthStore";
-import useCart from "../../../shared/hooks/useCart";
+import useCartStore from "../../../shared/stores/useCartStore";
 import useCartUIStore from "../../../shared/stores/useCartUIStore";
 import Button from "../../../shared/components/Button";
 import Skeleton from "../../../shared/components/Skeleton";
-import Alert from "../../auth/components/Alert";
+import Alert from "../../../shared/components/Alert";
 import BuyDirectForm from "../../buys/components/BuyDirectForm";
 import AddToCartForm from "../../cart/components/AddToCartForm";
 import { getFriendlyError } from "../../../shared/utils/errors";
@@ -15,7 +15,7 @@ import { getFriendlyError } from "../../../shared/utils/errors";
 function ExpansionDetailPage() {
   const { id } = useParams();
   const { email, isLoggedIn } = useAuthStore();
-  const { addItem } = useCart();
+  const addItem = useCartStore((state) => state.addItem);
   const { open: openCart } = useCartUIStore();
   const {
     pack,

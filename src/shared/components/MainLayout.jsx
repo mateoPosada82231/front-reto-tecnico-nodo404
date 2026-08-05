@@ -1,6 +1,5 @@
 import Header from './Header'
 import Footer from './Footer'
-import CartDrawer from '../../features/cart/components/CartDrawer'
 
 function MainLayout({ children }) {
   return (
@@ -10,7 +9,6 @@ function MainLayout({ children }) {
         {children}
       </main>
       <Footer />
-      <CartDrawer />
     </div>
   )
 }

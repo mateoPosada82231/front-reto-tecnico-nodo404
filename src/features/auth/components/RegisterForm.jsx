@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import InputField from "../../../shared/components/InputField";
-import SelectField from "./SelectField";
+import SelectField from "../../../shared/components/SelectField";
 import Button from "../../../shared/components/Button";
-import Alert from "./Alert";
+import Alert from "../../../shared/components/Alert";
 import SocialButtons from "./SocialButtons";
 import useRegisterFormStore from "../stores/useRegisterFormStore";
 import useUsersStore from "../../../shared/stores/useUsersStore";
