@@ -10,6 +10,7 @@ import Skeleton from "../../../shared/components/Skeleton";
 import Alert from "../../../shared/components/Alert";
 import BuyDirectForm from "../../buys/components/BuyDirectForm";
 import AddToCartForm from "../../cart/components/AddToCartForm";
+import { getFriendlyError } from "../../../shared/utils/errors";
 
 function ExpansionDetailPage() {
   const { id } = useParams();
@@ -27,6 +28,7 @@ function ExpansionDetailPage() {
     setShowForm,
     submitBuy,
     detailContent,
+    errorsContent,
   } = useExpansionDetail(id, email);
 
   const [showCartForm, setShowCartForm] = useState(false);
@@ -71,7 +73,7 @@ function ExpansionDetailPage() {
       setShowCartForm(false);
       openCart();
     } catch (err) {
-      setCartError(err?.message || "Error al agregar al carrito");
+      setCartError(getFriendlyError(errorsContent, err));
     } finally {
       setAddingToCart(false);
     }

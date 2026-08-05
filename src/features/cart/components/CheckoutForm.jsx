@@ -18,7 +18,7 @@ function CheckoutForm({ onSubmit, onCancel, loading }) {
 
   const validate = () => {
     const errs = {};
-    if (!formData.paymentMethod) errs.paymentMethod = errorsContent.required_field || "Requerido";
+    if (!formData.paymentMethod) errs.paymentMethod = errorsContent.required_field;
     setErrors(errs);
     return Object.keys(errs).length === 0;
   };
