@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { X, ShoppingBag, CheckCircle } from 'lucide-react'
-import { useTranslation } from 'react-i18next'
+import useContent from '../../../shared/hooks/useContent'
 import useCart from '../../../shared/hooks/useCart'
 import useAuthStore from '../../../shared/stores/useAuthStore'
 import useCartUIStore from '../../../shared/stores/useCartUIStore'
@@ -13,7 +13,8 @@ import CartItem from './CartItem'
 import CheckoutForm from './CheckoutForm'
 
 function CartDrawer() {
-  const { t } = useTranslation()
+  const { content: cartContent } = useContent('cart')
+  const { content: errorsContent } = useContent('errors.common')
   const navigate = useNavigate()
   const { isOpen, close } = useCartUIStore()
   const { email, isLoggedIn } = useAuthStore()
@@ -44,7 +45,7 @@ function CartDrawer() {
     try {
       await removeItem(cartItemId, email)
     } catch (err) {
-      setFeedback({ type: 'error', message: getFriendlyError(t('errors.common', { returnObjects: true }), err) })
+      setFeedback({ type: 'error', message: getFriendlyError(errorsContent, err) })
     } finally {
       setRemovingId(null)
     }
@@ -55,7 +56,7 @@ function CartDrawer() {
     try {
       await clear(email)
     } catch (err) {
-      setFeedback({ type: 'error', message: getFriendlyError(t('errors.common', { returnObjects: true }), err) })
+      setFeedback({ type: 'error', message: getFriendlyError(errorsContent, err) })
     }
   }
 
@@ -77,7 +78,7 @@ function CartDrawer() {
       setShowCheckoutForm(false)
       await fetchCart(email)
     } catch (err) {
-      setCheckoutError(getFriendlyError(t('errors.common', { returnObjects: true }), err))
+      setCheckoutError(getFriendlyError(errorsContent, err))
     } finally {
       setCheckingOut(false)
     }
@@ -100,17 +101,17 @@ function CartDrawer() {
       <aside
         role="dialog"
         aria-modal="true"
-        aria-label={t('cart.aria_label')}
+        aria-label={cartContent.aria_label}
         className={`fixed top-0 right-0 z-[70] h-full w-full max-w-md bg-bg border-l border-border/60 shadow-2xl transition-transform duration-300 flex flex-col ${
           isOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
         <div className="flex items-center justify-between px-5 py-4 border-b border-border/50">
-          <h2 className="text-lg font-bold text-text-main">{t('cart.title')}</h2>
+          <h2 className="text-lg font-bold text-text-main">{cartContent.title}</h2>
           <button
             type="button"
             onClick={close}
-            aria-label={t('cart.close_aria')}
+            aria-label={cartContent.close_aria}
             className="p-2 rounded-lg text-text-dim hover:text-text-main hover:bg-surface/50 transition-colors cursor-pointer"
           >
             <X className="h-5 w-5" />
@@ -121,9 +122,9 @@ function CartDrawer() {
           {!isLoggedIn && (
             <div className="flex flex-col items-center justify-center h-full gap-3 text-center py-16">
               <ShoppingBag className="h-10 w-10 text-text-dim" />
-              <p className="text-sm text-text-sub">{t('cart.login_required')}</p>
+              <p className="text-sm text-text-sub">{cartContent.login_required}</p>
               <Button variant="secondary" onClick={() => { close(); navigate('/login') }}>
-                {t('cart.login_link')}
+                {cartContent.login_link}
               </Button>
             </div>
           )}
@@ -141,13 +142,13 @@ function CartDrawer() {
               <div className="h-16 w-16 rounded-full bg-plumbob/10 flex items-center justify-center">
                 <CheckCircle className="h-10 w-10 text-plumbob" />
               </div>
-              <h3 className="text-xl font-bold text-text-main">{t('cart.checkout_success_title')}</h3>
-              <p className="text-sm text-text-sub">{t('cart.checkout_success_subtitle')}</p>
+              <h3 className="text-xl font-bold text-text-main">{cartContent.checkout_success_title}</h3>
+              <p className="text-sm text-text-sub">{cartContent.checkout_success_subtitle}</p>
               <p className="text-sm text-text-dim">
-                {t('cart.checkout_success_items', { count: checkoutSuccess.itemCount })}
+                {(cartContent.checkout_success_items || '{{count}}').replace('{{count}}', checkoutSuccess.itemCount)}
               </p>
               <p className="text-lg font-bold text-plumbob">
-                {t('cart.checkout_success_total')}: ${Number(checkoutSuccess.totalPrice).toLocaleString('es-CO')}
+                {cartContent.checkout_success_total}: ${Number(checkoutSuccess.totalPrice).toLocaleString('es-CO')}
               </p>
             </div>
           )}
@@ -157,17 +158,17 @@ function CartDrawer() {
               <div className="h-16 w-16 rounded-full bg-red-500/10 flex items-center justify-center">
                 <X className="h-10 w-10 text-red-400" />
               </div>
-              <h3 className="text-xl font-bold text-text-main">{t('cart.checkout_error_title')}</h3>
-              <p className="text-sm text-text-sub">{t('cart.checkout_error_subtitle')}</p>
+              <h3 className="text-xl font-bold text-text-main">{cartContent.checkout_error_title}</h3>
+              <p className="text-sm text-text-sub">{cartContent.checkout_error_subtitle}</p>
               <div className="rounded-xl border border-red-500/30 bg-red-500/10 p-4 text-sm text-red-400 max-w-xs">
                 {checkoutError}
               </div>
               <div className="flex gap-2">
                 <Button variant="secondary" onClick={() => { setCheckoutError(null); setShowCheckoutForm(true) }} className="flex-1">
-                  {t('cart.checkout_error_retry')}
+                  {cartContent.checkout_error_retry}
                 </Button>
                 <Button variant="primary" onClick={() => { setCheckoutError(null); close(); navigate('/') }} className="flex-1">
-                  {t('cart.checkout_error_continue')}
+                  {cartContent.checkout_error_continue}
                 </Button>
               </div>
             </div>
@@ -176,10 +177,10 @@ function CartDrawer() {
           {isLoggedIn && !loading && !checkoutSuccess && items.length === 0 && (
             <div className="flex flex-col items-center justify-center h-full gap-3 text-center py-16">
               <ShoppingBag className="h-10 w-10 text-text-dim" />
-              <p className="text-sm font-medium text-text-main">{t('cart.empty_title')}</p>
-              <p className="text-xs text-text-dim">{t('cart.empty_subtitle')}</p>
+              <p className="text-sm font-medium text-text-main">{cartContent.empty_title}</p>
+              <p className="text-xs text-text-dim">{cartContent.empty_subtitle}</p>
               <Button variant="secondary" onClick={() => { close(); navigate('/') }}>
-                {t('cart.explore_cta')}
+                {cartContent.explore_cta}
               </Button>
             </div>
           )}
@@ -223,14 +224,14 @@ function CartDrawer() {
             )}
 
             <div className="flex items-center justify-between">
-              <span className="text-sm text-text-sub">{t('cart.total_label')}</span>
+              <span className="text-sm text-text-sub">{cartContent.total_label}</span>
               <span className="text-lg font-bold text-plumbob">
                 ${Number(totalPrice).toLocaleString('es-CO')}
               </span>
             </div>
 
             <Button variant="primary" className="w-full" onClick={handleCheckout} loading={checkingOut}>
-              {checkingOut ? t('cart.checkout_processing') : t('cart.checkout_cta')}
+              {checkingOut ? cartContent.checkout_processing : cartContent.checkout_cta}
             </Button>
 
             <button
@@ -238,7 +239,7 @@ function CartDrawer() {
               onClick={handleClear}
               className="w-full text-center text-xs text-text-dim hover:text-red-400 transition-colors cursor-pointer"
             >
-              {t('cart.clear_cta')}
+              {cartContent.clear_cta}
             </button>
           </div>
         )}
@@ -246,14 +247,14 @@ function CartDrawer() {
         {checkoutSuccess && (
           <div className="border-t border-border/50 px-5 py-4 space-y-2">
             <Button variant="primary" className="w-full" onClick={() => { close(); navigate('/') }}>
-              {t('cart.checkout_success_explore')}
+              {cartContent.checkout_success_explore}
             </Button>
             <button
               type="button"
               onClick={close}
               className="w-full text-center text-xs text-text-dim hover:text-text-main transition-colors cursor-pointer"
             >
-              {t('cart.checkout_success_close')}
+              {cartContent.checkout_success_close}
             </button>
           </div>
         )}

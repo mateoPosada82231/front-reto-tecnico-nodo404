@@ -78,5 +78,6 @@ export default function useExpansionDetail(id, email) {
     submitBuy,
     resetBuy,
     detailContent,
+    errorsContent,
   }
 }
