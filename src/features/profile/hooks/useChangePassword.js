@@ -9,17 +9,6 @@ const INITIAL_FORM = {
   confirmPassword: '',
 }
 
-const VALIDATION_MESSAGES = {
-  current_required: 'Ingrese su contraseña actual',
-  password_required: 'Ingrese una contraseña',
-  password_min_length: 'La contraseña debe tener mínimo 8 caracteres',
-  password_uppercase: 'Debe contener al menos una mayúscula',
-  password_number: 'Debe contener al menos un número',
-  password_special: 'Debe contener al menos un carácter especial',
-  confirm_required: 'Confirme su contraseña',
-  confirm_match: 'Las contraseñas no coinciden',
-}
-
 function validatePassword(value, messages) {
   if (!value) return messages.password_required
   if (value.length < 8) return messages.password_min_length
@@ -29,12 +18,12 @@ function validatePassword(value, messages) {
   return ''
 }
 
-function validate(form) {
+function validate(form, messages) {
   const errors = {}
-  if (!form.currentPassword) errors.currentPassword = VALIDATION_MESSAGES.current_required
-  errors.newPassword = validatePassword(form.newPassword, VALIDATION_MESSAGES)
-  if (!form.confirmPassword) errors.confirmPassword = VALIDATION_MESSAGES.confirm_required
-  else if (form.newPassword !== form.confirmPassword) errors.confirmPassword = VALIDATION_MESSAGES.confirm_match
+  if (!form.currentPassword) errors.currentPassword = messages.current_required
+  errors.newPassword = validatePassword(form.newPassword, messages)
+  if (!form.confirmPassword) errors.confirmPassword = messages.confirm_required
+  else if (form.newPassword !== form.confirmPassword) errors.confirmPassword = messages.confirm_match
   return errors
 }
 
@@ -63,8 +52,8 @@ export default function useChangePassword() {
   }, [reset])
 
   const submit = useCallback(
-    async (errorsContent) => {
-      const validationResult = validate(form)
+    async ({ validation, errorsContent, content }) => {
+      const validationResult = validate(form, validation)
       if (Object.values(validationResult).some(Boolean)) {
         setErrors(validationResult)
         return false
@@ -78,13 +67,13 @@ export default function useChangePassword() {
           currentPassword: form.currentPassword,
           newPassword: form.newPassword,
         })
-        setFeedback({ type: 'success', message: 'Contraseña cambiada correctamente.' })
+        setFeedback({ type: 'success', message: content.success_text })
         setForm({ ...INITIAL_FORM })
         return true
       } catch (err) {
         setFeedback({
           type: 'error',
-          message: getFriendlyError(errorsContent, err) || err?.message || 'Error al cambiar la contraseña.',
+          message: getFriendlyError(errorsContent, err) || err?.message || content.error_text,
         })
         return false
       } finally {

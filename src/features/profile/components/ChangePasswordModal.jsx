@@ -8,6 +8,9 @@ import useContent from '../../../shared/hooks/useContent'
 
 export default function ChangePasswordModal({ open, onClose }) {
   const { content: errorsContent } = useContent('errors.common')
+  const { content } = useContent('profile.password')
+  const { content: common } = useContent('common')
+  const { content: validation } = useContent('validation.password')
   const {
     form,
     errors,
@@ -26,7 +29,7 @@ export default function ChangePasswordModal({ open, onClose }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const ok = await submit(errorsContent)
+    const ok = await submit({ validation, errorsContent, content })
     if (ok) {
       setTimeout(() => onClose?.(), 1500)
     }
@@ -34,15 +37,15 @@ export default function ChangePasswordModal({ open, onClose }) {
 
   const footer = isSuccess ? (
     <Button variant="primary" onClick={onClose}>
-      Entendido
+      {content.success_cta}
     </Button>
   ) : (
     <>
       <Button variant="ghost" onClick={onClose} disabled={loading}>
-        Cancelar
+        {content.cancel_text}
       </Button>
       <Button type="submit" loading={loading} disabled={loading}>
-        Cambiar contraseña
+        {content.submit_text}
       </Button>
     </>
   )
@@ -51,9 +54,10 @@ export default function ChangePasswordModal({ open, onClose }) {
     <Modal
       open={open}
       onClose={onClose}
-      title={isSuccess ? null : 'Cambiar contraseña'}
+      title={isSuccess ? null : content.title}
       footer={isSuccess ? footer : null}
       size="md"
+      closeAriaLabel={common.close_aria}
     >
       {isSuccess ? (
         <div className="text-center">
@@ -71,7 +75,7 @@ export default function ChangePasswordModal({ open, onClose }) {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="flex justify-center mb-4">
             <div className="w-14 h-14 rounded-full bg-plumbob/15 flex items-center justify-center">
-              <KeyRound className="w-7 h-7 text-plumbob" />
+              <KeyRound className="h-7 w-7 text-plumbob" />
             </div>
           </div>
 
@@ -82,7 +86,7 @@ export default function ChangePasswordModal({ open, onClose }) {
           )}
 
           <InputField
-            label="Contraseña actual"
+            label={content.current_label}
             name="currentPassword"
             type="password"
             value={form.currentPassword}
@@ -92,17 +96,17 @@ export default function ChangePasswordModal({ open, onClose }) {
             autoFocus
           />
           <InputField
-            label="Nueva contraseña"
+            label={content.new_label}
             name="newPassword"
             type="password"
             value={form.newPassword}
             onChange={handleChange}
             error={errors.newPassword}
             required
-            placeholder="Mayúscula, número y carácter especial"
+            placeholder={content.new_placeholder}
           />
           <InputField
-            label="Confirmar nueva contraseña"
+            label={content.confirm_label}
             name="confirmPassword"
             type="password"
             value={form.confirmPassword}

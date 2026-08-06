@@ -3,16 +3,6 @@ import useContent from "../../../shared/hooks/useContent";
 import Button from "../../../shared/components/Button";
 import SelectField from "../../../shared/components/SelectField";
 
-const LANGUAGE_OPTIONS = [
-  { value: "ES", label: "Español" },
-  { value: "EN", label: "Inglés" },
-];
-const PLATFORM_OPTIONS = [
-  { value: "PC", label: "PC" },
-  { value: "PS5", label: "PlayStation 5" },
-  { value: "XBOX", label: "Xbox" },
-];
-
 function AddToCartForm({ onSubmit, onCancel, loading }) {
   const { content } = useContent("landing.detail");
   const { content: errorsContent } = useContent("errors.common");
@@ -21,6 +11,16 @@ function AddToCartForm({ onSubmit, onCancel, loading }) {
     platform: "PC",
   });
   const [errors, setErrors] = useState({});
+
+  const LANGUAGE_OPTIONS = [
+    { value: "ES", label: content.language_es },
+    { value: "EN", label: content.language_en },
+  ];
+  const PLATFORM_OPTIONS = [
+    { value: "PC", label: "PC" },
+    { value: "PS5", label: "PlayStation 5" },
+    { value: "XBOX", label: "Xbox" },
+  ];
 
   const validate = () => {
     const errs = {};

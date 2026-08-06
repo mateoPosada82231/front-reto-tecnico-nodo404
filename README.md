@@ -21,16 +21,16 @@ Tienda de expansiones de Los Sims 4. Frontend en React 19 + Vite consumiendo una
 
 ## Stack
 
-| Tecnología | Versión | Uso |
-|---|---|---|
-| **React** | 19 | UI library |
-| **Vite** | 8 | Build tool + dev server |
-| **Tailwind CSS** | v4 | Utility-first CSS |
-| **pnpm** | — | Gestor de paquetes |
-| **react-router-dom** | 7 | Enrutamiento SPA (lazy + Suspense) |
-| **zustand** | 5 | State management (con `persist` para sesión) |
-| **lucide-react** | — | Iconografía |
-| **oxlint** | — | Linter (Oxidation compiler) |
+| Tecnología           | Versión | Uso                                          |
+| -------------------- | ------- | -------------------------------------------- |
+| **React**            | 19      | UI library                                   |
+| **Vite**             | 8       | Build tool + dev server                      |
+| **Tailwind CSS**     | v4      | Utility-first CSS                            |
+| **pnpm**             | —       | Gestor de paquetes                           |
+| **react-router-dom** | 7       | Enrutamiento SPA (lazy + Suspense)           |
+| **zustand**          | 5       | State management (con `persist` para sesión) |
+| **lucide-react**     | —       | Iconografía                                  |
+| **oxlint**           | —       | Linter (Oxidation compiler)                  |
 
 ---
 
@@ -85,16 +85,16 @@ src/
 
 ### Componentes reutilizables (en `shared/components/`)
 
-| Componente | Variantes / props clave | Notas |
-|---|---|---|
-| `Button` | `primary` \| `secondary` \| `ghost`, `loading`, `href`, `disabled` | Soporta `<a>` cuando se pasa `href`. Internamente incluye todos los estilos base. |
-| `InputField` | `label`, `error`, `required`, `className` | Wrapper `<div className="flex flex-col gap-1.5">`. Usado por login, registro y perfil. |
-| `Checkbox` | `label`, `checked`, `error` | Misma estructura que InputField. |
-| `Skeleton` | `className` | Incluye `animate-pulse rounded-xl bg-surface` + `loading_aria` desde `common.loading_aria`. |
-| `Alert` | `success` \| `error` \| `info` | Icono + color ya incluidos. |
-| `BetaTesterModal` | `open`, `loading`, `success`, `error` | Modal controlado; usa `useContent('beta_modal')` y `Button` internamente. |
-| `ThemeToggle` | `theme`, `onToggle` | ARIA labels desde `theme.toggle`. |
-| `Logo` / `Header` / `Footer` / `MainLayout` / `SocialIcons` | — | Wrappers/layout. |
+| Componente                                                  | Variantes / props clave                                            | Notas                                                                                       |
+| ----------------------------------------------------------- | ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------- |
+| `Button`                                                    | `primary` \| `secondary` \| `ghost`, `loading`, `href`, `disabled` | Soporta `<a>` cuando se pasa `href`. Internamente incluye todos los estilos base.           |
+| `InputField`                                                | `label`, `error`, `required`, `className`                          | Wrapper `<div className="flex flex-col gap-1.5">`. Usado por login, registro y perfil.      |
+| `Checkbox`                                                  | `label`, `checked`, `error`                                        | Misma estructura que InputField.                                                            |
+| `Skeleton`                                                  | `className`                                                        | Incluye `animate-pulse rounded-xl bg-surface` + `loading_aria` desde `common.loading_aria`. |
+| `Alert`                                                     | `success` \| `error` \| `info`                                     | Icono + color ya incluidos.                                                                 |
+| `BetaTesterModal`                                           | `open`, `loading`, `success`, `error`                              | Modal controlado; usa `useContent('beta_modal')` y `Button` internamente.                   |
+| `ThemeToggle`                                               | `theme`, `onToggle`                                                | ARIA labels desde `theme.toggle`.                                                           |
+| `Logo` / `Header` / `Footer` / `MainLayout` / `SocialIcons` | —                                                                  | Wrappers/layout.                                                                            |
 
 > **Convención**: cualquier estilo base (color, padding, transición, focus) debe vivir dentro del componente. Las páginas solo agregan clases de layout (grid, flex, spacing, max-w, mx-auto, etc.) o estilos estrictamente únicos de esa pantalla.
 
@@ -102,13 +102,13 @@ src/
 
 ## Rutas
 
-| Path | Componente | Acceso | Lazy |
-|---|---|---|---|
-| `/` | `LandingPage` | Público | No |
-| `/registro` | `RegisterPage` | Público | Sí |
-| `/login` | `LoginPage` | Público | Sí |
-| `/oauth2/callback` | `OAuthCallback` | Público | Sí |
-| `/perfil` | `ProfilePage` | Protegido (redirige a `/login` si no hay sesión) | Sí |
+| Path               | Componente      | Acceso                                           | Lazy |
+| ------------------ | --------------- | ------------------------------------------------ | ---- |
+| `/`                | `LandingPage`   | Público                                          | No   |
+| `/registro`        | `RegisterPage`  | Público                                          | Sí   |
+| `/login`           | `LoginPage`     | Público                                          | Sí   |
+| `/oauth2/callback` | `OAuthCallback` | Público                                          | Sí   |
+| `/perfil`          | `ProfilePage`   | Protegido (redirige a `/login` si no hay sesión) | Sí   |
 
 Las páginas perezosas se envuelven en `<Suspense>` dentro de `app/router.jsx`.
 
@@ -118,13 +118,13 @@ Las páginas perezosas se envuelven en `<Suspense>` dentro de `app/router.jsx`.
 
 Todos los servicios viven en `src/shared/services/`. Usan `httpClient.js` que añade `Authorization: Bearer <JWT>` a las peticiones no públicas, leyendo el token desde `useAuthStore` (zustand persist) — no se usa `localStorage` directamente.
 
-| Servicio | Archivo | Funciones | Auth |
-|---|---|---|---|
-| Auth | `auth.js` | `getRegisteredEmails()`, `register(data)`, `login(email, password)`, `logout()` | Mixto |
-| Users | `users.js` | `getUsers()`, `getUserByEmail(email)`, `updateUser(email, data)` | Bearer |
-| Extensions | `extensions.js` | `getExtensions`, `getExtensionById`, `getByCategory`, `getByDistributor`, `getByAge`, `getTrending`, `getRandom` | Público |
-| Content (CMS) | `content.js` | `getContentBySection`, `getContentByKey`, `createContent`, `updateContent`, `deleteContent` | GET público / escritura Bearer |
-| Config (CMS) | `content.js` | `getConfig`, `createConfig`, `updateConfig`, `deleteConfig` | GET público / escritura Bearer |
+| Servicio      | Archivo         | Funciones                                                                                                        | Auth                           |
+| ------------- | --------------- | ---------------------------------------------------------------------------------------------------------------- | ------------------------------ |
+| Auth          | `auth.js`       | `getRegisteredEmails()`, `register(data)`, `login(email, password)`, `logout()`                                  | Mixto                          |
+| Users         | `users.js`      | `getUsers()`, `getUserByEmail(email)`, `updateUser(email, data)`                                                 | Bearer                         |
+| Extensions    | `extensions.js` | `getExtensions`, `getExtensionById`, `getByCategory`, `getByDistributor`, `getByAge`, `getTrending`, `getRandom` | Público                        |
+| Content (CMS) | `content.js`    | `getContentBySection`, `getContentByKey`, `createContent`, `updateContent`, `deleteContent`                      | GET público / escritura Bearer |
+| Config (CMS)  | `content.js`    | `getConfig`, `createConfig`, `updateConfig`, `deleteConfig`                                                      | GET público / escritura Bearer |
 
 Detalle de cada endpoint en [`endpoints.md`](./endpoints.md).
 
@@ -136,12 +136,12 @@ El `httpClient` marca como públicos (sin `Authorization` ni `X-Encrypted`) los 
 
 ## State management (zustand)
 
-| Store | Archivo | Propósito |
-|---|---|---|
-| `useAuthStore` | `shared/stores/useAuthStore.js` | Sesión del usuario. Persiste `token`, `email`, `user`, `profileComplete`, `isBetaTester` en `localStorage` (key `auth-storage`) vía `persist`. El flag `isLoggedIn` se **deriva** del token en la hidratación (`merge` en el middleware). Acciones: `setAuth`, `fetchUser`, `logout`, `setUser`. |
-| `useUsersStore` | `shared/stores/useUsersStore.js` | Lista de emails ya registrados, cargados una sola vez desde `GET /api/auth/emails`. `isEmailRegistered(email)` valida duplicados en memoria (sin hits a la BD). `addEmail` tras registros exitosos. |
-| `useLoginFormStore` | `features/auth/stores/useLoginFormStore.js` | Estado del form de login (campos, errors, loading, success). Llama a `useAuthStore.setAuth` tras login OK. |
-| `useRegisterFormStore` | `features/auth/stores/useRegisterFormStore.js` | Estado del form de registro. Valida email duplicado contra `useUsersStore` antes de enviar al backend. Tras éxito, hace `addEmail` al store para mantener sincronizada la lista. |
+| Store                  | Archivo                                        | Propósito                                                                                                                                                                                                                                                                                        |
+| ---------------------- | ---------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `useAuthStore`         | `shared/stores/useAuthStore.js`                | Sesión del usuario. Persiste `token`, `email`, `user`, `profileComplete`, `isBetaTester` en `localStorage` (key `auth-storage`) vía `persist`. El flag `isLoggedIn` se **deriva** del token en la hidratación (`merge` en el middleware). Acciones: `setAuth`, `fetchUser`, `logout`, `setUser`. |
+| `useUsersStore`        | `shared/stores/useUsersStore.js`               | Lista de emails ya registrados, cargados una sola vez desde `GET /api/auth/emails`. `isEmailRegistered(email)` valida duplicados en memoria (sin hits a la BD). `addEmail` tras registros exitosos.                                                                                              |
+| `useLoginFormStore`    | `features/auth/stores/useLoginFormStore.js`    | Estado del form de login (campos, errors, loading, success). Llama a `useAuthStore.setAuth` tras login OK.                                                                                                                                                                                       |
+| `useRegisterFormStore` | `features/auth/stores/useRegisterFormStore.js` | Estado del form de registro. Valida email duplicado contra `useUsersStore` antes de enviar al backend. Tras éxito, hace `addEmail` al store para mantener sincronizada la lista.                                                                                                                 |
 
 > **Nota sobre auth**: el token vive únicamente en `useAuthStore` (persist). El `httpClient` lo lee vía `useAuthStore.getState().token`. No hay escrituras manuales a `localStorage` ni se usa el key suelto `token`. Headers, servicios y el header UI consumen el store; tras login por formulario (`useLoginFormStore`) o OAuth (`OAuthCallback.jsx` → `useAuthStore.setAuth`) la sesión se refleja reactivamente.
 
@@ -190,50 +190,50 @@ El `httpClient` marca como públicos (sin `Authorization` ni `X-Encrypted`) los 
 
 ### Hooks disponibles
 
-| Hook | Retorna | Uso |
-|---|---|---|
+| Hook                     | Retorna                       | Uso                                                           |
+| ------------------------ | ----------------------------- | ------------------------------------------------------------- |
 | `useContent(sectionKey)` | `{ content, loading, error }` | Textos editoriales (títulos, labels, placeholders, mensajes). |
-| `useConfig(configKey)` | `{ config, loading, error }` | Listas estructuradas (ej: `countries`). |
+| `useConfig(configKey)`   | `{ config, loading, error }`  | Listas estructuradas (ej: `countries`).                       |
 
 ### Ejemplo
 
 ```jsx
-import useContent from '../shared/hooks/useContent'
+import useContent from "../shared/hooks/useContent";
 
 function LoginPage() {
-  const { content } = useContent('auth.login')
-  return <h1>{content.title}</h1>
+  const { content } = useContent("auth.login");
+  return <h1>{content.title}</h1>;
 }
 ```
 
 ### Secciones de contenido registradas
 
-| Sección | Keys | Descripción |
-|---|---|---|
-| `landing.hero` | `cta_text`, `error_prefix`, `prev_aria`, `next_aria`, `slide_aria_prefix` | Carrusel hero |
-| `landing.grid` | `title`, `error_prefix`, `cta_text` | Grilla de productos |
-| `landing.welcome` | `title`, `subtitle`, `cta_text`, `close_aria` | Modal de bienvenida |
-| `auth.login` | `title`, `subtitle`, `email_label`, `password_label`, `submit_text`, `loading_text`, `success_message` | Formulario de login |
-| `auth.register` | `title`, `subtitle`, `fullname_label`, `fullname_placeholder`, `email_label`, `country_label`, `birthdate_label`, `id_label`, `phone_label`, `password_label`, `password_placeholder`, `confirm_password_label`, `confirm_password_placeholder`, `submit_text`, `loading_text`, `success_message` | Formulario de registro |
-| `auth.social` | `divider_login`, `divider_register` | Botones OAuth |
-| `auth.oauth` | `loading_text` | Callback OAuth |
-| `header` | `profile_warning`, `nav_home`, `nav_register`, `nav_login`, `beta_cta`, `logout_aria`, `menu_aria`, `profile_link_aria`, `beta_badge_label`, `mobile_profile_link` | Navegación |
-| `beta_modal` | `close_aria`, `already_title`, `already_description`, `already_cta`, `confirm_title`, `confirm_description`, `cancel_text`, `processing_text`, `confirm_cta` | Modal beta tester |
-| `footer` | `copyright` | Footer |
-| `common` | `loading_aria` | Textos compartidos |
-| `profile.page` | `name_fallback`, `beta_badge`, `fullname_label`, `country_label`, `identification_label`, `phone_label`, `birthdate_label`, `edit_button`, `cancel_button`, `save_button`, `success_message`, `error_message` | Página `/perfil` |
-| `theme.toggle` | `light_aria`, `dark_aria` | Botón de tema claro/oscuro |
-| `validation.login` | `email_required`, `email_invalid`, `password_required` | Validaciones del formulario de login |
-| `validation.register` | `name_required`, `email_required`, `email_invalid`, `email_already_registered`, `country_required`, `birthdate_required`, `id_required`, `phone_required`, `password_required`, `password_min_length`, `password_uppercase`, `password_number`, `password_special`, `confirm_required`, `confirm_match` | Validaciones del registro |
-| `validation.profile` | `name_required` | Validaciones del perfil |
-| `errors.common` | `duplicate_email`, `invalid_credentials`, `session_expired`, `unauthorized`, `required_field`, `validation_failed`, `server_error`, `service_unavailable`, `bad_request`, `not_found`, `network_error`, `unexpected_error` | Mensajes de error amigables |
-| `placeholders` | `email`, `password`, `id`, `phone` | Placeholders de inputs |
-| `select.default` | `placeholder` | Opción por defecto de `<SelectField>` |
+| Sección               | Keys                                                                                                                                                                                                                                                                                                    | Descripción                           |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------- |
+| `landing.hero`        | `cta_text`, `error_prefix`, `prev_aria`, `next_aria`, `slide_aria_prefix`                                                                                                                                                                                                                               | Carrusel hero                         |
+| `landing.grid`        | `title`, `error_prefix`, `cta_text`                                                                                                                                                                                                                                                                     | Grilla de productos                   |
+| `landing.welcome`     | `title`, `subtitle`, `cta_text`, `close_aria`                                                                                                                                                                                                                                                           | Modal de bienvenida                   |
+| `auth.login`          | `title`, `subtitle`, `email_label`, `password_label`, `submit_text`, `loading_text`, `success_message`                                                                                                                                                                                                  | Formulario de login                   |
+| `auth.register`       | `title`, `subtitle`, `fullname_label`, `fullname_placeholder`, `email_label`, `country_label`, `birthdate_label`, `id_label`, `phone_label`, `password_label`, `password_placeholder`, `confirm_password_label`, `confirm_password_placeholder`, `submit_text`, `loading_text`, `success_message`       | Formulario de registro                |
+| `auth.social`         | `divider_login`, `divider_register`                                                                                                                                                                                                                                                                     | Botones OAuth                         |
+| `auth.oauth`          | `loading_text`                                                                                                                                                                                                                                                                                          | Callback OAuth                        |
+| `header`              | `profile_warning`, `nav_home`, `nav_register`, `nav_login`, `beta_cta`, `logout_aria`, `menu_aria`, `profile_link_aria`, `beta_badge_label`, `mobile_profile_link`                                                                                                                                      | Navegación                            |
+| `beta_modal`          | `close_aria`, `already_title`, `already_description`, `already_cta`, `confirm_title`, `confirm_description`, `cancel_text`, `processing_text`, `confirm_cta`                                                                                                                                            | Modal beta tester                     |
+| `footer`              | `copyright`                                                                                                                                                                                                                                                                                             | Footer                                |
+| `common`              | `loading_aria`                                                                                                                                                                                                                                                                                          | Textos compartidos                    |
+| `profile.page`        | `name_fallback`, `beta_badge`, `fullname_label`, `country_label`, `identification_label`, `phone_label`, `birthdate_label`, `edit_button`, `cancel_button`, `save_button`, `success_message`, `error_message`                                                                                           | Página `/perfil`                      |
+| `theme.toggle`        | `light_aria`, `dark_aria`                                                                                                                                                                                                                                                                               | Botón de tema claro/oscuro            |
+| `validation.login`    | `email_required`, `email_invalid`, `password_required`                                                                                                                                                                                                                                                  | Validaciones del formulario de login  |
+| `validation.register` | `name_required`, `email_required`, `email_invalid`, `email_already_registered`, `country_required`, `birthdate_required`, `id_required`, `phone_required`, `password_required`, `password_min_length`, `password_uppercase`, `password_number`, `password_special`, `confirm_required`, `confirm_match` | Validaciones del registro             |
+| `validation.profile`  | `name_required`                                                                                                                                                                                                                                                                                         | Validaciones del perfil               |
+| `errors.common`       | `duplicate_email`, `invalid_credentials`, `session_expired`, `unauthorized`, `required_field`, `validation_failed`, `server_error`, `service_unavailable`, `bad_request`, `not_found`, `network_error`, `unexpected_error`                                                                              | Mensajes de error amigables           |
+| `placeholders`        | `email`, `password`, `id`, `phone`                                                                                                                                                                                                                                                                      | Placeholders de inputs                |
+| `select.default`      | `placeholder`                                                                                                                                                                                                                                                                                           | Opción por defecto de `<SelectField>` |
 
 ### Configuraciones
 
-| Key | Contenido |
-|---|---|
+| Key         | Contenido                                                                       |
+| ----------- | ------------------------------------------------------------------------------- |
 | `countries` | Lista de países `[{ value, label }]` (usado en formulario de registro y perfil) |
 
 ### Cómo agregar una nueva sección
@@ -258,9 +258,9 @@ El módulo `src/shared/utils/errors.js` mapea los mensajes crudos del backend (e
 ### API
 
 ```js
-import { getFriendlyError } from '../shared/utils/errors'
+import { getFriendlyError } from "../shared/utils/errors";
 
-getFriendlyError(messages, err) // -> string
+getFriendlyError(messages, err); // -> string
 ```
 
 - `messages`: objeto con las claves de la sección `errors.common` (ej: `{ duplicate_email, invalid_credentials, ... }`).
@@ -278,9 +278,9 @@ getFriendlyError(messages, err) // -> string
 Los hooks `useLoginForm`, `useRegisterForm`, `useProfile` y `useHeader` leen `errors.common` con `useContent` y lo pasan a `getFriendlyError`:
 
 ```js
-const { content: errorsContent } = useContent('errors.common')
+const { content: errorsContent } = useContent("errors.common");
 // ...
-setServerError(getFriendlyError(errorsContent, err))
+setServerError(getFriendlyError(errorsContent, err));
 ```
 
 Esto permite traducir los mensajes de error del backend sin tocar el `httpClient` ni los servicios.

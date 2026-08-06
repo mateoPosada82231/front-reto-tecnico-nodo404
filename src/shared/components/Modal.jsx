@@ -9,6 +9,7 @@ export default function Modal({
   footer,
   size = 'md',
   closeOnBackdrop = true,
+  closeAriaLabel = 'Cerrar',
 }) {
   const dialogRef = useRef(null)
 
@@ -58,7 +59,7 @@ export default function Modal({
         <button
           onClick={onClose}
           className="absolute top-4 right-4 p-2 rounded-lg text-text-dim hover:text-text-main hover:bg-hover transition-all duration-200 cursor-pointer"
-          aria-label="Cerrar"
+          aria-label={closeAriaLabel}
         >
           <X className="w-5 h-5" />
         </button>

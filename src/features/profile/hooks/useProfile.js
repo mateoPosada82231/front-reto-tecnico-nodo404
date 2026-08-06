@@ -4,6 +4,7 @@ import useContent from "../../../shared/hooks/useContent";
 import { getFriendlyError } from "../../../shared/utils/errors";
 import { updateUser } from "../../../shared/services/users";
 import { getUserBuys } from "../../../shared/services/buys";
+import lang from "../../../shared/lang";
 
 const EDITABLE_FIELDS = [
   "fullName",
@@ -45,19 +46,30 @@ export default function useProfile() {
 
     let cancelled = false;
 
-    setLoadingPurchases(true);
-    getUserBuys(email)
-      .then((result) => {
-        if (!cancelled) setPurchases(result);
-      })
-      .catch(() => {
-        if (!cancelled) setPurchases([]);
-      })
-      .finally(() => {
-        if (!cancelled) setLoadingPurchases(false);
-      });
+    const load = (currentLang) => {
+      setLoadingPurchases(true);
+      getUserBuys(email, currentLang)
+        .then((result) => {
+          if (!cancelled) setPurchases(result);
+        })
+        .catch(() => {
+          if (!cancelled) setPurchases([]);
+        })
+        .finally(() => {
+          if (!cancelled) setLoadingPurchases(false);
+        });
+    };
 
-    return () => { cancelled = true; };
+    load(lang.get());
+
+    const unsubscribe = lang.onChange((newLang) => {
+      if (!cancelled) load(newLang);
+    });
+
+    return () => {
+      cancelled = true;
+      unsubscribe();
+    };
   }, [email]);
 
   const handleChange = useCallback((e) => {

@@ -14,6 +14,7 @@ import useConfig from "../../../shared/hooks/useConfig";
 function ProfilePage() {
   const { content } = useContent("profile.page");
   const { content: selectDefault } = useContent("select.default");
+  const { content: detailContent } = useContent("landing.detail");
   const { config: countries } = useConfig("countries");
   const {
     user,
@@ -34,6 +35,9 @@ function ProfilePage() {
   } = useProfile();
 
   const [passwordModalOpen, setPasswordModalOpen] = useState(false);
+
+  const paymentLabel = (method) =>
+    method === "PAYPAL" ? detailContent.payment_method_paypal : detailContent.payment_method_card;
 
   if (loading) {
     return (
@@ -161,9 +165,9 @@ function ProfilePage() {
         <div className="mt-8 pt-6 border-t border-border/60">
           <div className="flex items-center justify-between gap-3">
             <div>
-              <h2 className="text-lg font-semibold">Seguridad</h2>
+              <h2 className="text-lg font-semibold">{content.security_title}</h2>
               <p className="text-sm text-text-sub">
-                Actualiza tu contraseña periódicamente para mantener tu cuenta protegida.
+                {content.security_subtitle}
               </p>
             </div>
             <Button
@@ -172,20 +176,20 @@ function ProfilePage() {
               onClick={() => setPasswordModalOpen(true)}
             >
               <KeyRound className="h-4 w-4" />
-              Cambiar contraseña
+              {content.change_password_button}
             </Button>
           </div>
         </div>
 
         <div className="mt-8 pt-6 border-t border-border/60">
-          <h2 className="text-lg font-semibold mb-4">Mis compras</h2>
+          <h2 className="text-lg font-semibold mb-4">{content.purchases_title}</h2>
 
           {loadingPurchases && (
-            <p className="text-sm text-text-sub">Cargando compras...</p>
+            <p className="text-sm text-text-sub">{content.purchases_loading}</p>
           )}
 
           {!loadingPurchases && purchases.length === 0 && (
-            <p className="text-sm text-text-sub">Aún no has comprado ninguna expansión.</p>
+            <p className="text-sm text-text-sub">{content.purchases_empty}</p>
           )}
 
           {!loadingPurchases && purchases.length > 0 && (
@@ -203,7 +207,9 @@ function ProfilePage() {
                   <div className="flex-1">
                     <p className="font-semibold text-text-main">{purchase.extension.name}</p>
                     <p className="text-xs text-text-sub">
-                      Comprado el {purchase.date} · {purchase.paymentMethod}
+                      {(content.purchases_item_meta || "")
+                        .replace("{{date}}", purchase.date)
+                        .replace("{{paymentMethod}}", paymentLabel(purchase.paymentMethod))}
                     </p>
                   </div>
                   <p className="font-semibold">
