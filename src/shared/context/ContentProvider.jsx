@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from 'react'
 import { getContentBySection, getConfig } from '../services/content'
 import { ContentContext } from './ContentContext'
+import lang from '../lang'
 
 const SECTIONS = [
   'landing.hero',
@@ -252,23 +253,6 @@ function mapItemsToObj(items) {
   return obj
 }
 
-import i18n from '../../i18n'
-
-function getSectionFallback(sectionKey, lang) {
-  const bundle = i18n.getResourceBundle(lang, 'translation') || {}
-  const keys = sectionKey.split('.')
-  let current = bundle
-  for (const k of keys) {
-    if (current && typeof current === 'object' && k in current) {
-      current = current[k]
-    } else {
-      current = null
-      break
-    }
-  }
-  return { ...(FALLBACK[sectionKey] || {}), ...(current && typeof current === 'object' ? current : {}) }
-}
-
 export function ContentProvider({ children }) {
   const [sections, setSections] = useState(FALLBACK)
   const [configs, setConfigs] = useState(FALLBACK_CONFIG)
@@ -278,17 +262,17 @@ export function ContentProvider({ children }) {
   useEffect(() => {
     let cancelled = false
 
-    async function loadAll(lang = i18n.language || 'es') {
+    async function loadAll(currentLang = lang.get()) {
       try {
         const sectionResults = await Promise.allSettled(
-          SECTIONS.map((key) => getContentBySection(key, lang))
+          SECTIONS.map((key) => getContentBySection(key, currentLang))
         )
 
         if (cancelled) return
 
         const mergedSections = {}
         SECTIONS.forEach((sectionKey, i) => {
-          const sectionFallback = getSectionFallback(sectionKey, lang)
+          const sectionFallback = FALLBACK[sectionKey] || {}
           const result = sectionResults[i]
           let mapped = {}
           if (result && result.status === 'fulfilled' && result.value?.items) {
@@ -322,17 +306,15 @@ export function ContentProvider({ children }) {
       }
     }
 
-    loadAll(i18n.language || 'es')
+    loadAll(lang.get())
 
-    const handleLangChange = (newLang) => {
+    const unsubscribe = lang.onChange((newLang) => {
       if (!cancelled) loadAll(newLang)
-    }
-
-    i18n.on('languageChanged', handleLangChange)
+    })
 
     return () => {
       cancelled = true
-      i18n.off('languageChanged', handleLangChange)
+      unsubscribe()
     }
   }, [])
 

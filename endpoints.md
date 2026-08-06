@@ -357,15 +357,17 @@ Respuestas comunes:
 
 ## 4) Extensions - `/api/extensions`
 
+Las extensiones exponen sus textos localizables (name, aboutGame, category, platforms, languages, distributor) a través de la subtabla `extension_translations`. Todos los endpoints GET aceptan el query param `?language=es|en` (por defecto `es`); si falta la traducción en el idioma solicitado, se aplica **fallback a ES**.
+
 ### Públicas (GET)
 
-- `GET /api/extensions`
-- `GET /api/extensions/{id}`
-- `GET /api/extensions/category/{category}`
-- `GET /api/extensions/distributor/{distributor}`
-- `GET /api/extensions/age/{age}`
-- `GET /api/extensions/trending`
-- `GET /api/extensions/random`
+- `GET /api/extensions?language=es|en`
+- `GET /api/extensions/{id}?language=es|en`
+- `GET /api/extensions/category/{category}?language=es|en`
+- `GET /api/extensions/distributor/{distributor}?language=es|en`
+- `GET /api/extensions/age/{age}?language=es|en`
+- `GET /api/extensions/trending?language=es|en`
+- `GET /api/extensions/random?language=es|en`
 
 ### Protegidas (escritura)
 
@@ -381,19 +383,53 @@ Respuesta para `DELETE /api/extensions/{id}`:
 }
 ```
 
-Body ejemplo para crear/actualizar:
+Body ejemplo para crear/actualizar (los campos traducibles van dentro de `translations`, una entrada por `language`):
 
 ```json
 {
   "price": 19.99,
   "requiredAge": 16,
+  "publicationDate": "2026-01-10",
+  "image": "https://.../expansion.png",
+  "translations": [
+    {
+      "language": "es",
+      "name": "Expansion Pack",
+      "aboutGame": "Contenido adicional",
+      "platforms": "PC",
+      "languages": "ES,EN",
+      "distributor": "Nodo Games",
+      "category": "Accion"
+    },
+    {
+      "language": "en",
+      "name": "Expansion Pack",
+      "aboutGame": "Additional content",
+      "platforms": "PC",
+      "languages": "ES,EN",
+      "distributor": "Nodo Games",
+      "category": "Action"
+    }
+  ]
+}
+```
+
+Respuesta de lectura (GET), DTO ya en el idioma solicitado:
+
+```json
+{
+  "id": 1,
   "name": "Expansion Pack",
   "aboutGame": "Contenido adicional",
+  "category": "Accion",
   "platforms": "PC",
   "languages": "ES,EN",
   "distributor": "Nodo Games",
+  "price": 19.99,
+  "requiredAge": 16,
   "publicationDate": "2026-01-10",
-  "category": "Accion"
+  "image": "https://.../expansion.png",
+  "language": "es"
 }
 ```
 
