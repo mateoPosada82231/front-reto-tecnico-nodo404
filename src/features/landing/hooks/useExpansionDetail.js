@@ -3,6 +3,7 @@ import { getExtensionById } from '../../../shared/services/extensions'
 import { buyDirect } from '../../../shared/services/buys'
 import useContent from '../../../shared/hooks/useContent'
 import { getFriendlyError } from '../../../shared/utils/errors'
+import lang from '../../../shared/lang'
 
 export default function useExpansionDetail(id, email) {
   const { content: detailContent } = useContent('landing.detail')
@@ -26,7 +27,7 @@ export default function useExpansionDetail(id, email) {
     setBuyError(null)
     setShowForm(false)
 
-    getExtensionById(id)
+    getExtensionById(id, lang.get())
       .then((result) => {
         if (!cancelled) setPack(result)
       })
@@ -37,7 +38,19 @@ export default function useExpansionDetail(id, email) {
         if (!cancelled) setLoading(false)
       })
 
-    return () => { cancelled = true }
+    const unsubscribe = lang.onChange((newLang) => {
+      if (cancelled) return
+      setLoading(true)
+      getExtensionById(id, newLang)
+        .then((result) => { if (!cancelled) setPack(result) })
+        .catch((err) => { if (!cancelled) setError(getFriendlyError(errorsContent, err)) })
+        .finally(() => { if (!cancelled) setLoading(false) })
+    })
+
+    return () => {
+      cancelled = true
+      unsubscribe()
+    }
   }, [id, errorsContent])
 
   async function submitBuy(formData) {

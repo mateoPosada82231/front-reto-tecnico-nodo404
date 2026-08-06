@@ -1,6 +1,6 @@
 import { createContext, useState, useEffect } from 'react'
 import { getExtensions } from '../../../shared/services/extensions'
-import i18n from '../../../i18n'
+import lang from '../../../shared/lang'
 
 export const ExtensionsContext = createContext(null)
 
@@ -12,9 +12,9 @@ export function ExtensionsProvider({ children }) {
   useEffect(() => {
     let cancelled = false
 
-    function fetchExtensions(lang = i18n.language || 'es') {
+    function fetchExtensions(currentLang = lang.get()) {
       setLoading(true)
-      getExtensions(lang)
+      getExtensions(currentLang)
         .then((result) => {
           if (!cancelled) setData(result)
         })
@@ -26,17 +26,17 @@ export function ExtensionsProvider({ children }) {
         })
     }
 
-    fetchExtensions(i18n.language || 'es')
+    fetchExtensions(lang.get())
 
     const handleLangChange = (newLang) => {
       if (!cancelled) fetchExtensions(newLang)
     }
 
-    i18n.on('languageChanged', handleLangChange)
+    const unsubscribe = lang.onChange(handleLangChange)
 
     return () => {
       cancelled = true
-      i18n.off('languageChanged', handleLangChange)
+      unsubscribe()
     }
   }, [])
 

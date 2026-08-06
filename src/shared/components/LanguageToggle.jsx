@@ -1,13 +1,14 @@
 import { Languages } from 'lucide-react'
-import { useTranslation } from 'react-i18next'
+import { useState, useEffect } from 'react'
+import lang from '../lang'
 
 function LanguageToggle() {
-  const { i18n } = useTranslation()
-  const currentLang = i18n.language?.split('-')[0] || 'es'
-  const nextLang = currentLang === 'es' ? 'en' : 'es'
+  const [currentLang, setCurrentLang] = useState(lang.get())
+
+  useEffect(() => lang.onChange(setCurrentLang), [])
 
   const toggle = () => {
-    i18n.changeLanguage(nextLang)
+    lang.toggle()
   }
 
   return (
