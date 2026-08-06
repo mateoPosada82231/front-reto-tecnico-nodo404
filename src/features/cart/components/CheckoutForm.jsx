@@ -3,11 +3,6 @@ import useContent from "../../../shared/hooks/useContent";
 import Button from "../../../shared/components/Button";
 import SelectField from "../../../shared/components/SelectField";
 
-const PAYMENT_OPTIONS = [
-  { value: "CARD", label: "Tarjeta" },
-  { value: "PAYPAL", label: "PayPal" },
-];
-
 function CheckoutForm({ onSubmit, onCancel, loading }) {
   const { content } = useContent("landing.detail");
   const { content: errorsContent } = useContent("errors.common");
@@ -15,6 +10,11 @@ function CheckoutForm({ onSubmit, onCancel, loading }) {
     paymentMethod: "CARD",
   });
   const [errors, setErrors] = useState({});
+
+  const PAYMENT_OPTIONS = [
+    { value: "CARD", label: content.payment_method_card },
+    { value: "PAYPAL", label: content.payment_method_paypal },
+  ];
 
   const validate = () => {
     const errs = {};

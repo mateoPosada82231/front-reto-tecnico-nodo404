@@ -17,6 +17,7 @@ export default function WelcomeModal() {
       onClose={() => setOpen(false)}
       closeOnBackdrop={false}
       size="lg"
+      closeAriaLabel={content.close_aria}
     >
       <div className="flex justify-center mb-5">
         <img src="/sims-icon.png" alt="" className="w-20 h-20 object-contain" />

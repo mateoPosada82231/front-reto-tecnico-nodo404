@@ -647,17 +647,39 @@ Elimina configuración por ID.
 
 ## 7) Cart - `/api/cart` (todas protegidas + ownership)
 
-### GET `/api/cart/{email}`
+### GET `/api/cart/{email}?language=es|en`
 
-Retorna resumen del carrito.
+Retorna resumen del carrito (las extensiones vienen traducidas según `language`; default `es`).
 
 Respuesta ejemplo:
 
 ```json
 {
-  "items": [],
-  "itemsCount": 0,
-  "totalPrice": 0
+  "items": [
+    {
+      "id": 1,
+      "addedDate": "2026-08-05",
+      "language": "ES",
+      "platform": "PC",
+      "userEmail": "user@nodo.com",
+      "extension": {
+        "id": 1,
+        "name": "Aventura en el Desierto",
+        "aboutGame": "...",
+        "category": "...",
+        "platforms": "...",
+        "languages": "...",
+        "distributor": "...",
+        "price": 49.99,
+        "requiredAge": 12,
+        "publicationDate": "2025-06-20",
+        "image": "...",
+        "language": "es"
+      }
+    }
+  ],
+  "itemsCount": 1,
+  "totalPrice": 49.99
 }
 ```
 
@@ -714,9 +736,32 @@ Lista compras.
 
 Consulta compra por id.
 
-### GET `/api/buys/user/{email}`
+### GET `/api/buys/user/{email}?language=es|en`
 
-Lista compras del usuario autenticado.
+Lista compras del usuario autenticado (las extensiones vienen traducidas según `language`; default `es`).
+
+Respuesta ejemplo:
+
+```json
+[
+  {
+    "id": 1,
+    "date": "2026-08-05",
+    "paymentMethod": "CARD",
+    "language": "ES",
+    "platform": "PC",
+    "userEmail": "user@nodo.com",
+    "extension": {
+      "id": 1,
+      "name": "Aventura en el Desierto",
+      "price": 49.99,
+      "image": "...",
+      "language": "es"
+    },
+    "extensionPrice": 49.99
+  }
+]
+```
 
 - Si el `email` no coincide con el usuario del token: `403 Forbidden`
 

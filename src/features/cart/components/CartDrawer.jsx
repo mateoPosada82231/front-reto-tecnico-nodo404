@@ -11,6 +11,7 @@ import { getFriendlyError } from '../../../shared/utils/errors'
 import { checkoutCart } from '../../../shared/services/buys'
 import CartItem from './CartItem'
 import CheckoutForm from './CheckoutForm'
+import lang from '../../../shared/lang'
 
 function CartDrawer() {
   const navigate = useNavigate()
@@ -29,6 +30,14 @@ function CartDrawer() {
 
   useEffect(() => {
     if (isOpen && isLoggedIn && email) fetchCart(email)
+  }, [isOpen, isLoggedIn, email, fetchCart])
+
+  useEffect(() => {
+    if (!isOpen) return
+    const unsubscribe = lang.onChange(() => {
+      if (isLoggedIn && email) fetchCart(email)
+    })
+    return unsubscribe
   }, [isOpen, isLoggedIn, email, fetchCart])
 
   useEffect(() => {
