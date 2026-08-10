@@ -2,93 +2,308 @@ import { packMedia } from './packMedia.js';
 
 export const expansionPacks = [
   {
-    id: "featured-1",
+    id: 1,
     name: "Los Sims 4: Vida en el Rancho",
     category: "Expansion Pack",
     price: 159900,
     description: "Crea tu propia vida rústica. Cría y entrena caballos, entabla amistad con mini-cabras y mini-ovejas, y elabora tu propio néctar casero para vender o compartir.",
+    aboutGame: "Crea tu propia vida rústica. Cría y entrena caballos, entabla amistad con mini-cabras y mini-ovejas, y elabora tu propio néctar casero para vender o compartir.",
+    requiredAge: 13,
+    platforms: "PC, Mac, PlayStation, Xbox",
+    languages: "Español, Inglés",
+    distributor: "Electronic Arts",
+    publicationDate: "2022-07-28",
     image: packMedia[1].image,
     featured: true,
-    link: packMedia[1].storeLink
+    link: packMedia[1].link
   },
   {
-    id: "pack-1",
+    id: 2,
     name: "Los Sims 4: Días de Universidad",
     category: "Expansion Pack",
     price: 159900,
     description: "Inscríbete en la universidad, explora experiencias académicas y asiste a actividades extracurriculares.",
+    aboutGame: "Inscríbete en la universidad, explora experiencias académicas y asiste a actividades extracurriculares.",
+    requiredAge: 13,
+    platforms: "PC, Mac, PlayStation, Xbox",
+    languages: "Español, Inglés",
+    distributor: "Electronic Arts",
+    publicationDate: "2019-11-15",
     image: packMedia[2].image,
     featured: false,
-    link: packMedia[2].storeLink
+    link: packMedia[2].link
   },
   {
-    id: "pack-2",
+    id: 3,
     name: "Los Sims 4: Urbanitas",
     category: "Expansion Pack",
     price: 159900,
     description: "Lleva a tus Sims a la gran ciudad y experimenta todo lo que ofrece, desde el bullicio exterior hasta situaciones exclusivas de los apartamentos.",
+    aboutGame: "Lleva a tus Sims a la gran ciudad y experimenta todo lo que ofrece, desde el bullicio exterior hasta situaciones exclusivas de los apartamentos.",
+    requiredAge: 13,
+    platforms: "PC, Mac, PlayStation, Xbox",
+    languages: "Español, Inglés",
+    distributor: "Electronic Arts",
+    publicationDate: "2016-11-01",
     image: packMedia[3].image,
     featured: false,
-    link: packMedia[3].storeLink
+    link: packMedia[3].link
   },
   {
-    id: "pack-3",
+    id: 4,
     name: "Los Sims 4: Y Las Cuatro Estaciones",
     category: "Expansion Pack",
     price: 159900,
     description: "Añade el clima a la vida de tus Sims para contar nuevas historias, disfrutar de actividades estacionales y celebrar festividades.",
+    aboutGame: "Añade el clima a la vida de tus Sims para contar nuevas historias, disfrutar de actividades estacionales y celebrar festividades.",
+    requiredAge: 13,
+    platforms: "PC, Mac, PlayStation, Xbox",
+    languages: "Español, Inglés",
+    distributor: "Electronic Arts",
+    publicationDate: "2018-11-13",
     image: packMedia[4].image,
     featured: false,
-    link: packMedia[4].storeLink
+    link: packMedia[4].link
   },
   {
-    id: "pack-4",
+    id: 5,
     name: "Los Sims 4: ¡A Trabajar!",
     category: "Expansion Pack",
     price: 159900,
     description: "Controla activamente a tus Sims en sus lugares de trabajo y determina si se dirigen hacia un gran ascenso o se convierten en una amenaza.",
+    aboutGame: "Controla activamente a tus Sims en sus lugares de trabajo y determina si se dirigen hacia un gran ascenso o se convierten en una amenaza.",
+    requiredAge: 13,
+    platforms: "PC, Mac, PlayStation, Xbox",
+    languages: "Español, Inglés",
+    distributor: "Electronic Arts",
+    publicationDate: "2015-04-01",
     image: packMedia[5].image,
     featured: false,
-    link: packMedia[5].storeLink
+    link: packMedia[5].link
   },
   {
-    id: "pack-5",
+    id: 6,
     name: "Los Sims 4: Perros y Gatos",
     category: "Expansion Pack",
     price: 159900,
     description: "Crea una variedad de perros y gatos, añádelos a los hogares de tus Sims para cambiar sus vidas para siempre y cuida de las mascotas del vecindario.",
+    aboutGame: "Crea una variedad de perros y gatos, añádelos a los hogares de tus Sims para cambiar sus vidas para siempre y cuida de las mascotas del vecindario.",
+    requiredAge: 13,
+    platforms: "PC, Mac, PlayStation, Xbox",
+    languages: "Español, Inglés",
+    distributor: "Electronic Arts",
+    publicationDate: "2017-11-10",
     image: packMedia[6].image,
     featured: false,
-    link: packMedia[6].storeLink
+    link: packMedia[6].link
   },
   {
-    id: "pack-6",
+    id: 7,
     name: "Los Sims 4: Vida Isleña",
     category: "Expansion Pack",
     price: 159900,
     description: "Escapa de la rutina y disfruta de un estilo de vida relajado rodeado de playas en Sulani, donde el sol brilla con fuerza y las noches son refrescantes.",
+    aboutGame: "Escapa de la rutina y disfruta de un estilo de vida relajado rodeado de playas en Sulani, donde el sol brilla con fuerza y las noches son refrescantes.",
+    requiredAge: 13,
+    platforms: "PC, Mac, PlayStation, Xbox",
+    languages: "Español, Inglés",
+    distributor: "Electronic Arts",
+    publicationDate: "2019-06-21",
     image: packMedia[7].image,
     featured: false,
-    link: packMedia[7].storeLink
+    link: packMedia[7].link
   },
   {
-    id: "pack-7",
+    id: 8,
     name: "Los Sims 4: Escapada en la Nieve",
     category: "Expansion Pack",
     price: 159900,
     description: "Equípate para los deportes de invierno, relájate en aguas termales y diseña tu hogar de estilo japonés.",
+    aboutGame: "Equípate para los deportes de invierno, relájate en aguas termales y diseña tu hogar de estilo japonés.",
+    requiredAge: 13,
+    platforms: "PC, Mac, PlayStation, Xbox",
+    languages: "Español, Inglés",
+    distributor: "Electronic Arts",
+    publicationDate: "2021-11-23",
     image: packMedia[8].image,
     featured: false,
-    link: packMedia[8].storeLink
+    link: packMedia[8].link
   },
   {
-    id: "pack-8",
+    id: 9,
     name: "Los Sims 4: Se Alquila",
     category: "Expansion Pack",
     price: 159900,
     description: "Experimenta la vida en vecindarios multifamiliares como inquilino o propietario de propiedades residenciales en alquiler.",
+    aboutGame: "Experimenta la vida en vecindarios multifamiliares como inquilino o propietario de propiedades residenciales en alquiler.",
+    requiredAge: 13,
+    platforms: "PC, Mac, PlayStation, Xbox",
+    languages: "Español, Inglés",
+    distributor: "Electronic Arts",
+    publicationDate: "2023-09-14",
     image: packMedia[9].image,
     featured: false,
-    link: packMedia[9].storeLink
+    link: packMedia[9].link
   }
 ];
+
+export const expansionPacksEN = [
+  {
+    id: 1,
+    name: "The Sims 4: Horse Ranch",
+    category: "Expansion Pack",
+    price: 159900,
+    description: "Craft your rustic life. Raise and train horses, bond with mini goats and mini sheep, and make your own homemade nectar to sell or share.",
+    aboutGame: "Craft your rustic life. Raise and train horses, bond with mini goats and mini sheep, and make your own homemade nectar to sell or share.",
+    requiredAge: 13,
+    platforms: "PC, Mac, PlayStation, Xbox",
+    languages: "Spanish, English",
+    distributor: "Electronic Arts",
+    publicationDate: "2022-07-28",
+    image: packMedia[1].image,
+    featured: true,
+    link: packMedia[1].link
+  },
+  {
+    id: 2,
+    name: "The Sims 4: Discover University",
+    category: "Expansion Pack",
+    price: 159900,
+    description: "Enroll in school, explore collegiate experiences, and enjoy extracurricular activities.",
+    aboutGame: "Enroll in school, explore collegiate experiences, and enjoy extracurricular activities.",
+    requiredAge: 13,
+    platforms: "PC, Mac, PlayStation, Xbox",
+    languages: "Spanish, English",
+    distributor: "Electronic Arts",
+    publicationDate: "2019-11-15",
+    image: packMedia[2].image,
+    featured: false,
+    link: packMedia[2].link
+  },
+  {
+    id: 3,
+    name: "The Sims 4: City Living",
+    category: "Expansion Pack",
+    price: 159900,
+    description: "Take your Sims to the city and explore everything it has to offer, from bustling street life to apartment living.",
+    aboutGame: "Take your Sims to the city and explore everything it has to offer, from bustling street life to apartment living.",
+    requiredAge: 13,
+    platforms: "PC, Mac, PlayStation, Xbox",
+    languages: "Spanish, English",
+    distributor: "Electronic Arts",
+    publicationDate: "2016-11-01",
+    image: packMedia[3].image,
+    featured: false,
+    link: packMedia[3].link
+  },
+  {
+    id: 4,
+    name: "The Sims 4: Seasons",
+    category: "Expansion Pack",
+    price: 159900,
+    description: "Add weather to your Sims' lives to tell new stories, enjoy seasonal activities, and celebrate heartfelt holidays.",
+    aboutGame: "Add weather to your Sims' lives to tell new stories, enjoy seasonal activities, and celebrate heartfelt holidays.",
+    requiredAge: 13,
+    platforms: "PC, Mac, PlayStation, Xbox",
+    languages: "Spanish, English",
+    distributor: "Electronic Arts",
+    publicationDate: "2018-11-13",
+    image: packMedia[4].image,
+    featured: false,
+    link: packMedia[4].link
+  },
+  {
+    id: 5,
+    name: "The Sims 4: Get to Work",
+    category: "Expansion Pack",
+    price: 159900,
+    description: "Actively control your Sims while they're at work, and determine whether they're heading toward a big promotion or becoming a workplace hazard.",
+    aboutGame: "Actively control your Sims while they're at work, and determine whether they're heading toward a big promotion or becoming a workplace hazard.",
+    requiredAge: 13,
+    platforms: "PC, Mac, PlayStation, Xbox",
+    languages: "Spanish, English",
+    distributor: "Electronic Arts",
+    publicationDate: "2015-04-01",
+    image: packMedia[5].image,
+    featured: false,
+    link: packMedia[5].link
+  },
+  {
+    id: 6,
+    name: "The Sims 4: Cats & Dogs",
+    category: "Expansion Pack",
+    price: 159900,
+    description: "Create a variety of cats and dogs, add them to your Sims' homes to forever change their lives, and care for neighborhood pets.",
+    aboutGame: "Create a variety of cats and dogs, add them to your Sims' homes to forever change their lives, and care for neighborhood pets.",
+    requiredAge: 13,
+    platforms: "PC, Mac, PlayStation, Xbox",
+    languages: "Spanish, English",
+    distributor: "Electronic Arts",
+    publicationDate: "2017-11-10",
+    image: packMedia[6].image,
+    featured: false,
+    link: packMedia[6].link
+  },
+  {
+    id: 7,
+    name: "The Sims 4: Island Living",
+    category: "Expansion Pack",
+    price: 159900,
+    description: "Escape the ordinary and enjoy a laid-back lifestyle surrounded by beaches in Sulani, where the sun shines bright and nights are cool.",
+    aboutGame: "Escape the ordinary and enjoy a laid-back lifestyle surrounded by beaches in Sulani, where the sun shines bright and nights are cool.",
+    requiredAge: 13,
+    platforms: "PC, Mac, PlayStation, Xbox",
+    languages: "Spanish, English",
+    distributor: "Electronic Arts",
+    publicationDate: "2019-06-21",
+    image: packMedia[7].image,
+    featured: false,
+    link: packMedia[7].link
+  },
+  {
+    id: 8,
+    name: "The Sims 4: Snowy Escape",
+    category: "Expansion Pack",
+    price: 159900,
+    description: "Gear up for winter sports, relax in hot springs, and design your Japanese-inspired home.",
+    aboutGame: "Gear up for winter sports, relax in hot springs, and design your Japanese-inspired home.",
+    requiredAge: 13,
+    platforms: "PC, Mac, PlayStation, Xbox",
+    languages: "Spanish, English",
+    distributor: "Electronic Arts",
+    publicationDate: "2021-11-23",
+    image: packMedia[8].image,
+    featured: false,
+    link: packMedia[8].link
+  },
+  {
+    id: 9,
+    name: "The Sims 4: For Rent",
+    category: "Expansion Pack",
+    price: 159900,
+    description: "Experience multi-family living as a tenant or property owner in Residential Rental lots.",
+    aboutGame: "Experience multi-family living as a tenant or property owner in Residential Rental lots.",
+    requiredAge: 13,
+    platforms: "PC, Mac, PlayStation, Xbox",
+    languages: "Spanish, English",
+    distributor: "Electronic Arts",
+    publicationDate: "2023-09-14",
+    image: packMedia[9].image,
+    featured: false,
+    link: packMedia[9].link
+  }
+];
+
+export function getTranslatedPack(pack, language = 'es') {
+  if (!pack) return pack
+  const targetDataset = language === 'en' ? expansionPacksEN : expansionPacks
+  const found = targetDataset.find((p) => Number(p.id) === Number(pack.id))
+  return found ? { ...pack, ...found } : pack
+}
+
+export function getTranslatedPacks(packs, language = 'es') {
+  if (!Array.isArray(packs)) return packs
+  return packs.map((p) => getTranslatedPack(p, language))
+}
+
+

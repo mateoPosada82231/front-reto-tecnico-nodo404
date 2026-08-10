@@ -1,4 +1,3 @@
-import { Languages } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import lang from '../lang'
 
@@ -14,17 +13,14 @@ function LanguageToggle() {
   return (
     <button
       onClick={toggle}
-      className="relative p-2 rounded-lg text-text-dim hover:text-text-primary hover:bg-slate-surface/50 transition-all duration-200 cursor-pointer"
+      type="button"
+      className="inline-flex items-center justify-center min-w-[44px] min-h-[44px] w-11 h-11 rounded-xl border border-border/60 bg-surface/60 hover:bg-hover text-xs font-bold tracking-wider text-text-sub hover:text-text-main transition-all duration-200 cursor-pointer select-none"
       aria-label={currentLang === 'es' ? 'Switch to English' : 'Cambiar a español'}
     >
-      <span className="relative block w-5 h-5">
-        <Languages className="absolute inset-0 w-5 h-5 transition-all duration-300" />
-      </span>
-      <span className="absolute -bottom-0.5 -right-0.5 text-[0.5rem] font-bold text-text-dim bg-bg rounded px-0.5 leading-none">
-        {currentLang.toUpperCase()}
-      </span>
+      {currentLang.toUpperCase()}
     </button>
   )
 }
 
 export default LanguageToggle
+

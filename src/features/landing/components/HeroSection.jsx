@@ -12,7 +12,7 @@ export default function HeroSection() {
     return (
       <section className="relative w-full h-[var(--hero-height)] overflow-hidden rounded-2xl mx-auto max-w-7xl">
         <img
-          src="https://drop-assets.ea.com/images/3HA9acuR0WKaLXXxHzSnVI/06d535194d8b18f42fd68c07dfbe94d5/TS4_Horse-Ranch_Media-Hero-Tile_16x9_03.jpg?im=Resize=(1280)&q=80"
+          src="https://drop-assets.ea.com/images/3HA9acuR0WKaLXXxHzSnVI/06d535194d8b18f42fd68c07dfbe94d5/TS4_Horse-Ranch_Media-Hero-Tile_16x9_03.jpg?im=Resize=(640)"
           alt=""
           width={1280}
           height={720}
@@ -21,7 +21,7 @@ export default function HeroSection() {
           className="absolute inset-0 w-full h-full object-cover"
         />
         <div className="absolute inset-0 hero-overlay z-0" />
-        <div className="relative z-10 w-full max-w-5xl px-8 md:px-16 text-center md:text-left flex flex-col md:items-start items-center gap-5">
+        <div className="relative z-10 w-full max-w-5xl px-10 sm:px-16 md:px-24 text-center md:text-left flex flex-col md:items-start items-center gap-5">
           <div className="bg-surface/90 backdrop-blur-sm rounded-2xl p-6 md:p-10 w-full md:w-auto md:max-w-3xl">
             <div className="h-8 md:h-12 bg-hover rounded-lg w-3/4 animate-pulse" />
             <div className="mt-4 h-4 bg-hover rounded w-full animate-pulse" />
@@ -37,7 +37,7 @@ export default function HeroSection() {
     return (
       <section className="relative w-full h-[var(--hero-height)] overflow-hidden rounded-2xl mx-auto max-w-7xl">
         <img
-          src="https://drop-assets.ea.com/images/3HA9acuR0WKaLXXxHzSnVI/06d535194d8b18f42fd68c07dfbe94d5/TS4_Horse-Ranch_Media-Hero-Tile_16x9_03.jpg?im=Resize=(1280)&q=80"
+          src="https://drop-assets.ea.com/images/3HA9acuR0WKaLXXxHzSnVI/06d535194d8b18f42fd68c07dfbe94d5/TS4_Horse-Ranch_Media-Hero-Tile_16x9_03.jpg?im=Resize=(640)"
           alt=""
           width={1280}
           height={720}
@@ -80,13 +80,13 @@ export default function HeroSection() {
               />
               <div className="absolute inset-0 hero-overlay z-0" />
 
-            <div className="relative z-10 w-full max-w-5xl px-8 md:px-16 text-center md:text-left flex flex-col md:items-start items-center gap-5">
+            <div className="relative z-10 w-full max-w-5xl px-10 sm:px-16 md:px-24 text-center md:text-left flex flex-col md:items-start items-center gap-5">
               <div className="bg-surface/90 backdrop-blur-sm rounded-2xl p-6 md:p-10 w-full md:w-auto md:max-w-3xl">
                 <h1 className="text-3xl sm:text-4xl md:text-6xl font-extrabold tracking-tight leading-[1.1] text-text-main">
                   {pack.name}
                 </h1>
 
-                <p className="mt-4 text-sm sm:text-base md:text-lg leading-relaxed font-light text-text-sub">
+                <p className="mt-4 text-sm sm:text-base md:text-lg leading-relaxed font-light text-text-sub line-clamp-3">
                   {pack.description || pack.aboutGame}
                 </p>
 
@@ -121,7 +121,7 @@ export default function HeroSection() {
         <ChevronRight className="w-5 h-5" />
       </button>
 
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2.5 z-20">
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2.5 z-20 glass px-3 py-1.5 rounded-full border shadow-lg">
         {packs.map((_, index) => (
           <button
             key={index}
@@ -138,3 +138,4 @@ export default function HeroSection() {
     </section>
   )
 }
+

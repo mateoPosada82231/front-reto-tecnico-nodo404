@@ -1,6 +1,7 @@
 import { createContext, useState, useEffect } from 'react'
 import { getExtensions } from '../../../shared/services/extensions'
 import lang from '../../../shared/lang'
+import { expansionPacks, getTranslatedPacks } from '../../../data/expansionPacks'
 
 export const ExtensionsContext = createContext(null)
 
@@ -16,10 +17,17 @@ export function ExtensionsProvider({ children }) {
       setLoading(true)
       getExtensions(currentLang)
         .then((result) => {
-          if (!cancelled) setData(result)
+          if (!cancelled) {
+            const rawList = Array.isArray(result) && result.length > 0 ? result : expansionPacks
+            setData(getTranslatedPacks(rawList, currentLang))
+            setError(null)
+          }
         })
-        .catch((err) => {
-          if (!cancelled) setError(err.message)
+        .catch(() => {
+          if (!cancelled) {
+            setData(getTranslatedPacks(expansionPacks, currentLang))
+            setError(null)
+          }
         })
         .finally(() => {
           if (!cancelled) setLoading(false)
