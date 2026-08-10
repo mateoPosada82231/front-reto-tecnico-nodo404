@@ -4,6 +4,7 @@ import { buyDirect } from '../../../shared/services/buys'
 import useContent from '../../../shared/hooks/useContent'
 import { getFriendlyError } from '../../../shared/utils/errors'
 import lang from '../../../shared/lang'
+import { expansionPacks, getTranslatedPack } from '../../../data/expansionPacks'
 
 export default function useExpansionDetail(id, email) {
   const { content: detailContent } = useContent('landing.detail')
@@ -18,6 +19,8 @@ export default function useExpansionDetail(id, email) {
   const [buying, setBuying] = useState(false)
   const [showForm, setShowForm] = useState(false)
 
+  const numericId = Number(id) || id
+
   useEffect(() => {
     let cancelled = false
 
@@ -27,12 +30,30 @@ export default function useExpansionDetail(id, email) {
     setBuyError(null)
     setShowForm(false)
 
-    getExtensionById(id, lang.get())
+    const findLocalFallback = () =>
+      expansionPacks.find(
+        (p) => p.id === numericId || String(p.id) === String(id)
+      )
+
+    const currentLang = lang.get()
+
+    getExtensionById(numericId, currentLang)
       .then((result) => {
-        if (!cancelled) setPack(result)
+        if (!cancelled) {
+          const raw = result || findLocalFallback() || null
+          setPack(getTranslatedPack(raw, currentLang))
+        }
       })
-      .catch((err) => {
-        if (!cancelled) setError(getFriendlyError(errorsContent, err))
+      .catch(() => {
+        if (!cancelled) {
+          const fallback = findLocalFallback()
+          if (fallback) {
+            setPack(getTranslatedPack(fallback, currentLang))
+            setError(null)
+          } else {
+            setError(detailContent.not_found)
+          }
+        }
       })
       .finally(() => {
         if (!cancelled) setLoading(false)
@@ -41,17 +62,32 @@ export default function useExpansionDetail(id, email) {
     const unsubscribe = lang.onChange((newLang) => {
       if (cancelled) return
       setLoading(true)
-      getExtensionById(id, newLang)
-        .then((result) => { if (!cancelled) setPack(result) })
-        .catch((err) => { if (!cancelled) setError(getFriendlyError(errorsContent, err)) })
-        .finally(() => { if (!cancelled) setLoading(false) })
+      getExtensionById(numericId, newLang)
+        .then((result) => {
+          if (!cancelled) {
+            const raw = result || findLocalFallback() || null
+            setPack(getTranslatedPack(raw, newLang))
+          }
+        })
+        .catch(() => {
+          if (!cancelled) {
+            const fallback = findLocalFallback()
+            if (fallback) {
+              setPack(getTranslatedPack(fallback, newLang))
+              setError(null)
+            }
+          }
+        })
+        .finally(() => {
+          if (!cancelled) setLoading(false)
+        })
     })
 
     return () => {
       cancelled = true
       unsubscribe()
     }
-  }, [id, errorsContent])
+  }, [id, numericId, detailContent.not_found])
 
   async function submitBuy(formData) {
     setBuying(true)
