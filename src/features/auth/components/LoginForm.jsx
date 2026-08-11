@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import InputField from "../../../shared/components/InputField";
 import Button from "../../../shared/components/Button";
 import Alert from "../../../shared/components/Alert";
@@ -52,6 +52,12 @@ function LoginForm() {
         placeholder={placeholders.password}
         required
       />
+
+      <div className="text-right">
+        <Link to="/forgot-password" className="text-sm text-primary hover:underline">
+          ¿Olvidaste tu contraseña?
+        </Link>
+      </div>
 
       <Button
         type="submit"
