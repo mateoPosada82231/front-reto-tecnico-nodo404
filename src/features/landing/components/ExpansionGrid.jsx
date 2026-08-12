@@ -10,7 +10,7 @@ export default function ExpansionGrid() {
 
   if (loading) {
     return (
-      <section className="w-full max-w-[2400px] mx-auto px-4 py-12">
+      <section className="w-full max-w-[150rem] mx-auto px-4 py-12">
         <h2 className="text-2xl md:text-3xl font-extrabold text-text-main mb-10 tracking-tight">
           {content.title}
         </h2>
@@ -32,7 +32,7 @@ export default function ExpansionGrid() {
 
   if (error) {
     return (
-      <section className="w-full max-w-[2400px] mx-auto px-4 py-12">
+      <section className="w-full max-w-[150rem] mx-auto px-4 py-12">
         <h2 className="text-2xl md:text-3xl font-extrabold text-text-main mb-10 tracking-tight">
           {content.title}
         </h2>
@@ -42,7 +42,7 @@ export default function ExpansionGrid() {
   }
 
   return (
-    <section className="w-full max-w-[2400px] mx-auto px-4 py-12 animate-fade-in">
+    <section className="w-full max-w-[150rem] mx-auto px-4 py-12 animate-fade-in">
       <div className="mb-10">
         <h2 className="text-2xl md:text-3xl font-extrabold text-text-main tracking-tight mb-2">
           {content.title}
@@ -61,6 +61,8 @@ export default function ExpansionGrid() {
               price={pack.price ? pack.price.toLocaleString('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }) : ''}
               ctaLabel={content.cta_text}
               href={`/expansion/${pack.id}`}
+              isBeta={pack.isPublic === false}
+              betaBadgeLabel={content.beta_badge_label}
             />
           </div>
         ))}

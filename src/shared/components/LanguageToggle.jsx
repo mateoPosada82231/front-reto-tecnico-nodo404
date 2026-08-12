@@ -14,7 +14,7 @@ function LanguageToggle() {
     <button
       onClick={toggle}
       type="button"
-      className="inline-flex items-center justify-center min-w-[44px] min-h-[44px] w-11 h-11 rounded-xl border border-border/60 bg-surface/60 hover:bg-hover text-xs font-bold tracking-wider text-text-sub hover:text-text-main transition-all duration-200 cursor-pointer select-none"
+      className="inline-flex items-center justify-center min-w-[2.75rem] min-h-[2.75rem] w-11 h-11 rounded-xl border border-border/60 bg-surface/60 hover:bg-hover text-xs font-bold tracking-wider text-text-sub hover:text-text-main transition-all duration-200 cursor-pointer select-none"
       aria-label={currentLang === 'es' ? 'Switch to English' : 'Cambiar a español'}
     >
       {currentLang.toUpperCase()}

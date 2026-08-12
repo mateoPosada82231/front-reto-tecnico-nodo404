@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import useAuthStore from '../stores/useAuthStore'
+import useBetaModalStore from '../stores/useBetaModalStore'
 import useTheme from './useTheme'
 import useContent from './useContent'
 import { getFriendlyError } from '../utils/errors'
@@ -9,13 +10,20 @@ import { updateUser } from '../services/users'
 export default function useHeader() {
   const navigate = useNavigate()
   const { user, email, isBetaTester, profileComplete, isLoggedIn } = useAuthStore()
+  const {
+    isOpen: modalOpen,
+    loading: betaLoading,
+    success: betaSuccess,
+    error: betaError,
+    open: openModal,
+    close: closeModal,
+    setLoading: setBetaLoading,
+    setSuccess: setBetaSuccess,
+    setError: setBetaError,
+  } = useBetaModalStore()
   const { theme, toggleTheme } = useTheme()
   const { content: errorsContent } = useContent('errors.common')
   const [mobileOpen, setMobileOpen] = useState(false)
-  const [modalOpen, setModalOpen] = useState(false)
-  const [betaLoading, setBetaLoading] = useState(false)
-  const [betaSuccess, setBetaSuccess] = useState(false)
-  const [betaError, setBetaError] = useState(null)
 
   const handleLogout = useCallback(() => {
     useAuthStore.getState().logout()
@@ -29,18 +37,6 @@ export default function useHeader() {
 
   const closeMobile = useCallback(() => {
     setMobileOpen(false)
-  }, [])
-
-  const openModal = useCallback(() => {
-    setModalOpen(true)
-    setBetaSuccess(false)
-    setBetaError(null)
-  }, [])
-
-  const closeModal = useCallback(() => {
-    setModalOpen(false)
-    setBetaSuccess(false)
-    setBetaError(null)
   }, [])
 
   const becomeBetaTester = useCallback(async () => {
@@ -57,7 +53,7 @@ export default function useHeader() {
     } finally {
       setBetaLoading(false)
     }
-  }, [email, user, errorsContent])
+  }, [email, user, errorsContent, setBetaLoading, setBetaError, setBetaSuccess])
 
   const showBetaButton = isLoggedIn && !isBetaTester
 
