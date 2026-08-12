@@ -1,7 +1,7 @@
 {
   "rewrites": [
     { "source": "/api/:path*", "destination": "https://reto-tecnico-api-60f1.onrender.com/api/:path*" },
-    { "source": "/oauth2/:path*", "destination": "https://reto-tecnico-api-60f1.onrender.com/oauth2/:path*" },
+    { "source": "/oauth2/authorization/:path*", "destination": "https://reto-tecnico-api-60f1.onrender.com/oauth2/authorization/:path*" },
     { "source": "/login/:path*", "destination": "https://reto-tecnico-api-60f1.onrender.com/login/:path*" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
