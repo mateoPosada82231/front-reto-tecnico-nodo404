@@ -43,6 +43,7 @@ const FALLBACK = {
     title: 'Paquetes de Expansión',
     error_prefix: 'Error al cargar extensiones: ',
     cta_text: 'Ver más',
+    beta_badge_label: 'Beta',
   },
   'landing.welcome': {
     title: '¡Bienvenido a Los Sims 4!',
@@ -77,6 +78,9 @@ const FALLBACK = {
     payment_method_paypal: 'PayPal',
     language_es: 'Español',
     language_en: 'Inglés',
+    beta_badge_label: 'Beta',
+    beta_only_notice: 'Esta extensión es exclusiva para beta testers. Conviértete en beta para adquirirla.',
+    beta_only_cta: 'Quiero ser beta tester',
   },
   'auth.login': {
     title: 'Iniciar Sesión',
@@ -164,6 +168,10 @@ const FALLBACK = {
     purchases_loading: 'Cargando compras...',
     purchases_empty: 'Aún no has comprado ninguna expansión.',
     purchases_item_meta: 'Comprado el {{date}} · {{paymentMethod}}',
+    beta_extensions_title: 'Mis extensiones beta',
+    beta_extensions_loading: 'Cargando extensiones beta...',
+    beta_extensions_empty: 'Aún no tienes extensiones beta.',
+    beta_extensions_item_meta: 'Comprado el {{date}}',
   },
   'profile.password': {
     title: 'Cambiar contraseña',
@@ -229,6 +237,8 @@ const FALLBACK = {
     not_found: 'Recurso no encontrado',
     network_error: 'Sin conexión al servidor',
     unexpected_error: 'Error inesperado, intenta de nuevo',
+    already_purchased: 'Ya has comprado esta extensión',
+    extension_beta_only: 'Esta extensión es exclusiva para beta testers',
   },
   placeholders: {
     email: 'tu@email.com',
@@ -283,6 +293,7 @@ const FALLBACK_EN = {
     title: 'Expansion Packs',
     error_prefix: 'Error loading extensions: ',
     cta_text: 'View more',
+    beta_badge_label: 'Beta',
   },
   'landing.welcome': {
     title: 'Welcome to The Sims 4!',
@@ -319,6 +330,9 @@ const FALLBACK_EN = {
     payment_method_paypal: 'PayPal',
     language_es: 'Spanish',
     language_en: 'English',
+    beta_badge_label: 'Beta',
+    beta_only_notice: 'This extension is exclusive to beta testers. Become one to purchase it.',
+    beta_only_cta: 'Become a beta tester',
   },
   'auth.login': {
     title: 'Log In',
@@ -406,6 +420,10 @@ const FALLBACK_EN = {
     purchases_loading: 'Loading purchases...',
     purchases_empty: 'You have not purchased any expansion packs yet.',
     purchases_item_meta: 'Purchased on {{date}} · {{paymentMethod}}',
+    beta_extensions_title: 'My beta extensions',
+    beta_extensions_loading: 'Loading beta extensions...',
+    beta_extensions_empty: 'You have no beta extensions yet.',
+    beta_extensions_item_meta: 'Purchased on {{date}}',
   },
   'profile.password': {
     title: 'Change password',
@@ -471,6 +489,8 @@ const FALLBACK_EN = {
     not_found: 'Resource not found',
     network_error: 'No server connection',
     unexpected_error: 'Unexpected error, please try again',
+    already_purchased: 'You have already purchased this extension',
+    extension_beta_only: 'This extension is exclusive to beta testers',
   },
   placeholders: {
     email: 'you@email.com',

@@ -61,6 +61,8 @@ export default function ExpansionGrid() {
               price={pack.price ? pack.price.toLocaleString('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }) : ''}
               ctaLabel={content.cta_text}
               href={`/expansion/${pack.id}`}
+              isBeta={pack.isPublic === false}
+              betaBadgeLabel={content.beta_badge_label}
             />
           </div>
         ))}

@@ -31,6 +31,7 @@ function ProfilePage() {
     cancelEditing,
     saveProfile,
     purchases,
+    betaPurchases,
     loadingPurchases,
   } = useProfile();
 
@@ -220,6 +221,47 @@ function ProfilePage() {
             </div>
           )}
         </div>
+
+        {user?.betaTester && (
+          <div className="mt-8 pt-6 border-t border-border/60">
+            <h2 className="text-lg font-semibold mb-4">{content.beta_extensions_title}</h2>
+
+            {loadingPurchases && (
+              <p className="text-sm text-text-sub">{content.beta_extensions_loading}</p>
+            )}
+
+            {!loadingPurchases && betaPurchases.length === 0 && (
+              <p className="text-sm text-text-sub">{content.beta_extensions_empty}</p>
+            )}
+
+            {!loadingPurchases && betaPurchases.length > 0 && (
+              <div className="space-y-3">
+                {betaPurchases.map((purchase) => (
+                  <div
+                    key={purchase.id}
+                    className="flex items-center gap-4 rounded-xl border border-plumbob/40 bg-plumbob/5 p-3"
+                  >
+                    <img
+                      src={purchase.extension.image}
+                      alt={purchase.extension.name}
+                      className="w-16 h-16 rounded-lg object-cover"
+                    />
+                    <div className="flex-1">
+                      <p className="font-semibold text-text-main">{purchase.extension.name}</p>
+                      <p className="text-xs text-text-sub">
+                        {(content.beta_extensions_item_meta || "")
+                          .replace("{{date}}", purchase.date)}
+                      </p>
+                    </div>
+                    <span className="inline-flex items-center gap-1 rounded-full bg-plumbob/15 border border-plumbob/30 px-2.5 py-0.5 text-xs font-semibold text-plumbob">
+                      {content.beta_badge}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
       <ChangePasswordModal

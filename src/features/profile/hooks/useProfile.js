@@ -125,6 +125,8 @@ export default function useProfile() {
     [email, form, validate, content, errorsContent, user],
   );
 
+  const betaPurchases = purchases.filter((p) => p.extension?.isPublic === false);
+
   return {
     user,
     email,
@@ -140,6 +142,7 @@ export default function useProfile() {
     cancelEditing,
     saveProfile,
     purchases,
+    betaPurchases,
     loadingPurchases,
   };
 }

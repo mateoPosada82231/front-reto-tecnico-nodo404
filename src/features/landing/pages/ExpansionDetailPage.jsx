@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { ArrowLeft, ShoppingCart } from "lucide-react";
+import { ArrowLeft, Beaker, ShoppingCart } from "lucide-react";
 import useExpansionDetail from "../hooks/useExpansionDetail";
 import useAuthStore from "../../../shared/stores/useAuthStore";
+import useBetaModalStore from "../../../shared/stores/useBetaModalStore";
 import useCartStore from "../../../shared/stores/useCartStore";
 import useCartUIStore from "../../../shared/stores/useCartUIStore";
 import Button from "../../../shared/components/Button";
@@ -14,9 +15,10 @@ import { getFriendlyError } from "../../../shared/utils/errors";
 
 function ExpansionDetailPage() {
   const { id } = useParams();
-  const { email, isLoggedIn } = useAuthStore();
+  const { email, isLoggedIn, isBetaTester } = useAuthStore();
   const addItem = useCartStore((state) => state.addItem);
   const { open: openCart } = useCartUIStore();
+  const openBetaModal = useBetaModalStore((state) => state.open);
   const {
     pack,
     loading,
@@ -79,6 +81,8 @@ function ExpansionDetailPage() {
     }
   };
 
+  const isBetaLocked = isLoggedIn && !buySuccess && pack.isPublic === false && !isBetaTester;
+
   return (
     <div className="max-w-3xl mx-auto p-6 sm:p-10">
       <Link
@@ -89,7 +93,15 @@ function ExpansionDetailPage() {
         {detailContent.back_text}
       </Link>
 
-      <h1 className="text-3xl font-bold text-text-main">{pack.name}</h1>
+      <div className="flex flex-wrap items-center gap-3 mb-2">
+        <h1 className="text-3xl font-bold text-text-main">{pack.name}</h1>
+        {pack.isPublic === false && (
+          <span className="inline-flex items-center gap-1 rounded-full bg-plumbob/15 border border-plumbob/30 px-2.5 py-0.5 text-xs font-semibold text-plumbob">
+            <Beaker className="w-3 h-3" />
+            {detailContent.beta_badge_label}
+          </span>
+        )}
+      </div>
       <p className="text-text-sub mb-2">
         {detailContent.category_label}: {pack.category}
       </p>
@@ -186,7 +198,17 @@ function ExpansionDetailPage() {
         </Alert>
       )}
 
-      {isLoggedIn && !buySuccess && (
+      {isBetaLocked && (
+        <div className="flex items-start gap-3 rounded-xl border border-plumbob/30 bg-plumbob/10 p-4">
+          <Beaker className="w-5 h-5 text-plumbob flex-shrink-0 mt-0.5" />
+          <div className="flex-1">
+            <p className="text-sm text-text-main mb-3">{detailContent.beta_only_notice}</p>
+            <Button onClick={openBetaModal}>{detailContent.beta_only_cta}</Button>
+          </div>
+        </div>
+      )}
+
+      {isLoggedIn && !buySuccess && !isBetaLocked && (
         <div className="flex flex-col gap-3">
           <div className="flex flex-wrap gap-2">
             {!showForm && !showCartForm && (

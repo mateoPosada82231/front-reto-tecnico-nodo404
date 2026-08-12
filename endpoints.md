@@ -341,7 +341,7 @@ Crea usuario.
 
 ### PUT `/api/users/{email}`
 
-Actualiza usuario por email.
+Actualiza usuario por email. Si `betaTester` pasa de `false` a `true`, el backend envía el correo de bienvenida al programa beta tester.
 
 ### DELETE `/api/users/{email}`
 
@@ -391,6 +391,7 @@ Body ejemplo para crear/actualizar (los campos traducibles van dentro de `transl
   "requiredAge": 16,
   "publicationDate": "2026-01-10",
   "image": "https://.../expansion.png",
+  "isPublic": true,
   "translations": [
     {
       "language": "es",
@@ -414,6 +415,8 @@ Body ejemplo para crear/actualizar (los campos traducibles van dentro de `transl
 }
 ```
 
+> **`isPublic` (boolean, default `false`)**: si es `false`, la extensión es **exclusiva para beta testers**. El listado público la incluye para todos (con etiqueta `Beta` en el frontend), pero la compra (`POST /api/buys/direct`, `POST /api/buys/checkout`, `POST /api/cart`) devuelve **403 `extension_beta_only`** si el usuario autenticado no tiene `betaTester=true`.
+
 Respuesta de lectura (GET), DTO ya en el idioma solicitado:
 
 ```json
@@ -429,6 +432,7 @@ Respuesta de lectura (GET), DTO ya en el idioma solicitado:
   "requiredAge": 16,
   "publicationDate": "2026-01-10",
   "image": "https://.../expansion.png",
+  "isPublic": true,
   "language": "es"
 }
 ```
@@ -756,6 +760,7 @@ Respuesta ejemplo:
       "name": "Aventura en el Desierto",
       "price": 49.99,
       "image": "...",
+      "isPublic": true,
       "language": "es"
     },
     "extensionPrice": 49.99
@@ -764,6 +769,7 @@ Respuesta ejemplo:
 ```
 
 - Si el `email` no coincide con el usuario del token: `403 Forbidden`
+- Si la extensión es exclusiva beta (`isPublic=false`) y el usuario no es beta tester: `403 extension_beta_only`
 
 ### POST `/api/buys`
 
@@ -813,6 +819,10 @@ Respuesta `201 Created` ejemplo:
 Error de validación:
 
 - `400 Bad Request`: `"language y platform son obligatorios"`
+
+Restricción beta:
+
+- `403 Forbidden`: si la extensión es exclusiva beta (`isPublic=false`) y el usuario autenticado no es beta tester. Aplica también en `POST /api/buys/checkout` y `POST /api/cart`.
 
 ### POST `/api/buys/checkout`
 

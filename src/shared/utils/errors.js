@@ -50,6 +50,11 @@ const ERROR_KEYS = {
     'already purchased',
     'ya compraste',
   ],
+  extension_beta_only: [
+    'exclusiva para beta testers',
+    'exclusive to beta testers',
+    'beta tester',
+  ],
 }
 
 export function getFriendlyError(messages, err) {
