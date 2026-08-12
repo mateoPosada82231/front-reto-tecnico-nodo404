@@ -26,6 +26,7 @@ function Header() {
     user,
     email,
     isBetaTester,
+    isAdmin,
     profileComplete,
     isLoggedIn,
     mobileOpen,
@@ -134,6 +135,14 @@ function Header() {
                   {headerContent.beta_badge_label}
                 </span>
               )}
+              {isAdmin && (
+                <NavLink
+                  to="/admin"
+                  className="inline-flex items-center gap-1 rounded-full bg-azure/15 border border-azure/30 px-2.5 py-0.5 text-xs font-semibold text-azure transition-all duration-200 hover:bg-azure/25"
+                >
+                  {headerContent.nav_admin}
+                </NavLink>
+              )}
               <button
                 onClick={handleLogout}
                 className="p-2 rounded-lg text-text-dim hover:text-red-400 hover:bg-red-500/10 transition-all duration-200 cursor-pointer"
@@ -215,6 +224,15 @@ function Header() {
                 <User className="w-4 h-4" />
                 {headerContent.mobile_profile_link}
               </NavLink>
+              {isAdmin && (
+                <NavLink
+                  to="/admin"
+                  onClick={closeMobile}
+                  className="flex items-center gap-2 text-sm text-text-sub hover:text-text-main py-2 cursor-pointer"
+                >
+                  {headerContent.nav_admin}
+                </NavLink>
+              )}
               <button
                 onClick={handleLogout}
                 className="flex items-center gap-2 text-sm text-red-400 hover:text-red-300 transition-colors cursor-pointer"

@@ -9,7 +9,7 @@ import { updateUser } from '../services/users'
 
 export default function useHeader() {
   const navigate = useNavigate()
-  const { user, email, isBetaTester, profileComplete, isLoggedIn } = useAuthStore()
+  const { user, email, isBetaTester, isAdmin, profileComplete, isLoggedIn } = useAuthStore()
   const {
     isOpen: modalOpen,
     loading: betaLoading,
@@ -61,6 +61,7 @@ export default function useHeader() {
     user,
     email,
     isBetaTester,
+    isAdmin,
     profileComplete,
     isLoggedIn,
     mobileOpen,

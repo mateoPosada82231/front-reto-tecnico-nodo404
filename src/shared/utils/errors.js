@@ -1,4 +1,10 @@
 const ERROR_KEYS = {
+  user_not_found: [
+    'Usuario no encontrado',
+    'User not found',
+    'No existe un usuario',
+    'The user does not exist',
+  ],
   duplicate_email: [
     'El correo ya está registrado',
     'El email ya está registrado',
