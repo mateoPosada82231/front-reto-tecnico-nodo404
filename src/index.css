@@ -173,6 +173,24 @@
     color-scheme: light dark;
   }
 
+  @media (min-width: 1536px) {
+    html {
+      font-size: 1.0625em;
+    }
+  }
+
+  @media (min-width: 1920px) {
+    html {
+      font-size: 1.125em;
+    }
+  }
+
+  @media (min-width: 3840px) {
+    html {
+      font-size: 1.5em;
+    }
+  }
+
   body {
     background-color: var(--color-bg);
     color: var(--color-text-main);
