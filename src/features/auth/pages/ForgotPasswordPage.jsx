@@ -1,0 +1,79 @@
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import InputField from "../../../shared/components/InputField";
+import Button from "../../../shared/components/Button";
+import Alert from "../../../shared/components/Alert";
+import { forgotPassword } from "../../../shared/services/auth";
+
+function ForgotPasswordPage() {
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [sent, setSent] = useState(false);
+  const [error, setError] = useState("");
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+
+    try {
+      await forgotPassword(email);
+      setSent(true);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <section className="flex flex-col items-center justify-center gap-8 py-12 animate-fade-in">
+      <div className="text-center max-w-xl">
+        <h1 className="text-3xl font-extrabold text-text-main md:text-4xl mb-3 tracking-tight">
+          ¿Olvidaste tu contraseña?
+        </h1>
+        <p className="text-text-sub text-sm md:text-base leading-relaxed">
+          Escribe tu correo y te enviaremos un link para restablecerla.
+        </p>
+      </div>
+
+      <form
+        onSubmit={handleSubmit}
+        className="w-full max-w-md space-y-5 rounded-2xl bg-surface border border-border/50 p-8 shadow-2xl shadow-black/20"
+      >
+        {sent && (
+          <Alert variant="success">
+            Si el correo existe, revisa tu bandeja de entrada para continuar.
+          </Alert>
+        )}
+
+        {error && !sent && <Alert variant="error">{error}</Alert>}
+
+        {!sent && (
+          <>
+            <InputField
+              label="Correo electrónico"
+              name="email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+
+            <Button type="submit" loading={loading} disabled={loading} className="w-full">
+              {loading ? "Enviando..." : "Enviar link de recuperación"}
+            </Button>
+          </>
+        )}
+
+        <div className="text-center">
+          <Link to="/login" className="text-sm text-primary hover:underline">
+            ← Volver a iniciar sesión
+          </Link>
+        </div>
+      </form>
+    </section>
+  );
+}
+
+export default ForgotPasswordPage;
