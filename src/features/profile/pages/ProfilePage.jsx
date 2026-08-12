@@ -1,6 +1,6 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, NavLink } from "react-router-dom";
 import { useState } from "react";
-import { Pencil, X, Check, KeyRound } from "lucide-react";
+import { Pencil, X, Check, KeyRound, ShieldCheck } from "lucide-react";
 import Button from "../../../shared/components/Button";
 import InputField from "../../../shared/components/InputField";
 import SelectField from "../../../shared/components/SelectField";
@@ -70,6 +70,15 @@ function ProfilePage() {
             <span className="inline-flex items-center rounded-full bg-plumbob/15 border border-plumbob/30 px-2.5 py-0.5 text-xs font-semibold text-plumbob">
               {content.beta_badge}
             </span>
+          )}
+          {user?.admin && (
+            <NavLink
+              to="/admin"
+              className="inline-flex items-center gap-1 rounded-full bg-azure/15 border border-azure/30 px-2.5 py-0.5 text-xs font-semibold text-azure transition-all duration-200 hover:bg-azure/25"
+            >
+              <ShieldCheck className="w-3 h-3" />
+              {content.admin_badge}
+            </NavLink>
           )}
         </div>
 

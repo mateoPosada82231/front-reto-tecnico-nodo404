@@ -12,6 +12,7 @@ export const useAuthStore = create(
       loading: false,
       profileComplete: true,
       isBetaTester: false,
+      isAdmin: false,
       isLoggedIn: false,
 
       setUser: (user) => {
@@ -19,6 +20,7 @@ export const useAuthStore = create(
           user,
           profileComplete: user?.profileComplete ?? true,
           isBetaTester: user?.betaTester ?? false,
+          isAdmin: user?.admin ?? false,
         })
       },
 
@@ -30,7 +32,7 @@ export const useAuthStore = create(
       fetchUser: async () => {
         const { email } = get()
         if (!email) {
-          set({ user: null, profileComplete: true, isBetaTester: false, loading: false })
+          set({ user: null, profileComplete: true, isBetaTester: false, isAdmin: false, loading: false })
           return
         }
         set({ loading: true })
@@ -38,7 +40,7 @@ export const useAuthStore = create(
           const userData = await getUserByEmail(email)
           get().setUser(userData)
         } catch {
-          set({ user: null, profileComplete: true, isBetaTester: false })
+          set({ user: null, profileComplete: true, isBetaTester: false, isAdmin: false })
         } finally {
           set({ loading: false })
         }
@@ -53,6 +55,7 @@ export const useAuthStore = create(
           loading: false,
           profileComplete: true,
           isBetaTester: false,
+          isAdmin: false,
           isLoggedIn: false,
         })
       },
@@ -65,6 +68,7 @@ export const useAuthStore = create(
         user: state.user,
         profileComplete: state.profileComplete,
         isBetaTester: state.isBetaTester,
+        isAdmin: state.isAdmin,
       }),
       merge: (persisted, current) => {
         const p = persisted || {}
