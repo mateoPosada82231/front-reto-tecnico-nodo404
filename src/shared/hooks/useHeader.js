@@ -44,7 +44,7 @@ export default function useHeader() {
     setBetaLoading(true)
     setBetaError(null)
     try {
-      const body = { ...user, betaTester: true }
+      const body = { betaTester: true }
       await updateUser(email, body)
       setBetaSuccess(true)
       useAuthStore.getState().fetchUser()
