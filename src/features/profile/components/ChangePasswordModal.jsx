@@ -55,7 +55,7 @@ export default function ChangePasswordModal({ open, onClose }) {
       open={open}
       onClose={onClose}
       title={isSuccess ? null : content.title}
-      footer={isSuccess ? footer : null}
+      footer={null}
       size="md"
       closeAriaLabel={common.close_aria}
     >

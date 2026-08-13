@@ -105,7 +105,12 @@ export default function useProfile() {
       setSaving(true);
       setFeedback(null);
       try {
-        const payload = { ...form, provider: user?.provider, betaTester: user?.betaTester ?? false };
+        const payload = {
+          ...form,
+          provider: user?.provider,
+          betaTester: user?.betaTester ?? false,
+          dateOfBirth: form.dateOfBirth || null,
+        };
         await updateUser(email, payload);
         await useAuthStore.getState().fetchUser();
         setFeedback({

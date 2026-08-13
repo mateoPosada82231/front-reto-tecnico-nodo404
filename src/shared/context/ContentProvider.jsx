@@ -647,7 +647,7 @@ export function ContentProvider({ children }) {
           }
           mergedSections[sectionKey] = {
             ...sectionFallback,
-            ...(currentLang === 'en' ? activeFallback[sectionKey] : mapped),
+            ...mapped,
           }
         })
         setSections(mergedSections)
