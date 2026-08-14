@@ -19,19 +19,19 @@ const useLoginFormStore = create((set, get) => ({
     }))
   },
 
-  validate: (form, validation) => {
+  validate: (form, errorsContent) => {
     const newErrors = {}
-    if (!form.email.trim()) newErrors.email = validation.email_required
+    if (!form.email.trim()) newErrors.email = errorsContent.email_required
     else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(form.email))
-      newErrors.email = validation.email_invalid
-    if (!form.password) newErrors.password = validation.password_required
+      newErrors.email = errorsContent.email_invalid
+    if (!form.password) newErrors.password = errorsContent.password_required
     return newErrors
   },
 
-  handleSubmit: async (e, { validation, errorsContent, onSuccess } = {}) => {
+  handleSubmit: async (e, { errorsContent, onSuccess } = {}) => {
     e.preventDefault()
     const { form, validate } = get()
-    const validationResult = validate(form, validation)
+    const validationResult = validate(form, errorsContent)
     if (Object.keys(validationResult).length > 0) {
       set({ errors: validationResult })
       return
