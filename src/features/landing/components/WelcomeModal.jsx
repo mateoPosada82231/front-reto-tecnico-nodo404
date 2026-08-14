@@ -1,20 +1,34 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Button from "../../../shared/components/Button";
 import Modal from "../../../shared/components/Modal";
 import useContent from "../../../shared/hooks/useContent";
 
+const WELCOME_MODAL_KEY = "los-sims-welcome-seen";
+
 export default function WelcomeModal() {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const { content } = useContent("landing.welcome");
 
+  useEffect(() => {
+    const alreadySeen = localStorage.getItem(WELCOME_MODAL_KEY);
+    if (!alreadySeen) {
+      setOpen(true);
+    }
+  }, []);
+
+  const handleClose = () => {
+    setOpen(false);
+    localStorage.setItem(WELCOME_MODAL_KEY, "true");
+  };
+
   const footer = (
-    <Button onClick={() => setOpen(false)}>{content.cta_text}</Button>
+    <Button onClick={handleClose}>{content.cta_text}</Button>
   );
 
   return (
     <Modal
       open={open}
-      onClose={() => setOpen(false)}
+      onClose={handleClose}
       closeOnBackdrop={false}
       size="lg"
       closeAriaLabel={content.close_aria}
