@@ -1,27 +1,35 @@
-import { useEffect } from 'react'
-import { NavLink } from 'react-router-dom'
-import { LogOut, Beaker, Menu, X, AlertCircle, User, ShoppingCart } from 'lucide-react'
-import Logo from './Logo'
-import ThemeToggle from './ThemeToggle'
-import LanguageToggle from './LanguageToggle'
-import BetaTesterModal from './BetaTesterModal'
-import useHeader from '../hooks/useHeader'
-import useContent from '../hooks/useContent'
-import useCartStore from '../stores/useCartStore'
-import useCartUIStore from '../stores/useCartUIStore'
-import lang from '../lang'
+import { useEffect } from "react";
+import { NavLink } from "react-router-dom";
+import {
+  LogOut,
+  Beaker,
+  Menu,
+  X,
+  AlertCircle,
+  User,
+  ShoppingCart,
+} from "lucide-react";
+import Logo from "./Logo";
+import ThemeToggle from "./ThemeToggle";
+import LanguageToggle from "./LanguageToggle";
+import BetaTesterModal from "./BetaTesterModal";
+import useHeader from "../hooks/useHeader";
+import useContent from "../hooks/useContent";
+import useCartStore from "../stores/useCartStore";
+import useCartUIStore from "../stores/useCartUIStore";
+import lang from "../lang";
 
 const navLinkClass = ({ isActive }) =>
   `text-sm font-medium transition-colors duration-200 md:text-base ${
-    isActive ? 'text-plumbob' : 'text-text-sub hover:text-text-main'
-  }`
+    isActive ? "text-plumbob" : "text-text-sub hover:text-text-main"
+  }`;
 
 const mobileLinkClass = ({ isActive }) =>
-  `block text-sm font-medium py-2 ${isActive ? 'text-plumbob' : 'text-text-sub'}`
+  `block text-sm font-medium py-2 ${isActive ? "text-plumbob" : "text-text-sub"}`;
 
 function Header() {
-  const { content: headerContent } = useContent('header')
-  const { content: cartContent } = useContent('cart')
+  const { content: headerContent } = useContent("header");
+  const { content: cartContent } = useContent("cart");
   const {
     user,
     email,
@@ -43,31 +51,31 @@ function Header() {
     openModal,
     closeModal,
     becomeBetaTester,
-  } = useHeader()
+  } = useHeader();
 
-  const itemsCount = useCartStore((state) => state.itemsCount)
-  const fetchCart = useCartStore((state) => state.fetchCart)
-  const cartOpen = useCartUIStore((state) => state.open)
+  const itemsCount = useCartStore((state) => state.itemsCount);
+  const fetchCart = useCartStore((state) => state.fetchCart);
+  const cartOpen = useCartUIStore((state) => state.open);
 
   useEffect(() => {
-    if (isLoggedIn && email) fetchCart(email)
-  }, [isLoggedIn, email, fetchCart])
+    if (isLoggedIn && email) fetchCart(email);
+  }, [isLoggedIn, email, fetchCart]);
 
   useEffect(() => {
     const unsubscribe = lang.onChange(() => {
-      if (isLoggedIn && email) fetchCart(email)
-    })
-    return unsubscribe
-  }, [isLoggedIn, email, fetchCart])
+      if (isLoggedIn && email) fetchCart(email);
+    });
+    return unsubscribe;
+  }, [isLoggedIn, email, fetchCart]);
 
   return (
-    <header className="w-full sticky top-0 z-50 bg-glass-bg border-b border-glass-border">
+    <header className="w-full sticky top-0 z-50 bg-surface border-b border-border">
       {isLoggedIn && !profileComplete && (
         <div className="bg-azure/10 border-b border-azure/20 px-4 py-2 md:px-8">
           <div className="max-w-7xl mx-auto flex items-center justify-center gap-2 text-xs md:text-sm text-azure">
             <AlertCircle className="w-4 h-4 shrink-0" />
             <span>
-              {headerContent.profile_warning_prefix}{' '}
+              {headerContent.profile_warning_prefix}{" "}
               <NavLink to="/perfil" className="underline font-medium">
                 {headerContent.profile_warning_link}
               </NavLink>
@@ -176,7 +184,11 @@ function Header() {
             className="p-2 rounded-lg text-text-sub hover:text-text-main hover:bg-surface/50 transition-colors cursor-pointer"
             aria-label={headerContent.menu_aria}
           >
-            {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            {mobileOpen ? (
+              <X className="w-5 h-5" />
+            ) : (
+              <Menu className="w-5 h-5" />
+            )}
           </button>
         </div>
 
@@ -194,10 +206,18 @@ function Header() {
 
           {!isLoggedIn && (
             <>
-              <NavLink to="/registro" onClick={closeMobile} className={mobileLinkClass}>
+              <NavLink
+                to="/registro"
+                onClick={closeMobile}
+                className={mobileLinkClass}
+              >
                 {headerContent.nav_register}
               </NavLink>
-              <NavLink to="/login" onClick={closeMobile} className={mobileLinkClass}>
+              <NavLink
+                to="/login"
+                onClick={closeMobile}
+                className={mobileLinkClass}
+              >
                 {headerContent.nav_login}
               </NavLink>
             </>
@@ -205,7 +225,10 @@ function Header() {
 
           {showBetaButton && (
             <button
-              onClick={() => { closeMobile(); openModal() }}
+              onClick={() => {
+                closeMobile();
+                openModal();
+              }}
               className="flex items-center gap-2 text-sm font-medium text-plumbob py-2 cursor-pointer"
             >
               <Beaker className="w-4 h-4" />
@@ -215,7 +238,9 @@ function Header() {
 
           {isLoggedIn && (
             <div className="pt-3 border-t border-border/50">
-              <p className="text-sm text-text-sub mb-3">{user?.fullName || email}</p>
+              <p className="text-sm text-text-sub mb-3">
+                {user?.fullName || email}
+              </p>
               <NavLink
                 to="/perfil"
                 onClick={closeMobile}
@@ -254,7 +279,7 @@ function Header() {
         onClose={closeModal}
       />
     </header>
-  )
+  );
 }
 
-export default Header
+export default Header;
