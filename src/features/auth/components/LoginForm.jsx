@@ -10,20 +10,19 @@ function LoginForm() {
   const navigate = useNavigate();
   const { content } = useContent("auth.login");
   const { content: placeholders } = useContent("placeholders");
-  const { content: validation } = useContent("validation.login");
   const { content: errorsContent } = useContent("errors.common");
   const { form, errors, serverError, loading, success, handleChange, handleSubmit } =
     useLoginFormStore();
 
   const submit = (e) =>
     handleSubmit(e, {
-      validation,
       errorsContent,
       onSuccess: () => setTimeout(() => navigate("/"), 1500),
     });
 
   return (
     <form
+      noValidate
       onSubmit={submit}
       className="w-full max-w-md space-y-5 rounded-2xl bg-surface border border-border/50 p-8 shadow-2xl shadow-black/20 animate-scale-in"
     >

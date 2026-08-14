@@ -135,7 +135,7 @@ function BetaUsersTab({ content, users, loading, error }) {
 
 function BroadcastTab({ content, subject, setSubject, body, setBody, broadcasting, feedback, onSend }) {
   return (
-    <form onSubmit={onSend} className="space-y-5">
+    <form noValidate onSubmit={onSend} className="space-y-5">
       <InputField
         label={content.broadcast_subject_label}
         name="subject"
@@ -170,7 +170,7 @@ function BroadcastTab({ content, subject, setSubject, body, setBody, broadcastin
 
 function PromoteTab({ content, email, setEmail, promoting, feedback, onPromote }) {
   return (
-    <form onSubmit={onPromote} className="space-y-5">
+    <form noValidate onSubmit={onPromote} className="space-y-5">
       <InputField
         label={content.table_email}
         name="promoteEmail"

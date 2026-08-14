@@ -34,6 +34,7 @@ function RegisterForm() {
 
   return (
     <form
+      noValidate
       onSubmit={submit}
       className="w-full max-w-2xl space-y-5 rounded-2xl bg-surface border border-border/50 p-8 shadow-2xl shadow-black/20 animate-scale-in"
     >

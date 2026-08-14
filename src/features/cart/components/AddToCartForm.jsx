@@ -42,7 +42,7 @@ function AddToCartForm({ onSubmit, onCancel, loading }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="mt-4 space-y-4 p-4 border border-border rounded-xl bg-surface">
+    <form noValidate onSubmit={handleSubmit} className="mt-4 space-y-4 p-4 border border-border rounded-xl bg-surface">
       <SelectField
         label={content.language_label}
         name="language"

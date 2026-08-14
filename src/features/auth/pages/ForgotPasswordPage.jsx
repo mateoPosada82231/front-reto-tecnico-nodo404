@@ -13,6 +13,7 @@ function ForgotPasswordPage() {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    if (!email.trim()) return;
     setError("");
     setLoading(true);
 
@@ -38,6 +39,7 @@ function ForgotPasswordPage() {
       </div>
 
       <form
+        noValidate
         onSubmit={handleSubmit}
         className="w-full max-w-md space-y-5 rounded-2xl bg-surface border border-border/50 p-8 shadow-2xl shadow-black/20"
       >
