@@ -12,7 +12,7 @@ export default function HeroSection() {
     return (
       <section className="relative w-full h-[var(--hero-height)] overflow-hidden rounded-2xl mx-auto max-w-7xl">
         <img
-          src="https://drop-assets.ea.com/images/3HA9acuR0WKaLXXxHzSnVI/06d535194d8b18f42fd68c07dfbe94d5/TS4_Horse-Ranch_Media-Hero-Tile_16x9_03.jpg?im=Resize=(640)"
+          src="https://drop-assets.ea.com/images/3HA9acuR0WKaLXXxHzSnVI/06d535194d8b18f42fd68c07dfbe94d5/TS4_Horse-Ranch_Media-Hero-Tile_16x9_03.jpg?im=Resize=(1280)&q=80"
           alt=""
           width={1280}
           height={720}
@@ -37,10 +37,11 @@ export default function HeroSection() {
     return (
       <section className="relative w-full h-[var(--hero-height)] overflow-hidden rounded-2xl mx-auto max-w-7xl">
         <img
-          src="https://drop-assets.ea.com/images/3HA9acuR0WKaLXXxHzSnVI/06d535194d8b18f42fd68c07dfbe94d5/TS4_Horse-Ranch_Media-Hero-Tile_16x9_03.jpg?im=Resize=(640)"
+          src="https://drop-assets.ea.com/images/3HA9acuR0WKaLXXxHzSnVI/06d535194d8b18f42fd68c07dfbe94d5/TS4_Horse-Ranch_Media-Hero-Tile_16x9_03.jpg?im=Resize=(1280)&q=80"
           alt=""
           width={1280}
           height={720}
+          fetchPriority="high"
           decoding="async"
           className="absolute inset-0 w-full h-full object-cover"
         />

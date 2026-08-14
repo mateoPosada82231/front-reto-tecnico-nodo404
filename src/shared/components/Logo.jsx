@@ -9,6 +9,9 @@ function Logo() {
       <img
         src="/sims-icon.png"
         alt=""
+        width={32}
+        height={32}
+        decoding="async"
         className="w-8 h-8 object-contain transition-transform duration-300 group-hover:scale-110"
       />
       <span>
