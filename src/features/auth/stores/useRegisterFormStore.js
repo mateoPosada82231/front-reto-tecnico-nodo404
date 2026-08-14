@@ -30,19 +30,19 @@ const useRegisterFormStore = create((set, get) => ({
     }))
   },
 
-  validate: (form, validation) => {
+  validate: (form, validation, errorsContent) => {
     const newErrors = {}
-    if (!form.fullName.trim()) newErrors.fullName = validation.name_required
-    if (!form.email.trim()) newErrors.email = validation.email_required
+    if (!form.fullName.trim()) newErrors.fullName = errorsContent.name_required
+    if (!form.email.trim()) newErrors.email = errorsContent.email_required
     else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(form.email))
-      newErrors.email = validation.email_invalid
+      newErrors.email = errorsContent.email_invalid
     else if (useUsersStore.getState().isEmailRegistered(form.email))
-      newErrors.email = validation.email_already_registered
+      newErrors.email = errorsContent.duplicate_email
     if (!form.country) newErrors.country = validation.country_required
     if (!form.birthDate) newErrors.birthDate = validation.birthdate_required
     if (!form.identification.trim()) newErrors.identification = validation.id_required
     if (!form.phone.trim()) newErrors.phone = validation.phone_required
-    if (!form.password) newErrors.password = validation.password_required
+    if (!form.password) newErrors.password = errorsContent.password_required
     else if (form.password.length < 8) newErrors.password = validation.password_min_length
     else if (!/[A-Z]/.test(form.password)) newErrors.password = validation.password_uppercase
     else if (!/[0-9]/.test(form.password)) newErrors.password = validation.password_number
@@ -56,7 +56,7 @@ const useRegisterFormStore = create((set, get) => ({
     e.preventDefault()
     const { form, validate } = get()
     await useUsersStore.getState().loadEmails()
-    const validationResult = validate(form, validation)
+    const validationResult = validate(form, validation, errorsContent)
     if (Object.keys(validationResult).length > 0) {
       set({ errors: validationResult })
       return

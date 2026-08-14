@@ -24,7 +24,6 @@ function buildFormState(user) {
 export default function useProfile() {
   const { user, email, loading, isLoggedIn } = useAuthStore();
   const { content } = useContent("profile.page");
-  const { content: validation } = useContent("validation.profile");
   const { content: errorsContent } = useContent("errors.common");
   const [form, setForm] = useState(() => buildFormState(user));
   const [errors, setErrors] = useState({});
@@ -80,10 +79,10 @@ export default function useProfile() {
 
   const validate = useCallback(() => {
     const nextErrors = {};
-    if (!form.fullName.trim()) nextErrors.fullName = validation.name_required;
+    if (!form.fullName.trim()) nextErrors.fullName = errorsContent.name_required;
     setErrors(nextErrors);
     return Object.keys(nextErrors).length === 0;
-  }, [form, validation]);
+  }, [form, errorsContent]);
 
   const startEditing = useCallback(() => {
     setFeedback(null);
