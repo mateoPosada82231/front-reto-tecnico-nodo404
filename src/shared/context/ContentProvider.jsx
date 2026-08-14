@@ -27,6 +27,7 @@ const SECTIONS = [
   'errors.common',
   'placeholders',
   'select.default',
+  'extensions.search',
   'cart',
 ]
 
@@ -282,6 +283,12 @@ const FALLBACK = {
   },
   'select.default': {
     placeholder: 'Seleccione...',
+  },
+  'extensions.search': {
+    placeholder: 'Buscar extensiones...',
+    search_aria: 'Buscar extensiones',
+    clear_aria: 'Limpiar búsqueda',
+    empty_results: 'No se encontraron resultados para "{{query}}".',
   },
   cart: {
     title: 'Tu carrito',
@@ -567,6 +574,12 @@ const FALLBACK_EN = {
   },
   'select.default': {
     placeholder: 'Select...',
+  },
+  'extensions.search': {
+    placeholder: 'Search extensions...',
+    search_aria: 'Search extensions',
+    clear_aria: 'Clear search',
+    empty_results: 'No results found for "{{query}}".',
   },
   cart: {
     title: 'Your cart',

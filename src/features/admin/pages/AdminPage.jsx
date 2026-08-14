@@ -3,6 +3,9 @@ import { Users, BarChart3, Send, ShieldCheck, Megaphone } from 'lucide-react'
 import Button from '../../../shared/components/Button'
 import InputField from '../../../shared/components/InputField'
 import Skeleton from '../../../shared/components/Skeleton'
+import ExtensionSearch from '../../../shared/components/ExtensionSearch'
+import useExtensionSearch from '../../../shared/hooks/useExtensionSearch'
+import useContent from '../../../shared/hooks/useContent'
 import useAdmin from '../hooks/useAdmin'
 
 const TAB_ICONS = {
@@ -45,6 +48,9 @@ function Feedback({ feedback }) {
 }
 
 function StatsTab({ content, stats, loading, error }) {
+  const { content: searchContent } = useContent('extensions.search')
+  const statsSearch = useExtensionSearch(stats, { fields: ['searchText', 'name'] })
+
   if (loading) {
     return <Skeleton className="h-24 w-full" />
   }
@@ -55,43 +61,55 @@ function StatsTab({ content, stats, loading, error }) {
     return <p className="text-sm text-text-sub">{content.empty_stats}</p>
   }
 
-  const sorted = [...stats].sort((a, b) => b.purchaseCount - a.purchaseCount)
+  const sorted = [...statsSearch.results].sort((a, b) => b.purchaseCount - a.purchaseCount)
 
   return (
-    <div className="overflow-x-auto">
-      <table className="w-full text-left text-sm">
-        <thead>
-          <tr className="border-b border-border/60 text-xs uppercase tracking-wide text-text-sub">
-            <th className="py-2 pr-4">{content.table_extension}</th>
-            <th className="py-2 pr-4">{content.table_count}</th>
-            <th className="py-2 pr-4">{content.table_status}</th>
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-border/40">
-          {sorted.map((s) => (
-            <tr key={s.extensionId}>
-              <td className="py-3 pr-4">
-                <div className="flex items-center gap-3">
-                  <img
-                    src={s.image}
-                    alt={s.name}
-                    className="w-10 h-10 rounded-lg object-cover"
-                  />
-                  <span className="font-medium text-text-main">{s.name}</span>
-                </div>
-              </td>
-              <td className="py-3 pr-4 font-semibold text-text-main">
-                {s.purchaseCount}
-              </td>
-              <td className="py-3 pr-4">
-                <span className="inline-flex items-center rounded-full bg-surface border border-border px-2.5 py-0.5 text-xs font-semibold">
-                  {s.isPublic ? content.table_public : content.table_private}
-                </span>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div>
+      <div className="max-w-md mb-4">
+        <ExtensionSearch value={statsSearch.query} onChange={statsSearch.setQuery} />
+      </div>
+
+      {statsSearch.isSearching && statsSearch.results.length === 0 ? (
+        <p className="text-sm text-text-sub">
+          {(searchContent.empty_results || '').replace('{{query}}', statsSearch.query.trim())}
+        </p>
+      ) : (
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-sm">
+            <thead>
+              <tr className="border-b border-border/60 text-xs uppercase tracking-wide text-text-sub">
+                <th className="py-2 pr-4">{content.table_extension}</th>
+                <th className="py-2 pr-4">{content.table_count}</th>
+                <th className="py-2 pr-4">{content.table_status}</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-border/40">
+              {sorted.map((s) => (
+                <tr key={s.extensionId}>
+                  <td className="py-3 pr-4">
+                    <div className="flex items-center gap-3">
+                      <img
+                        src={s.image}
+                        alt={s.name}
+                        className="w-10 h-10 rounded-lg object-cover"
+                      />
+                      <span className="font-medium text-text-main">{s.name}</span>
+                    </div>
+                  </td>
+                  <td className="py-3 pr-4 font-semibold text-text-main">
+                    {s.purchaseCount}
+                  </td>
+                  <td className="py-3 pr-4">
+                    <span className="inline-flex items-center rounded-full bg-surface border border-border px-2.5 py-0.5 text-xs font-semibold">
+                      {s.isPublic ? content.table_public : content.table_private}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   )
 }

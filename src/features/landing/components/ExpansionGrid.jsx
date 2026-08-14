@@ -1,12 +1,16 @@
 import React from 'react'
 import Card from './Card'
 import Skeleton from '../../../shared/components/Skeleton'
+import ExtensionSearch from '../../../shared/components/ExtensionSearch'
 import useExpansionGrid from '../hooks/useExpansionGrid'
+import useExtensionSearch from '../../../shared/hooks/useExtensionSearch'
 import useContent from '../../../shared/hooks/useContent'
 
 export default function ExpansionGrid() {
   const { extensions, loading, error } = useExpansionGrid()
   const { content } = useContent('landing.grid')
+  const { content: searchContent } = useContent('extensions.search')
+  const { query, setQuery, results, isSearching } = useExtensionSearch(extensions)
 
   if (loading) {
     return (
@@ -48,25 +52,35 @@ export default function ExpansionGrid() {
           {content.title}
         </h2>
         <div className="h-1 w-16 rounded-full bg-plumbob/60" />
+
+        <div className="mt-6 max-w-md">
+          <ExtensionSearch value={query} onChange={setQuery} />
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 3xl:grid-cols-5 4k:grid-cols-6 gap-6">
-        {extensions.map((pack, index) => (
-          <div key={pack.id} style={{ animationDelay: `${index * 60}ms` }} className="animate-slide-up">
-            <Card
-              image={pack.image || pack.imagen || ''}
-              category={pack.category}
-              title={pack.name}
-              description={pack.description || pack.aboutGame || ''}
-              price={pack.price ? pack.price.toLocaleString('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }) : ''}
-              ctaLabel={content.cta_text}
-              href={`/expansion/${pack.id}`}
-              isBeta={pack.isPublic === false}
-              betaBadgeLabel={content.beta_badge_label}
-            />
-          </div>
-        ))}
-      </div>
+      {isSearching && results.length === 0 ? (
+        <p className="text-sm text-text-sub">
+          {(searchContent.empty_results || '').replace('{{query}}', query.trim())}
+        </p>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 3xl:grid-cols-5 4k:grid-cols-6 gap-6">
+          {results.map((pack, index) => (
+            <div key={pack.id} style={{ animationDelay: `${index * 60}ms` }} className="animate-slide-up">
+              <Card
+                image={pack.image || pack.imagen || ''}
+                category={pack.category}
+                title={pack.name}
+                description={pack.description || pack.aboutGame || ''}
+                price={pack.price ? pack.price.toLocaleString('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }) : ''}
+                ctaLabel={content.cta_text}
+                href={`/expansion/${pack.id}`}
+                isBeta={pack.isPublic === false}
+                betaBadgeLabel={content.beta_badge_label}
+              />
+            </div>
+          ))}
+        </div>
+      )}
     </section>
   )
 }

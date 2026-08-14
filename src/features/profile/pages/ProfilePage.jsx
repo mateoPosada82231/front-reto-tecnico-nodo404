@@ -5,16 +5,23 @@ import Button from "../../../shared/components/Button";
 import InputField from "../../../shared/components/InputField";
 import SelectField from "../../../shared/components/SelectField";
 import Skeleton from "../../../shared/components/Skeleton";
+import ExtensionSearch from "../../../shared/components/ExtensionSearch";
 import ProfileAvatar from "../components/ProfileAvatar";
 import ChangePasswordModal from "../components/ChangePasswordModal";
 import useProfile from "../hooks/useProfile";
+import useExtensionSearch from "../../../shared/hooks/useExtensionSearch";
 import useContent from "../../../shared/hooks/useContent";
 import useConfig from "../../../shared/hooks/useConfig";
+
+function purchaseSearchText(purchase) {
+  return purchase?.extension?.searchText || purchase?.extension?.name || "";
+}
 
 function ProfilePage() {
   const { content } = useContent("profile.page");
   const { content: selectDefault } = useContent("select.default");
   const { content: detailContent } = useContent("landing.detail");
+  const { content: searchContent } = useContent("extensions.search");
   const { config: countries } = useConfig("countries");
   const {
     user,
@@ -36,6 +43,13 @@ function ProfilePage() {
   } = useProfile();
 
   const [passwordModalOpen, setPasswordModalOpen] = useState(false);
+
+  const purchasesSearch = useExtensionSearch(purchases, {
+    getSearchableText: purchaseSearchText,
+  });
+  const betaSearch = useExtensionSearch(betaPurchases, {
+    getSearchableText: purchaseSearchText,
+  });
 
   const paymentLabel = (method) =>
     method === "PAYPAL" ? detailContent.payment_method_paypal : detailContent.payment_method_card;
@@ -203,31 +217,43 @@ function ProfilePage() {
           )}
 
           {!loadingPurchases && purchases.length > 0 && (
-            <div className="space-y-3">
-              {purchases.map((purchase) => (
-                <div
-                  key={purchase.id}
-                  className="flex items-center gap-4 rounded-xl border border-border/60 p-3"
-                >
-                  <img
-                    src={purchase.extension.image}
-                    alt={purchase.extension.name}
-                    className="w-16 h-16 rounded-lg object-cover"
-                  />
-                  <div className="flex-1">
-                    <p className="font-semibold text-text-main">{purchase.extension.name}</p>
-                    <p className="text-xs text-text-sub">
-                      {(content.purchases_item_meta || "")
-                        .replace("{{date}}", purchase.date)
-                        .replace("{{paymentMethod}}", paymentLabel(purchase.paymentMethod))}
-                    </p>
-                  </div>
-                  <p className="font-semibold">
-                    ${purchase.extension.price.toLocaleString("es-CO")}
-                  </p>
+            <>
+              <div className="max-w-md mb-4">
+                <ExtensionSearch value={purchasesSearch.query} onChange={purchasesSearch.setQuery} />
+              </div>
+
+              {purchasesSearch.isSearching && purchasesSearch.results.length === 0 ? (
+                <p className="text-sm text-text-sub">
+                  {(searchContent.empty_results || "").replace("{{query}}", purchasesSearch.query.trim())}
+                </p>
+              ) : (
+                <div className="space-y-3">
+                  {purchasesSearch.results.map((purchase) => (
+                    <div
+                      key={purchase.id}
+                      className="flex items-center gap-4 rounded-xl border border-border/60 p-3"
+                    >
+                      <img
+                        src={purchase.extension.image}
+                        alt={purchase.extension.name}
+                        className="w-16 h-16 rounded-lg object-cover"
+                      />
+                      <div className="flex-1">
+                        <p className="font-semibold text-text-main">{purchase.extension.name}</p>
+                        <p className="text-xs text-text-sub">
+                          {(content.purchases_item_meta || "")
+                            .replace("{{date}}", purchase.date)
+                            .replace("{{paymentMethod}}", paymentLabel(purchase.paymentMethod))}
+                        </p>
+                      </div>
+                      <p className="font-semibold">
+                        ${purchase.extension.price.toLocaleString("es-CO")}
+                      </p>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
+              )}
+            </>
           )}
         </div>
 
@@ -244,30 +270,42 @@ function ProfilePage() {
             )}
 
             {!loadingPurchases && betaPurchases.length > 0 && (
-              <div className="space-y-3">
-                {betaPurchases.map((purchase) => (
-                  <div
-                    key={purchase.id}
-                    className="flex items-center gap-4 rounded-xl border border-plumbob/40 bg-plumbob/5 p-3"
-                  >
-                    <img
-                      src={purchase.extension.image}
-                      alt={purchase.extension.name}
-                      className="w-16 h-16 rounded-lg object-cover"
-                    />
-                    <div className="flex-1">
-                      <p className="font-semibold text-text-main">{purchase.extension.name}</p>
-                      <p className="text-xs text-text-sub">
-                        {(content.beta_extensions_item_meta || "")
-                          .replace("{{date}}", purchase.date)}
-                      </p>
-                    </div>
-                    <span className="inline-flex items-center gap-1 rounded-full bg-plumbob/15 border border-plumbob/30 px-2.5 py-0.5 text-xs font-semibold text-plumbob">
-                      {content.beta_badge}
-                    </span>
+              <>
+                <div className="max-w-md mb-4">
+                  <ExtensionSearch value={betaSearch.query} onChange={betaSearch.setQuery} />
+                </div>
+
+                {betaSearch.isSearching && betaSearch.results.length === 0 ? (
+                  <p className="text-sm text-text-sub">
+                    {(searchContent.empty_results || "").replace("{{query}}", betaSearch.query.trim())}
+                  </p>
+                ) : (
+                  <div className="space-y-3">
+                    {betaSearch.results.map((purchase) => (
+                      <div
+                        key={purchase.id}
+                        className="flex items-center gap-4 rounded-xl border border-plumbob/40 bg-plumbob/5 p-3"
+                      >
+                        <img
+                          src={purchase.extension.image}
+                          alt={purchase.extension.name}
+                          className="w-16 h-16 rounded-lg object-cover"
+                        />
+                        <div className="flex-1">
+                          <p className="font-semibold text-text-main">{purchase.extension.name}</p>
+                          <p className="text-xs text-text-sub">
+                            {(content.beta_extensions_item_meta || "")
+                              .replace("{{date}}", purchase.date)}
+                          </p>
+                        </div>
+                        <span className="inline-flex items-center gap-1 rounded-full bg-plumbob/15 border border-plumbob/30 px-2.5 py-0.5 text-xs font-semibold text-plumbob">
+                          {content.beta_badge}
+                        </span>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
+                )}
+              </>
             )}
           </div>
         )}
