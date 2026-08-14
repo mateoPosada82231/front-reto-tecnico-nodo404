@@ -49,7 +49,7 @@ function ResetPasswordPage() {
       <section className="flex flex-col items-center justify-center gap-8 py-12 animate-fade-in">
         <div className="w-full max-w-md space-y-5 rounded-2xl bg-surface border border-border/50 p-8 shadow-2xl shadow-black/20 text-center">
           <Alert variant="error">Este link no es válido.</Alert>
-          <Link to="/forgot-password" className="text-sm text-primary hover:underline">
+          <Link to="/forgot-password" className="text-sm text-plumbob underline hover:text-plumbob-light">
             Pedir un nuevo link
           </Link>
         </div>
@@ -62,7 +62,7 @@ function ResetPasswordPage() {
       <section className="flex flex-col items-center justify-center gap-8 py-12 animate-fade-in">
         <div className="w-full max-w-md space-y-5 rounded-2xl bg-surface border border-border/50 p-8 shadow-2xl shadow-black/20 text-center">
           <Alert variant="error">Este link venció o no es válido.</Alert>
-          <Link to="/forgot-password" className="text-sm text-primary hover:underline">
+          <Link to="/forgot-password" className="text-sm text-plumbob underline hover:text-plumbob-light">
             Pedir un nuevo link
           </Link>
         </div>

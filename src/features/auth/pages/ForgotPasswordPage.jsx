@@ -69,7 +69,7 @@ function ForgotPasswordPage() {
         )}
 
         <div className="text-center">
-          <Link to="/login" className="text-sm text-primary hover:underline">
+          <Link to="/login" className="text-sm text-plumbob underline hover:text-plumbob-light">
             ← Volver a iniciar sesión
           </Link>
         </div>

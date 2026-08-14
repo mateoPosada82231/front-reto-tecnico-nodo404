@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import InputField from "../../../shared/components/InputField";
 import SelectField from "../../../shared/components/SelectField";
 import Button from "../../../shared/components/Button";
@@ -142,6 +142,13 @@ function RegisterForm() {
       </Button>
 
       <SocialButtons />
+
+      <p className="text-center text-sm text-text-sub">
+        {content.has_account_text}{" "}
+        <Link to="/login" className="text-plumbob underline hover:text-plumbob-light">
+          {content.has_account_link}
+        </Link>
+      </p>
     </form>
   );
 }

@@ -53,7 +53,7 @@ function LoginForm() {
       />
 
       <div className="text-right">
-        <Link to="/forgot-password" className="text-sm text-primary hover:underline">
+        <Link to="/forgot-password" className="text-sm text-plumbob underline hover:text-plumbob-light">
           {content.forgot_password_link}
         </Link>
       </div>
@@ -68,6 +68,13 @@ function LoginForm() {
       </Button>
 
       <SocialButtons mode="login" />
+
+      <p className="text-center text-sm text-text-sub">
+        {content.no_account_text}{" "}
+        <Link to="/registro" className="text-plumbob underline hover:text-plumbob-light">
+          {content.no_account_link}
+        </Link>
+      </p>
     </form>
   );
 }
