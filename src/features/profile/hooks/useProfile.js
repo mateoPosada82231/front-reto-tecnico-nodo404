@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import useAuthStore from "../../../shared/stores/useAuthStore";
 import useContent from "../../../shared/hooks/useContent";
 import { getFriendlyError } from "../../../shared/utils/errors";
@@ -130,7 +130,10 @@ export default function useProfile() {
     [email, form, validate, content, errorsContent, user],
   );
 
-  const betaPurchases = purchases.filter((p) => p.extension?.isPublic === false);
+  const betaPurchases = useMemo(
+    () => purchases.filter((p) => p.extension?.isPublic === false),
+    [purchases],
+  );
 
   return {
     user,
