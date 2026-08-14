@@ -55,7 +55,7 @@ function LoginForm() {
 
       <div className="text-right">
         <Link to="/forgot-password" className="text-sm text-primary hover:underline">
-          ¿Olvidaste tu contraseña?
+          {content.forgot_password_link}
         </Link>
       </div>
 
