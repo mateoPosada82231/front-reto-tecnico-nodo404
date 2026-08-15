@@ -72,7 +72,7 @@ export default function ChangePasswordModal({ open, onClose }) {
           <div className="flex justify-center">{footer}</div>
         </div>
       ) : (
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form noValidate onSubmit={handleSubmit} className="space-y-4">
           <div className="flex justify-center mb-4">
             <div className="w-14 h-14 rounded-full bg-plumbob/15 flex items-center justify-center">
               <KeyRound className="h-7 w-7 text-plumbob" />

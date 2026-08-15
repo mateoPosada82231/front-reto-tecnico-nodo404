@@ -26,7 +26,12 @@ function Button({
 
   const content = (
     <>
-      {loading && <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />}
+      {loading && (
+        <>
+          <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+          <span className="sr-only">Cargando</span>
+        </>
+      )}
       {children}
     </>
   )
@@ -44,7 +49,7 @@ function Button({
   }
 
   return (
-    <button type={type} disabled={isDisabled} onClick={onClick} className={classes} {...props}>
+      <button type={type} disabled={isDisabled} aria-busy={loading} onClick={onClick} className={classes} {...props}>
       {content}
     </button>
   )

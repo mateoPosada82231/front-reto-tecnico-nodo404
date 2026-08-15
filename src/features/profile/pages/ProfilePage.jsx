@@ -108,7 +108,7 @@ function ProfilePage() {
           </div>
         )}
 
-        <form onSubmit={saveProfile} className="space-y-5">
+        <form noValidate onSubmit={saveProfile} className="space-y-5">
           <InputField
             label={content.fullname_label}
             name="fullName"

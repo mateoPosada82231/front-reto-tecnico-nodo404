@@ -1,4 +1,7 @@
-import { useId } from 'react'
+import { useId, useState, useEffect } from 'react'
+import { Eye, EyeOff } from 'lucide-react'
+
+const SHOW_PASSWORD_TIMEOUT_MS = 1000
 
 function InputField({
   label,
@@ -14,6 +17,15 @@ function InputField({
 }) {
   const generatedId = useId()
   const id = name || generatedId
+  const [showPassword, setShowPassword] = useState(false)
+  const isPassword = type === 'password'
+  const inputType = isPassword ? (showPassword ? 'text' : 'password') : type
+
+  useEffect(() => {
+    if (!showPassword) return
+    const timer = setTimeout(() => setShowPassword(false), SHOW_PASSWORD_TIMEOUT_MS)
+    return () => clearTimeout(timer)
+  }, [showPassword])
 
   return (
     <div className={`flex flex-col gap-1.5 ${className}`}>
@@ -23,21 +35,35 @@ function InputField({
           {required && <span className="text-plumbob ml-0.5">*</span>}
         </label>
       )}
-      <input
-        id={id}
-        name={name}
-        type={type}
-        value={value}
-        onChange={onChange}
-        placeholder={placeholder}
-        required={required}
-        aria-invalid={Boolean(error)}
-        aria-describedby={error ? `${id}-error` : undefined}
-        className={`rounded-xl border px-4 py-2.5 text-sm text-text-primary placeholder:text-text-dim bg-slate-surface transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-plumbob/40 focus:border-plumbob ${
-          error ? 'border-red-500/60 focus:ring-red-500/30' : 'border-slate-border hover:border-text-dim'
-        }`}
-        {...props}
-      />
+      <div className="relative">
+        <input
+          id={id}
+          name={name}
+          type={inputType}
+          value={value}
+          onChange={onChange}
+          placeholder={placeholder}
+          required={required}
+          aria-invalid={Boolean(error)}
+          aria-describedby={error ? `${id}-error` : undefined}
+          className={`w-full rounded-xl border px-4 py-2.5 text-sm text-text-primary placeholder:text-text-dim bg-slate-surface transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-plumbob/40 focus:border-plumbob ${
+            isPassword ? 'pr-11' : ''
+          } ${
+            error ? 'border-red-500/60 focus:ring-red-500/30' : 'border-slate-border hover:border-text-dim'
+          }`}
+          {...props}
+        />
+        {isPassword && (
+          <button
+            type="button"
+            onClick={() => setShowPassword((prev) => !prev)}
+            aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-text-dim hover:text-text-muted transition-colors duration-200 cursor-pointer"
+          >
+            {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+          </button>
+        )}
+      </div>
       {error && (
         <p id={`${id}-error`} className="text-xs text-red-400 mt-0.5">
           {error}
