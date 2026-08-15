@@ -8,7 +8,7 @@ function ThemeToggle({ theme, onToggle }) {
   return (
     <button
       onClick={onToggle}
-      className="relative p-2 rounded-lg text-text-dim hover:text-text-primary hover:bg-slate-surface/50 transition-all duration-200 cursor-pointer"
+      className="relative p-2 rounded-lg text-text-dim hover:text-text-primary hover:bg-surface/50 transition-all duration-200 cursor-pointer"
       aria-label={isDark ? content.light_aria : content.dark_aria}
     >
       <span className="relative block w-5 h-5">

@@ -4,6 +4,7 @@ import { Check, Circle } from 'lucide-react'
 function PasswordRequirements({ value = '', requirements = [], visible = false }) {
   const [show, setShow] = useState(false)
   const firstRender = useRef(true)
+  const prevMet = useRef({})
 
   useEffect(() => {
     if (visible) {
@@ -27,19 +28,23 @@ function PasswordRequirements({ value = '', requirements = [], visible = false }
         show ? 'max-h-60 opacity-100 mt-1' : 'max-h-0 opacity-0'
       }`}
     >
-      <ul className="space-y-1 rounded-xl border border-border/40 bg-slate-surface/50 px-3.5 py-2.5">
+      <ul className="space-y-1 rounded-xl border border-border/40 bg-surface/50 px-3.5 py-2.5">
         {requirements.map((req) => {
           const met = Boolean(req.test(value))
+          const wasMet = prevMet.current[req.key]
+          if (met && !wasMet) prevMet.current[req.key] = true
+          const justMet = met && !wasMet
+
           return (
             <li
               key={req.key}
-              className={`flex items-center gap-2 text-xs transition-colors duration-200 ${
+              className={`flex items-start gap-2 text-xs transition-colors duration-200 ${
                 met ? 'text-plumbob' : 'text-text-sub'
               }`}
             >
               <span
                 className={`flex h-4 w-4 shrink-0 items-center justify-center transition-transform duration-200 ${
-                  met ? 'check-pop' : ''
+                  justMet ? 'check-pop' : ''
                 }`}
               >
                 {met ? (
@@ -48,16 +53,12 @@ function PasswordRequirements({ value = '', requirements = [], visible = false }
                   <Circle className="h-2.5 w-2.5 opacity-40" />
                 )}
               </span>
-              <span className="relative inline-block">
-                <span className={`transition-colors duration-200 ${met ? 'line-through' : ''}`}>
-                  {req.label}
-                </span>
-                <span
-                  className={`pointer-events-none absolute left-0 top-1/2 h-px origin-left bg-plumbob transition-transform duration-300 ease-out ${
-                    met ? 'scale-x-100' : 'scale-x-0'
-                  }`}
-                  style={{ width: '100%', marginTop: '-0.5px' }}
-                />
+              <span
+                className={`decoration-plumbob decoration-2 transition-all duration-300 ease-out ${
+                  met ? 'line-through opacity-60' : 'no-underline opacity-100'
+                }`}
+              >
+                {req.label}
               </span>
             </li>
           )

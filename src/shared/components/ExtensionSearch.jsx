@@ -1,4 +1,4 @@
-import { Search, X } from "lucide-react";
+import { Search } from "lucide-react";
 import useContent from "../hooks/useContent";
 
 function ExtensionSearch({ value, onChange, className = "", ...props }) {
@@ -16,7 +16,7 @@ function ExtensionSearch({ value, onChange, className = "", ...props }) {
         onChange={(e) => onChange(e.target.value)}
         placeholder={content.placeholder}
         aria-label={content.search_aria}
-        className="w-full rounded-xl border border-slate-border bg-slate-surface py-2.5 pl-11 pr-11 text-sm text-text-primary placeholder:text-text-dim transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-plumbob/40 focus:border-plumbob hover:border-text-dim"
+        className="w-full min-w-0 rounded-xl border border-border bg-surface py-2.5 pl-11 pr-11 text-sm text-text-primary placeholder:text-text-dim transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-plumbob/50 focus:border-plumbob-light hover:border-text-dim"
         {...props}
       />
       {value && (

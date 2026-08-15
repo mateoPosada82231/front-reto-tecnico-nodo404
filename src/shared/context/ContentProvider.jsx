@@ -92,6 +92,9 @@ const FALLBACK = {
     submit_text: 'Iniciar Sesión',
     loading_text: 'Iniciando sesión...',
     success_message: 'Inicio de sesión exitoso. Redirigiendo...',
+    forgot_password_link: '¿Olvidaste tu contraseña?',
+    no_account_text: '¿No tienes cuenta?',
+    no_account_link: 'Regístrate',
   },
   'auth.register': {
     title: 'Crear Cuenta',
@@ -110,6 +113,8 @@ const FALLBACK = {
     submit_text: 'Crear Cuenta',
     loading_text: 'Creando cuenta...',
     success_message: 'Cuenta creada con éxito. Ya puedes iniciar sesión.',
+    has_account_text: '¿Ya tienes cuenta?',
+    has_account_link: 'Inicia sesión',
   },
   'auth.social': {
     divider_login: 'O inicia sesión con',
@@ -383,6 +388,9 @@ const FALLBACK_EN = {
     submit_text: 'Log In',
     loading_text: 'Logging in...',
     success_message: 'Log in successful. Redirecting...',
+    forgot_password_link: 'Forgot your password?',
+    no_account_text: 'No account yet?',
+    no_account_link: 'Sign up',
   },
   'auth.register': {
     title: 'Create Account',
@@ -401,6 +409,8 @@ const FALLBACK_EN = {
     submit_text: 'Create Account',
     loading_text: 'Creating account...',
     success_message: 'Account created successfully. You can now log in.',
+    has_account_text: 'Already have an account?',
+    has_account_link: 'Log in',
   },
   'auth.social': {
     divider_login: 'Or log in with',

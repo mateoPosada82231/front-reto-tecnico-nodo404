@@ -172,7 +172,7 @@ function BroadcastTab({ content, subject, setSubject, body, setBody, broadcastin
           onChange={(e) => setBody(e.target.value)}
           required
           rows={6}
-          className="rounded-xl border px-4 py-2.5 text-sm text-text-primary placeholder:text-text-dim bg-slate-surface transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-plumbob/40 focus:border-plumbob border-slate-border hover:border-text-dim"
+          className="w-full min-w-0 rounded-xl border px-4 py-2.5 text-sm text-text-primary placeholder:text-text-dim bg-surface transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-plumbob/50 focus:border-plumbob-light border-border hover:border-text-dim"
         />
       </div>
       <Feedback feedback={feedback} />

@@ -1,5 +1,5 @@
 import React from 'react'
-import { ExtensionsProvider } from '../context/ExtensionsContext'
+import { ExtensionsProvider } from '../context/ExtensionsProvider'
 import HeroSection from '../components/HeroSection'
 import ExpansionGrid from '../components/ExpansionGrid'
 import WelcomeModal from '../components/WelcomeModal'
