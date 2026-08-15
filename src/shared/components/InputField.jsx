@@ -19,6 +19,7 @@ function InputField({
   const id = name || generatedId
   const [showPassword, setShowPassword] = useState(false)
   const isPassword = type === 'password'
+  const isDate = type === 'date'
   const inputType = isPassword ? (showPassword ? 'text' : 'password') : type
 
   useEffect(() => {
@@ -46,8 +47,10 @@ function InputField({
           required={required}
           aria-invalid={Boolean(error)}
           aria-describedby={error ? `${id}-error` : undefined}
-          className={`min-w-0 w-full rounded-xl border px-4 py-2.5 text-sm text-text-main placeholder:text-text-dim bg-surface transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-plumbob/40 focus:border-plumbob ${
+          className={`min-w-0 w-full max-w-full rounded-xl border px-4 py-2.5 text-sm text-text-main placeholder:text-text-dim bg-surface transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-plumbob/40 focus:border-plumbob ${
             isPassword ? 'pr-11' : ''
+          } ${
+            isDate ? '[&::-webkit-datetime-edit]:w-full [&::-webkit-date-and-time-value]:w-full [&::-webkit-date-and-time-value]:text-left' : ''
           } ${
             error ? 'border-red-500/60 focus:ring-red-500/30' : 'border-border hover:border-text-dim'}
           }`}
