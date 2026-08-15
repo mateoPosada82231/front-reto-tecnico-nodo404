@@ -32,10 +32,10 @@ function SelectField({
         value={value}
         onChange={onChange}
         disabled={disabled}
-        className={`w-full min-w-0 rounded-xl border px-4 py-2.5 text-sm bg-surface text-text-main transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-plumbob/40 focus:border-plumbob ${
+        className={`w-full min-w-0 rounded-xl border px-4 py-2.5 text-sm bg-surface text-text-main transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-plumbob/50 focus:border-plumbob ${
           error
             ? 'border-red-500/60 focus:ring-red-500/30'
-            : 'border-border hover:border-text-dim'
+            : 'border-border hover:border-text-dim focus:ring-plumbob/50 focus:border-plumbob-light'
         } ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
       >
         <option value="">{placeholder}</option>
