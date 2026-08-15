@@ -28,7 +28,7 @@ function InputField({
   }, [showPassword])
 
   return (
-    <div className={`flex flex-col gap-1.5 ${className}`}>
+    <div className={`min-w-0 flex flex-col gap-1.5 ${className}`}>
       {label && (
         <label htmlFor={id} className="text-sm font-medium text-text-muted">
           {label}
@@ -46,10 +46,10 @@ function InputField({
           required={required}
           aria-invalid={Boolean(error)}
           aria-describedby={error ? `${id}-error` : undefined}
-          className={`w-full rounded-xl border px-4 py-2.5 text-sm text-text-primary placeholder:text-text-dim bg-slate-surface transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-plumbob/40 focus:border-plumbob ${
+          className={`min-w-0 w-full rounded-xl border px-4 py-2.5 text-sm text-text-main placeholder:text-text-dim bg-surface transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-plumbob/40 focus:border-plumbob ${
             isPassword ? 'pr-11' : ''
           } ${
-            error ? 'border-red-500/60 focus:ring-red-500/30' : 'border-slate-border'}
+            error ? 'border-red-500/60 focus:ring-red-500/30' : 'border-border hover:border-text-dim'}
           }`}
           {...props}
         />
