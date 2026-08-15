@@ -1,4 +1,7 @@
-import { useId } from 'react'
+import { useId, useState, useEffect } from 'react'
+import { Eye, EyeOff } from 'lucide-react'
+
+const SHOW_PASSWORD_TIMEOUT_MS = 1000
 
 function InputField({
   label,
@@ -14,9 +17,19 @@ function InputField({
 }) {
   const generatedId = useId()
   const id = name || generatedId
+  const [showPassword, setShowPassword] = useState(false)
+  const isPassword = type === 'password'
+  const isDate = type === 'date'
+  const inputType = isPassword ? (showPassword ? 'text' : 'password') : type
+
+  useEffect(() => {
+    if (!showPassword) return
+    const timer = setTimeout(() => setShowPassword(false), SHOW_PASSWORD_TIMEOUT_MS)
+    return () => clearTimeout(timer)
+  }, [showPassword])
 
   return (
-    <div className={`flex flex-col gap-1.5 ${className}`}>
+    <div className={`min-w-0 flex flex-col gap-1.5 ${className}`}>
       {label && (
         <label htmlFor={id} className="text-sm font-medium text-text-muted">
           {label}

@@ -10,20 +10,19 @@ function LoginForm() {
   const navigate = useNavigate();
   const { content } = useContent("auth.login");
   const { content: placeholders } = useContent("placeholders");
-  const { content: validation } = useContent("validation.login");
   const { content: errorsContent } = useContent("errors.common");
   const { form, errors, serverError, loading, success, handleChange, handleSubmit } =
     useLoginFormStore();
 
   const submit = (e) =>
     handleSubmit(e, {
-      validation,
       errorsContent,
       onSuccess: () => setTimeout(() => navigate("/"), 1500),
     });
 
   return (
     <form
+      noValidate
       onSubmit={submit}
       className="w-full max-w-md space-y-5 rounded-2xl bg-surface border border-border/50 p-8 shadow-2xl shadow-black/20 animate-scale-in"
     >
@@ -54,8 +53,8 @@ function LoginForm() {
       />
 
       <div className="text-right">
-        <Link to="/forgot-password" className="text-sm text-primary hover:underline">
-          ¿Olvidaste tu contraseña?
+        <Link to="/forgot-password" className="text-sm text-plumbob underline hover:text-plumbob-light">
+          {content.forgot_password_link}
         </Link>
       </div>
 
@@ -69,6 +68,13 @@ function LoginForm() {
       </Button>
 
       <SocialButtons mode="login" />
+
+      <p className="text-center text-sm text-text-sub">
+        {content.no_account_text}{" "}
+        <Link to="/registro" className="text-plumbob underline hover:text-plumbob-light">
+          {content.no_account_link}
+        </Link>
+      </p>
     </form>
   );
 }

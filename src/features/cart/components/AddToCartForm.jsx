@@ -2,6 +2,7 @@ import { useState } from "react";
 import useContent from "../../../shared/hooks/useContent";
 import Button from "../../../shared/components/Button";
 import SelectField from "../../../shared/components/SelectField";
+import { PLATFORM_OPTIONS } from "../../../shared/constants/platformOptions";
 
 function AddToCartForm({ onSubmit, onCancel, loading }) {
   const { content } = useContent("landing.detail");
@@ -16,12 +17,6 @@ function AddToCartForm({ onSubmit, onCancel, loading }) {
     { value: "ES", label: content.language_es },
     { value: "EN", label: content.language_en },
   ];
-  const PLATFORM_OPTIONS = [
-    { value: "PC", label: "PC" },
-    { value: "PS5", label: "PlayStation 5" },
-    { value: "XBOX", label: "Xbox" },
-  ];
-
   const validate = () => {
     const errs = {};
     if (!formData.language) errs.language = errorsContent.required_field;
@@ -42,7 +37,7 @@ function AddToCartForm({ onSubmit, onCancel, loading }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="mt-4 space-y-4 p-4 border border-border rounded-xl bg-surface">
+    <form noValidate onSubmit={handleSubmit} className="mt-4 space-y-4 p-4 border border-border rounded-xl bg-surface">
       <SelectField
         label={content.language_label}
         name="language"

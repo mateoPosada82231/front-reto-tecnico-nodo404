@@ -59,6 +59,7 @@ export default function useAdmin() {
   const handleBroadcast = useCallback(
     async (e) => {
       e?.preventDefault()
+      if (!subject.trim() || !body.trim()) return
       setBroadcasting(true)
       setBroadcastFeedback(null)
       try {

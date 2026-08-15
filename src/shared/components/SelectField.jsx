@@ -1,3 +1,4 @@
+import { useId } from 'react'
 import useContent from '../hooks/useContent'
 
 function SelectField({
@@ -13,17 +14,20 @@ function SelectField({
 }) {
   const { content: selectDefault } = useContent('select.default')
   const placeholder = defaultPlaceholder ?? selectDefault.placeholder
+  const generatedId = useId()
+  const id = name || generatedId
 
   return (
     <div className="flex flex-col gap-1.5">
       {label && (
-        <label className="text-sm font-medium text-text-sub">
+          <label htmlFor={id} className="text-sm font-medium text-text-sub">
           {label}
           {required && <span className="text-plumbob ml-0.5">*</span>}
         </label>
       )}
 
       <select
+        id={id}
         name={name}
         value={value}
         onChange={onChange}
@@ -44,7 +48,7 @@ function SelectField({
       </select>
 
       {error && (
-        <p className="text-xs text-red-400 mt-0.5">{error}</p>
+          <p id={`${id}-error`} className="text-xs text-red-400 mt-0.5">{error}</p>
       )}
     </div>
   )
