@@ -41,6 +41,8 @@
   --animate-glow-pulse: glowPulse 2.5s ease-in-out infinite;
   --animate-beta-shimmer: betaShimmer 3s ease-in-out infinite;
   --animate-float: float 3s ease-in-out infinite;
+  --animate-requirement-met: requirementMet 0.45s ease-out;
+  --animate-check-pop: checkPop 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 
   --breakpoint-sm: 640px;
   --breakpoint-md: 768px;
@@ -165,6 +167,45 @@
   }
 }
 
+@keyframes requirementMet {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  40% {
+    opacity: 0.5;
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes checkPop {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.25);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes strikeDraw {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
 /* ─── Base layer ─── */
 @layer base {
   html {
@@ -255,6 +296,14 @@
   backdrop-filter: blur(1.25rem);
   -webkit-backdrop-filter: blur(1.25rem);
   border: 0.0625rem solid var(--color-glass-border);
+}
+
+@utility requirement-met {
+  animation: requirementMet 0.45s ease-out;
+}
+
+@utility check-pop {
+  animation: checkPop 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .hero-overlay {
