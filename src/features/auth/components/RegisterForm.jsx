@@ -1,9 +1,11 @@
-import { useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import InputField from "../../../shared/components/InputField";
 import SelectField from "../../../shared/components/SelectField";
 import Button from "../../../shared/components/Button";
 import Alert from "../../../shared/components/Alert";
+import PasswordRequirements from "../../../shared/components/PasswordRequirements";
+import { buildPasswordRequirements } from "../../../shared/utils/passwordRules";
 import SocialButtons from "./SocialButtons";
 import useRegisterFormStore from "../stores/useRegisterFormStore";
 import useUsersStore from "../../../shared/stores/useUsersStore";
@@ -20,6 +22,7 @@ function RegisterForm() {
   const { config: countries } = useConfig("countries");
   const { form, errors, serverError, loading, success, handleChange, handleSubmit } =
     useRegisterFormStore();
+  const [passwordFocused, setPasswordFocused] = useState(false);
 
   useEffect(() => {
     useUsersStore.getState().loadEmails();
@@ -31,6 +34,8 @@ function RegisterForm() {
       errorsContent,
       onSuccess: () => setTimeout(() => navigate("/login"), 3000),
     });
+
+  const passwordRequirements = buildPasswordRequirements(validation);
 
   return (
     <form
@@ -109,17 +114,26 @@ function RegisterForm() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-        <InputField
-          label={content.password_label}
-          name="password"
-          type="password"
-          value={form.password}
-          onChange={handleChange}
-          error={errors.password}
-          placeholder={content.password_placeholder}
-          required
-          minLength={8}
-        />
+        <div className="flex flex-col gap-1.5">
+          <InputField
+            label={content.password_label}
+            name="password"
+            type="password"
+            value={form.password}
+            onChange={handleChange}
+            error={errors.password}
+            placeholder={content.password_placeholder}
+            required
+            minLength={8}
+            onFocus={() => setPasswordFocused(true)}
+            onBlur={() => setPasswordFocused(false)}
+          />
+          <PasswordRequirements
+            value={form.password}
+            requirements={passwordRequirements}
+            visible={passwordFocused || Boolean(form.password)}
+          />
+        </div>
         <InputField
           label={content.confirm_password_label}
           name="confirmPassword"

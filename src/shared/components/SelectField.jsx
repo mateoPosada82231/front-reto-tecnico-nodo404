@@ -32,9 +32,7 @@ function SelectField({
         value={value}
         onChange={onChange}
         disabled={disabled}
-        aria-invalid={Boolean(error)}
-        aria-describedby={error ? `${id}-error` : undefined}
-        className={`rounded-xl border px-4 py-2.5 text-sm bg-surface text-text-main transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-plumbob/40 focus:border-plumbob ${
+        className={`w-full min-w-0 rounded-xl border px-4 py-2.5 text-sm bg-surface text-text-main transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-plumbob/40 focus:border-plumbob ${
           error
             ? 'border-red-500/60 focus:ring-red-500/30'
             : 'border-border hover:border-text-dim'

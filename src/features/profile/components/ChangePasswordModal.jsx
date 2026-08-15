@@ -1,8 +1,10 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { KeyRound, CheckCircle } from 'lucide-react'
 import Modal from '../../../shared/components/Modal'
 import InputField from '../../../shared/components/InputField'
 import Button from '../../../shared/components/Button'
+import PasswordRequirements from '../../../shared/components/PasswordRequirements'
+import { buildPasswordRequirements } from '../../../shared/utils/passwordRules'
 import useChangePassword from '../hooks/useChangePassword'
 import useContent from '../../../shared/hooks/useContent'
 
@@ -20,6 +22,7 @@ export default function ChangePasswordModal({ open, onClose }) {
     submit,
     close,
   } = useChangePassword()
+  const [newPasswordFocused, setNewPasswordFocused] = useState(false)
 
   const isSuccess = feedback?.type === 'success'
 
@@ -34,6 +37,8 @@ export default function ChangePasswordModal({ open, onClose }) {
       setTimeout(() => onClose?.(), 1500)
     }
   }
+
+  const passwordRequirements = buildPasswordRequirements(validation)
 
   const footer = isSuccess ? (
     <Button variant="primary" onClick={onClose}>
@@ -95,16 +100,25 @@ export default function ChangePasswordModal({ open, onClose }) {
             required
             autoFocus
           />
-          <InputField
-            label={content.new_label}
-            name="newPassword"
-            type="password"
-            value={form.newPassword}
-            onChange={handleChange}
-            error={errors.newPassword}
-            required
-            placeholder={content.new_placeholder}
-          />
+          <div className="flex flex-col gap-1.5">
+            <InputField
+              label={content.new_label}
+              name="newPassword"
+              type="password"
+              value={form.newPassword}
+              onChange={handleChange}
+              error={errors.newPassword}
+              required
+              placeholder={content.new_placeholder}
+              onFocus={() => setNewPasswordFocused(true)}
+              onBlur={() => setNewPasswordFocused(false)}
+            />
+            <PasswordRequirements
+              value={form.newPassword}
+              requirements={passwordRequirements}
+              visible={newPasswordFocused || Boolean(form.newPassword)}
+            />
+          </div>
           <InputField
             label={content.confirm_label}
             name="confirmPassword"
