@@ -106,18 +106,18 @@ function Header() {
 
           {isLoggedIn && (
             <div className="flex items-center gap-3 ml-2 pl-4 border-l border-border/50">
-              <button
-                onClick={cartOpen}
+              <NavLink
+                to="/car"
                 aria-label={cartContent.aria_label}
                 className="relative p-2 rounded-lg text-text-dim hover:text-plumbob hover:bg-plumbob/10 transition-all duration-200 cursor-pointer"
               >
                 <ShoppingCart className="w-4 h-4" />
                 {itemsCount > 0 && (
-                  <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-plumbob text-[0.625rem] font-bold text-white">
+                  <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-emerald-500 text-[0.625rem] font-bold text-white shadow-xs">
                     {itemsCount}
                   </span>
                 )}
-              </button>
+              </NavLink>
               <NavLink
                 to="/perfil"
                 className="p-2 rounded-lg text-text-dim hover:text-plumbob hover:bg-plumbob/10 transition-all duration-200 cursor-pointer"
@@ -147,18 +147,18 @@ function Header() {
 
         <div className="flex items-center gap-1 md:hidden">
           {isLoggedIn && (
-            <button
-              onClick={cartOpen}
+            <NavLink
+              to="/car"
               aria-label={cartContent.aria_label}
               className="relative p-2 rounded-lg text-text-sub hover:text-plumbob hover:bg-surface/50 transition-colors cursor-pointer"
             >
               <ShoppingCart className="w-5 h-5" />
               {itemsCount > 0 && (
-                <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-plumbob text-[0.625rem] font-bold text-white">
+                <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-emerald-500 text-[0.625rem] font-bold text-white shadow-xs">
                   {itemsCount}
                 </span>
               )}
-            </button>
+            </NavLink>
           )}
           <LanguageToggle />
           <ThemeToggle theme={theme} onToggle={toggleTheme} />

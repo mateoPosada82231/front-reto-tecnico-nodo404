@@ -8,6 +8,7 @@ const RegisterPage = lazy(() => import('../features/auth/pages/RegisterPage'))
 const LoginPage = lazy(() => import('../features/auth/pages/LoginPage'))
 const OAuthCallback = lazy(() => import('../features/auth/pages/OAuthCallback'))
 const ProfilePage = lazy(() => import('../features/profile/pages/ProfilePage'))
+const CartPage = lazy(() => import('../features/cart/pages/CartPage'))
 
 const FALLBACK_TEXT = {
   es: 'Cargando…',
@@ -30,6 +31,8 @@ function AppRouter() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/oauth2/callback" element={<OAuthCallback />} />
         <Route path="/perfil" element={<ProfilePage />} />
+        <Route path="/cart" element={<CartPage />} />
+        <Route path="/car" element={<CartPage />} />
       </Routes>
     </Suspense>
   )

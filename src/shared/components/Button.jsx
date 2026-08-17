@@ -3,11 +3,15 @@ import { Link } from 'react-router-dom'
 
 const VARIANT_CLASSES = {
   primary:
-    'bg-plumbob text-white hover:bg-plumbob-light font-semibold shadow-lg shadow-plumbob/20 hover:shadow-plumbob/40 focus-visible:outline-plumbob',
+    'bg-plumbob text-white hover:bg-plumbob/90 font-bold shadow-md shadow-plumbob/20 hover:shadow-lg hover:shadow-plumbob/30 focus-visible:outline-plumbob',
   secondary:
-    'bg-surface text-text-main border border-border hover:bg-hover hover:border-text-dim focus-visible:outline-plumbob',
+    'bg-surface text-text-main border border-border/80 hover:bg-surface/80 hover:border-plumbob/40 font-semibold focus-visible:outline-plumbob shadow-xs',
   ghost:
-    'bg-transparent text-text-sub hover:text-text-main hover:bg-surface/50 focus-visible:outline-plumbob',
+    'bg-transparent text-text-sub hover:text-text-main hover:bg-surface/60 font-medium focus-visible:outline-plumbob',
+  outline:
+    'bg-transparent text-plumbob border border-plumbob/40 hover:bg-plumbob/10 hover:border-plumbob font-semibold focus-visible:outline-plumbob',
+  danger:
+    'bg-red-500/10 text-red-500 border border-red-500/30 hover:bg-red-500/20 font-semibold focus-visible:outline-red-500',
 }
 
 function Button({
@@ -22,7 +26,8 @@ function Button({
   ...props
 }) {
   const isDisabled = disabled || loading
-  const classes = `inline-flex items-center justify-center gap-2 rounded-xl px-5 py-2.5 text-sm font-medium transition-all duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-50 active:scale-[0.97] ${VARIANT_CLASSES[variant]} ${className}`
+  const baseVariant = VARIANT_CLASSES[variant] || VARIANT_CLASSES.primary
+  const classes = `inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer active:scale-[0.98] ${baseVariant} ${className}`
 
   const content = (
     <>
@@ -32,14 +37,14 @@ function Button({
   )
 
   if (href && !isDisabled) {
-  return (
-    <Link
-      to={href}
-      className={classes}
-      {...props}
-    >
-      {content}
-    </Link>
+    return (
+      <Link
+        to={href}
+        className={classes}
+        {...props}
+      >
+        {content}
+      </Link>
     )
   }
 

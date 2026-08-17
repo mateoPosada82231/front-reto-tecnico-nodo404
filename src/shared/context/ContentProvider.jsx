@@ -77,6 +77,11 @@ const FALLBACK = {
     payment_method_paypal: 'PayPal',
     language_es: 'Español',
     language_en: 'Inglés',
+    buy_another_platform: 'Comprar otra plataforma',
+    in_library_badge: 'En biblioteca ({{platforms}})',
+    view_full_cart: 'Ver carrito completo',
+    view_in_cart: 'Ver en carrito',
+    already_owned_option: '(Ya adquirida)',
   },
   'auth.login': {
     title: 'Iniciar Sesión',
@@ -319,6 +324,11 @@ const FALLBACK_EN = {
     payment_method_paypal: 'PayPal',
     language_es: 'Spanish',
     language_en: 'English',
+    buy_another_platform: 'Buy for another platform',
+    in_library_badge: 'In library ({{platforms}})',
+    view_full_cart: 'View full cart',
+    view_in_cart: 'View in cart',
+    already_owned_option: '(Already owned)',
   },
   'auth.login': {
     title: 'Log In',

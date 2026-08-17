@@ -1,28 +1,54 @@
-const PALETTE = ['bg-plumbob/15 text-plumbob', 'bg-azure/15 text-azure']
+import { User } from 'lucide-react'
+import useAuthStore from '../../../shared/stores/useAuthStore'
 
-function getInitials(name) {
-  if (!name) return '?'
-  const parts = name.trim().split(/\s+/).filter(Boolean)
-  const first = parts[0]?.[0] ?? ''
-  const last = parts.length > 1 ? parts[parts.length - 1][0] : ''
-  return (first + last).toUpperCase()
-}
+function ProfileAvatar({ name, size = 'lg', avatarUrl: overrideAvatarUrl, onClick, className = '' }) {
+  const storeAvatarUrl = useAuthStore((state) => state.avatarUrl)
+  const activeAvatarUrl = overrideAvatarUrl ?? storeAvatarUrl
 
-function pickColor(seed) {
-  let hash = 0
-  for (let i = 0; i < seed.length; i++) {
-    hash = seed.charCodeAt(i) + ((hash << 5) - hash)
+  const sizeClasses =
+    size === 'xl'
+      ? 'h-24 w-24 text-3xl'
+      : size === 'lg'
+      ? 'h-16 w-16 text-xl'
+      : size === 'sm'
+      ? 'h-9 w-9 text-sm'
+      : 'h-12 w-12 text-base'
+
+  const iconSizes =
+    size === 'xl'
+      ? 'h-12 w-12'
+      : size === 'lg'
+      ? 'h-8 w-8'
+      : size === 'sm'
+      ? 'h-4 w-4'
+      : 'h-6 w-6'
+
+  if (activeAvatarUrl) {
+    return (
+      <div
+        onClick={onClick}
+        className={`relative rounded-full overflow-hidden shrink-0 border-2 border-emerald-400/90 shadow-md ${
+          onClick ? 'cursor-pointer hover:ring-4 hover:ring-emerald-400/40 transition-all' : ''
+        } ${sizeClasses} ${className}`}
+      >
+        <img
+          src={activeAvatarUrl}
+          alt={name || 'Avatar'}
+          className="h-full w-full object-cover"
+        />
+      </div>
+    )
   }
-  return PALETTE[Math.abs(hash) % PALETTE.length]
-}
 
-function ProfileAvatar({ name, size = 'lg' }) {
-  const sizeClasses = size === 'lg' ? 'h-24 w-24 text-3xl' : 'h-12 w-12 text-base'
-  const colorClasses = pickColor(name || '?')
-
+  // When no photo is uploaded: simple clean avatar placeholder without text or extra shapes
   return (
-    <div className={`flex items-center justify-center rounded-full font-semibold shrink-0 ${sizeClasses} ${colorClasses}`}>
-      {getInitials(name)}
+    <div
+      onClick={onClick}
+      className={`flex items-center justify-center rounded-full shrink-0 border border-border/80 bg-surface/50 text-text-dim shadow-xs ${
+        onClick ? 'cursor-pointer hover:bg-surface hover:text-text-main transition-all' : ''
+      } ${sizeClasses} ${className}`}
+    >
+      <User className={iconSizes} />
     </div>
   )
 }

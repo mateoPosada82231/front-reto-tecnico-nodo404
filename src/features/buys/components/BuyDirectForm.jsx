@@ -2,29 +2,28 @@ import { useState } from "react";
 import useContent from "../../../shared/hooks/useContent";
 import Button from "../../../shared/components/Button";
 import SelectField from "../../../shared/components/SelectField";
+import { parsePlatforms, parseLanguages } from "../../../shared/utils/extensionOptions";
 
-function BuyDirectForm({ onSubmit, onCancel, buying }) {
+function BuyDirectForm({ onSubmit, onCancel, buying, ownedPlatforms = [], platformsStr, languagesStr }) {
   const { content } = useContent("landing.detail");
   const { content: errorsContent } = useContent("errors.common");
+
+  const PLATFORM_OPTIONS = parsePlatforms(platformsStr, ownedPlatforms);
+  const LANGUAGE_OPTIONS = parseLanguages(languagesStr);
+
+  const defaultPlatform = PLATFORM_OPTIONS.find((p) => !p.disabled)?.value || PLATFORM_OPTIONS[0]?.value || "PC";
+  const defaultLanguage = LANGUAGE_OPTIONS[0]?.value || "ES";
+
   const [formData, setFormData] = useState({
     paymentMethod: "CARD",
-    language: "ES",
-    platform: "PC",
+    language: defaultLanguage,
+    platform: defaultPlatform,
   });
   const [errors, setErrors] = useState({});
 
   const PAYMENT_OPTIONS = [
     { value: "CARD", label: content.payment_method_card },
     { value: "PAYPAL", label: content.payment_method_paypal },
-  ];
-  const LANGUAGE_OPTIONS = [
-    { value: "ES", label: content.language_es },
-    { value: "EN", label: content.language_en },
-  ];
-  const PLATFORM_OPTIONS = [
-    { value: "PC", label: "PC" },
-    { value: "PS5", label: "PlayStation 5" },
-    { value: "XBOX", label: "Xbox" },
   ];
 
   const validate = () => {
@@ -77,7 +76,7 @@ function BuyDirectForm({ onSubmit, onCancel, buying }) {
         required
       />
       <div className="flex gap-2">
-        <Button type="submit" loading={buying}>
+        <Button type="submit" loading={buying} className="font-extrabold uppercase">
           {buying ? content.processing_text : content.confirm_button}
         </Button>
         <Button type="button" variant="secondary" onClick={onCancel} disabled={buying}>

@@ -2,6 +2,7 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { getUserByEmail } from '../services/users'
 import { logout as logoutApi } from '../services/auth'
+import { getUserBuys } from '../services/buys'
 
 export const useAuthStore = create(
   persist(
@@ -13,6 +14,13 @@ export const useAuthStore = create(
       profileComplete: true,
       isBetaTester: false,
       isLoggedIn: false,
+      avatarUrl: null,
+      avatarHat: 'none',
+      purchasedIds: [],
+      purchasedItems: [], // array of { extensionId, platform, language }
+
+      setAvatarUrl: (avatarUrl) => set({ avatarUrl }),
+      setAvatarHat: (avatarHat) => set({ avatarHat }),
 
       setUser: (user) => {
         set({
@@ -25,6 +33,7 @@ export const useAuthStore = create(
       setAuth: (token, email) => {
         set({ token, email, isLoggedIn: !!token })
         get().fetchUser()
+        get().fetchPurchases()
       },
 
       fetchUser: async () => {
@@ -37,10 +46,36 @@ export const useAuthStore = create(
         try {
           const userData = await getUserByEmail(email)
           get().setUser(userData)
+          await get().fetchPurchases()
         } catch {
           set({ user: null, profileComplete: true, isBetaTester: false })
         } finally {
           set({ loading: false })
+        }
+      },
+
+      fetchPurchases: async () => {
+        const { email } = get()
+        if (!email) {
+          set({ purchasedIds: [], purchasedItems: [] })
+          return
+        }
+        try {
+          const buys = await getUserBuys(email)
+          if (Array.isArray(buys)) {
+            const items = buys.map((b) => ({
+              extensionId: b.extension?.id ?? b.extensionId,
+              platform: b.platform || 'PC',
+              language: b.language || 'Español',
+            })).filter((i) => i.extensionId)
+
+            const ids = items.map((i) => i.extensionId)
+            set({ purchasedIds: ids, purchasedItems: items })
+          } else {
+            set({ purchasedIds: [], purchasedItems: [] })
+          }
+        } catch {
+          set({ purchasedIds: [], purchasedItems: [] })
         }
       },
 
@@ -54,6 +89,8 @@ export const useAuthStore = create(
           profileComplete: true,
           isBetaTester: false,
           isLoggedIn: false,
+          purchasedIds: [],
+          purchasedItems: [],
         })
       },
     }),
@@ -65,6 +102,10 @@ export const useAuthStore = create(
         user: state.user,
         profileComplete: state.profileComplete,
         isBetaTester: state.isBetaTester,
+        avatarUrl: state.avatarUrl,
+        avatarHat: state.avatarHat,
+        purchasedIds: state.purchasedIds,
+        purchasedItems: state.purchasedItems,
       }),
       merge: (persisted, current) => {
         const p = persisted || {}

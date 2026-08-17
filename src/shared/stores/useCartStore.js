@@ -37,6 +37,22 @@ export const useCartStore = create((set, get) => ({
         }
     },
 
+    updateItemOptions: ({ cartItemId, platform, language }) => {
+        set((state) => ({
+            items: state.items.map((item) => {
+                const id = item.id ?? item.cartItemId
+                if (id === cartItemId) {
+                    return {
+                        ...item,
+                        platform: platform ?? item.platform,
+                        language: language ?? item.language,
+                    }
+                }
+                return item
+            }),
+        }))
+    },
+
     removeItem: async (cartItemId, email) => {
         set({ loading: true, error: null })
         try {

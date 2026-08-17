@@ -1,12 +1,77 @@
-import React from 'react'
+import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import Card from './Card'
 import Skeleton from '../../../shared/components/Skeleton'
 import useExpansionGrid from '../hooks/useExpansionGrid'
 import useContent from '../../../shared/hooks/useContent'
+import useAuthStore from '../../../shared/stores/useAuthStore'
+import useCartStore from '../../../shared/stores/useCartStore'
+import useCartUIStore from '../../../shared/stores/useCartUIStore'
 
 export default function ExpansionGrid() {
+  const navigate = useNavigate()
   const { extensions, loading, error } = useExpansionGrid()
   const { content } = useContent('landing.grid')
+  const { email, isLoggedIn, purchasedItems, fetchPurchases } = useAuthStore()
+  const cartItems = useCartStore((state) => state.items)
+  const addItem = useCartStore((state) => state.addItem)
+  const openCart = useCartUIStore((state) => state.open)
+
+  const [addingId, setAddingId] = useState(null)
+
+  useEffect(() => {
+    if (isLoggedIn && email) {
+      fetchPurchases()
+    }
+  }, [isLoggedIn, email, fetchPurchases])
+
+  const handleAddToCart = async (packId, isInCart, ownedPlatforms = []) => {
+    if (!isLoggedIn) {
+      navigate('/login')
+      return
+    }
+    if (isInCart) {
+      navigate('/car')
+      return
+    }
+    // Select first non-owned platform automatically
+    const availablePlatforms = ['PC', 'PS5', 'XBOX'].filter((p) => !ownedPlatforms.includes(p))
+    const platformToAssign = availablePlatforms[0] || 'PS5'
+
+    setAddingId(packId)
+    try {
+      await addItem({
+        email,
+        extensionId: packId,
+        platform: platformToAssign,
+        language: 'Español',
+      })
+      openCart()
+    } catch (err) {
+      console.error('Error al añadir al carrito:', err)
+    } finally {
+      setAddingId(null)
+    }
+  }
+
+  // Deduplicate extensions array by unique ID
+  const uniqueExtensions = Array.isArray(extensions)
+    ? extensions.filter((pack, index, self) => index === self.findIndex((p) => p.id === pack.id || p.name === pack.name))
+    : []
+
+  const cartIdSet = new Set(cartItems.map((item) => item.extension?.id ?? item.extensionId ?? item.id))
+
+  // Map of pack.id -> array of platforms owned
+  const purchasedPlatformMap = new Map()
+  if (isLoggedIn && Array.isArray(purchasedItems)) {
+    purchasedItems.forEach((item) => {
+      const existing = purchasedPlatformMap.get(item.extensionId) || []
+      if (!existing.includes(item.platform)) {
+        existing.push(item.platform)
+      }
+      purchasedPlatformMap.set(item.extensionId, existing)
+    })
+  }
 
   if (loading) {
     return (
@@ -51,19 +116,28 @@ export default function ExpansionGrid() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 3xl:grid-cols-5 4k:grid-cols-6 gap-6">
-        {extensions.map((pack, index) => (
-          <div key={pack.id} style={{ animationDelay: `${index * 60}ms` }} className="animate-slide-up">
-            <Card
-              image={pack.image || pack.imagen || ''}
-              category={pack.category}
-              title={pack.name}
-              description={pack.description || pack.aboutGame || ''}
-              price={pack.price ? pack.price.toLocaleString('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }) : ''}
-              ctaLabel={content.cta_text}
-              href={`/expansion/${pack.id}`}
-            />
-          </div>
-        ))}
+        {uniqueExtensions.map((pack, index) => {
+          const purchasedPlatforms = isLoggedIn ? (purchasedPlatformMap.get(pack.id) || []) : []
+          const isInCart = isLoggedIn && cartIdSet.has(pack.id)
+
+          return (
+            <div key={pack.id} style={{ animationDelay: `${index * 60}ms` }} className="animate-slide-up">
+              <Card
+                image={pack.image || pack.imagen || ''}
+                category={pack.category}
+                title={pack.name}
+                description={pack.description || pack.aboutGame || ''}
+                price={pack.price ? pack.price.toLocaleString('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }) : ''}
+                ctaLabel={content.cta_text}
+                href={`/expansion/${pack.id}`}
+                onAddToCart={isLoggedIn ? () => handleAddToCart(pack.id, isInCart, purchasedPlatforms) : null}
+                adding={addingId === pack.id}
+                purchasedPlatforms={purchasedPlatforms}
+                isInCart={isInCart}
+              />
+            </div>
+          )
+        })}
       </div>
     </section>
   )

@@ -1,20 +1,36 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Button from "../../../shared/components/Button";
 import Modal from "../../../shared/components/Modal";
 import useContent from "../../../shared/hooks/useContent";
 
 export default function WelcomeModal() {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const { content } = useContent("landing.welcome");
 
+  useEffect(() => {
+    const hasSeen = localStorage.getItem("hasSeenWelcomeModal");
+    if (!hasSeen) {
+      setOpen(true);
+    }
+  }, []);
+
+  const handleClose = () => {
+    localStorage.setItem("hasSeenWelcomeModal", "true");
+    setOpen(false);
+  };
+
   const footer = (
-    <Button onClick={() => setOpen(false)}>{content.cta_text}</Button>
+    <Button onClick={handleClose} variant="primary">
+      {content.cta_text}
+    </Button>
   );
+
+  if (!open) return null;
 
   return (
     <Modal
       open={open}
-      onClose={() => setOpen(false)}
+      onClose={handleClose}
       closeOnBackdrop={false}
       size="lg"
       closeAriaLabel={content.close_aria}

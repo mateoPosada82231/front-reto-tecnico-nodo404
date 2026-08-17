@@ -1,6 +1,6 @@
 import { Navigate } from "react-router-dom";
-import { useState } from "react";
-import { Pencil, X, Check, KeyRound } from "lucide-react";
+import { useState, useRef } from "react";
+import { Pencil, X, Check, KeyRound, Upload, Image as ImageIcon } from "lucide-react";
 import Button from "../../../shared/components/Button";
 import InputField from "../../../shared/components/InputField";
 import SelectField from "../../../shared/components/SelectField";
@@ -10,12 +10,16 @@ import ChangePasswordModal from "../components/ChangePasswordModal";
 import useProfile from "../hooks/useProfile";
 import useContent from "../../../shared/hooks/useContent";
 import useConfig from "../../../shared/hooks/useConfig";
+import useAuthStore from "../../../shared/stores/useAuthStore";
 
 function ProfilePage() {
   const { content } = useContent("profile.page");
   const { content: selectDefault } = useContent("select.default");
   const { content: detailContent } = useContent("landing.detail");
   const { config: countries } = useConfig("countries");
+  const { avatarUrl, setAvatarUrl } = useAuthStore();
+  const fileInputRef = useRef(null);
+
   const {
     user,
     email,
@@ -35,9 +39,31 @@ function ProfilePage() {
   } = useProfile();
 
   const [passwordModalOpen, setPasswordModalOpen] = useState(false);
+  const [imageUrlInput, setImageUrlInput] = useState("");
+  const [showUrlInput, setShowUrlInput] = useState(false);
 
   const paymentLabel = (method) =>
     method === "PAYPAL" ? detailContent.payment_method_paypal : detailContent.payment_method_card;
+
+  const handleFileUpload = (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setAvatarUrl(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleUrlSubmit = (e) => {
+    e.preventDefault();
+    if (imageUrlInput.trim()) {
+      setAvatarUrl(imageUrlInput.trim());
+      setShowUrlInput(false);
+      setImageUrlInput("");
+    }
+  };
 
   if (loading) {
     return (
@@ -55,20 +81,86 @@ function ProfilePage() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto">
-      <div className="rounded-2xl border border-border bg-surface/40 p-6 md:p-8">
-        <div className="flex flex-col items-center gap-3 text-center border-b border-border/60 pb-6 mb-6">
-          <ProfileAvatar name={user?.fullName} />
+    <div className="max-w-2xl mx-auto space-y-6">
+      <div className="rounded-2xl border border-border bg-surface/40 p-6 md:p-8 shadow-sm">
+        {/* Header & Photo Upload Section */}
+        <div className="flex flex-col items-center gap-4 text-center border-b border-border/60 pb-6 mb-6">
+          <div className="relative group">
+            <ProfileAvatar name={user?.fullName} size="xl" />
+            <button
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              className="absolute bottom-0 right-0 p-2 rounded-full bg-plumbob text-white shadow-md hover:bg-plumbob/90 transition-transform transform group-hover:scale-110 cursor-pointer"
+              title="Subir foto de perfil"
+            >
+              <Upload className="h-4 w-4" />
+            </button>
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleFileUpload}
+              accept="image/*"
+              className="hidden"
+            />
+          </div>
+
           <div>
             <h1 className="text-xl font-semibold text-text-main md:text-2xl">
               {user?.fullName || content.name_fallback}
             </h1>
             <p className="text-sm text-text-sub">{email}</p>
           </div>
+
           {user?.betaTester && (
-            <span className="inline-flex items-center rounded-full bg-plumbob/15 border border-plumbob/30 px-2.5 py-0.5 text-xs font-semibold text-plumbob">
+            <span className="inline-flex items-center rounded-full bg-plumbob/15 border border-plumbob/30 px-3 py-0.5 text-xs font-semibold text-plumbob">
               {content.beta_badge}
             </span>
+          )}
+
+          {/* Photo Management Actions */}
+          <div className="flex items-center gap-3 pt-2">
+            <Button
+              type="button"
+              variant="secondary"
+              className="text-xs px-3 py-1.5"
+              onClick={() => fileInputRef.current?.click()}
+            >
+              <Upload className="h-3.5 w-3.5" />
+              Subir Foto
+            </Button>
+            <Button
+              type="button"
+              variant="ghost"
+              className="text-xs px-3 py-1.5 text-text-dim"
+              onClick={() => setShowUrlInput(!showUrlInput)}
+            >
+              <ImageIcon className="h-3.5 w-3.5" />
+              Usar URL
+            </Button>
+            {avatarUrl && (
+              <button
+                type="button"
+                onClick={() => setAvatarUrl(null)}
+                className="text-xs text-text-dim hover:text-red-400 transition-colors"
+              >
+                Quitar foto
+              </button>
+            )}
+          </div>
+
+          {showUrlInput && (
+            <form onSubmit={handleUrlSubmit} className="flex gap-2 mt-2 w-full max-w-sm">
+              <input
+                type="url"
+                value={imageUrlInput}
+                onChange={(e) => setImageUrlInput(e.target.value)}
+                placeholder="https://ejemplo.com/mi-foto.jpg"
+                className="flex-1 px-3 py-1.5 text-xs rounded-xl bg-bg border border-border/80 text-text-main placeholder:text-text-dim focus:outline-none focus:border-plumbob"
+              />
+              <Button type="submit" variant="primary" className="text-xs px-3 py-1.5">
+                Guardar
+              </Button>
+            </form>
           )}
         </div>
 

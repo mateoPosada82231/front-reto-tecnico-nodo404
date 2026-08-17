@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import { ArrowLeft, ShoppingCart } from "lucide-react";
+import { ArrowLeft, ShoppingCart, Check } from "lucide-react";
 import useExpansionDetail from "../hooks/useExpansionDetail";
 import useAuthStore from "../../../shared/stores/useAuthStore";
 import useCartStore from "../../../shared/stores/useCartStore";
@@ -14,7 +14,7 @@ import { getFriendlyError } from "../../../shared/utils/errors";
 
 function ExpansionDetailPage() {
   const { id } = useParams();
-  const { email, isLoggedIn } = useAuthStore();
+  const { email, isLoggedIn, purchasedItems, fetchPurchases } = useAuthStore();
   const addItem = useCartStore((state) => state.addItem);
   const { open: openCart } = useCartUIStore();
   const {
@@ -35,6 +35,12 @@ function ExpansionDetailPage() {
   const [addingToCart, setAddingToCart] = useState(false);
   const [cartSuccess, setCartSuccess] = useState(false);
   const [cartError, setCartError] = useState(null);
+
+  useEffect(() => {
+    if (isLoggedIn && email) {
+      fetchPurchases();
+    }
+  }, [isLoggedIn, email, fetchPurchases]);
 
   if (loading) {
     return (
@@ -58,6 +64,13 @@ function ExpansionDetailPage() {
       </div>
     );
   }
+
+  const ownedPlatforms = Array.isArray(purchasedItems)
+    ? purchasedItems
+        .filter((i) => Number(i.extensionId) === Number(pack.id))
+        .map((i) => i.platform)
+    : [];
+  const isPurchased = ownedPlatforms.length > 0;
 
   const handleAddToCart = async (formData) => {
     setAddingToCart(true);
@@ -158,6 +171,15 @@ function ExpansionDetailPage() {
         </Alert>
       )}
 
+      {isPurchased && (
+        <Alert variant="success" className="mb-4 font-bold border-emerald-500/40 bg-emerald-500/10 text-emerald-500">
+          <span className="inline-flex items-center gap-1.5">
+            <Check className="h-4 w-4 text-emerald-500" />
+            Ya posees esta expansión para: {ownedPlatforms.join(", ")}. Puedes adquirirla para otra plataforma a continuación.
+          </span>
+        </Alert>
+      )}
+
       {buySuccess && (
         <Alert variant="success" className="mb-4">
           <span className="inline-flex items-center gap-1.5">
@@ -191,12 +213,13 @@ function ExpansionDetailPage() {
           <div className="flex flex-wrap gap-2">
             {!showForm && !showCartForm && (
               <>
-                <Button onClick={() => setShowForm(true)}>
+                <Button onClick={() => setShowForm(true)} className="uppercase font-bold">
                   {detailContent.buy_button}
                 </Button>
                 <Button
                   variant="secondary"
                   onClick={() => setShowCartForm(true)}
+                  className="uppercase font-bold"
                 >
                   <ShoppingCart className="h-4 w-4" />
                   {detailContent.add_to_cart_button}
@@ -209,6 +232,9 @@ function ExpansionDetailPage() {
               onSubmit={submitBuy}
               onCancel={() => setShowForm(false)}
               buying={buying}
+              ownedPlatforms={ownedPlatforms}
+              platformsStr={pack.platforms}
+              languagesStr={pack.languages}
             />
           )}
           {showCartForm && (
@@ -216,6 +242,9 @@ function ExpansionDetailPage() {
               onSubmit={handleAddToCart}
               onCancel={() => setShowCartForm(false)}
               loading={addingToCart}
+              ownedPlatforms={ownedPlatforms}
+              platformsStr={pack.platforms}
+              languagesStr={pack.languages}
             />
           )}
         </div>

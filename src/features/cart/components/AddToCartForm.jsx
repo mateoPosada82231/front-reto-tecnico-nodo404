@@ -2,25 +2,23 @@ import { useState } from "react";
 import useContent from "../../../shared/hooks/useContent";
 import Button from "../../../shared/components/Button";
 import SelectField from "../../../shared/components/SelectField";
+import { parsePlatforms, parseLanguages } from "../../../shared/utils/extensionOptions";
 
-function AddToCartForm({ onSubmit, onCancel, loading }) {
+function AddToCartForm({ onSubmit, onCancel, loading, ownedPlatforms = [], platformsStr, languagesStr }) {
   const { content } = useContent("landing.detail");
   const { content: errorsContent } = useContent("errors.common");
+
+  const PLATFORM_OPTIONS = parsePlatforms(platformsStr, ownedPlatforms);
+  const LANGUAGE_OPTIONS = parseLanguages(languagesStr);
+
+  const defaultPlatform = PLATFORM_OPTIONS.find((p) => !p.disabled)?.value || PLATFORM_OPTIONS[0]?.value || "PC";
+  const defaultLanguage = LANGUAGE_OPTIONS[0]?.value || "ES";
+
   const [formData, setFormData] = useState({
-    language: "ES",
-    platform: "PC",
+    language: defaultLanguage,
+    platform: defaultPlatform,
   });
   const [errors, setErrors] = useState({});
-
-  const LANGUAGE_OPTIONS = [
-    { value: "ES", label: content.language_es },
-    { value: "EN", label: content.language_en },
-  ];
-  const PLATFORM_OPTIONS = [
-    { value: "PC", label: "PC" },
-    { value: "PS5", label: "PlayStation 5" },
-    { value: "XBOX", label: "Xbox" },
-  ];
 
   const validate = () => {
     const errs = {};
@@ -62,7 +60,7 @@ function AddToCartForm({ onSubmit, onCancel, loading }) {
         required
       />
       <div className="flex gap-2">
-        <Button type="submit" loading={loading}>
+        <Button type="submit" loading={loading} className="font-extrabold uppercase">
           {loading ? content.adding_to_cart_text : content.add_to_cart_confirm}
         </Button>
         <Button type="button" variant="secondary" onClick={onCancel} disabled={loading}>
