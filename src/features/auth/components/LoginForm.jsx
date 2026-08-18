@@ -11,7 +11,7 @@ function LoginForm() {
   const { content } = useContent("auth.login");
   const { content: placeholders } = useContent("placeholders");
   const { content: errorsContent } = useContent("errors.common");
-  const { form, errors, serverError, loading, success, handleChange, handleSubmit } =
+  const { form, errors, serverError, loading, success, handleChange, handleSubmit, reset } =
     useLoginFormStore();
 
   const submit = (e) =>
@@ -26,7 +26,7 @@ function LoginForm() {
       onSubmit={submit}
       className="w-full max-w-md space-y-5 rounded-2xl bg-surface border border-border/50 p-8 shadow-2xl shadow-black/20 animate-scale-in"
     >
-      {success && <Alert variant="success">{content.success_message}</Alert>}
+      {success && <Alert variant="success" autoDismiss={5000} onDismiss={reset}>{content.success_message}</Alert>}
 
       {serverError && !success && <Alert variant="error">{serverError}</Alert>}
 

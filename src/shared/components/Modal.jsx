@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState, useCallback } from 'react'
 import { X } from 'lucide-react'
 
 export default function Modal({
@@ -10,8 +10,18 @@ export default function Modal({
   size = 'md',
   closeOnBackdrop = true,
   closeAriaLabel = 'Cerrar',
+  autoDismiss,
 }) {
   const dialogRef = useRef(null)
+  const [remaining, setRemaining] = useState(autoDismiss || 0)
+  const [paused, setPaused] = useState(false)
+  const elapsedRef = useRef(0)
+  const startRef = useRef(null)
+  const rafRef = useRef(null)
+
+  const dismiss = useCallback(() => {
+    onClose?.()
+  }, [onClose])
 
   useEffect(() => {
     if (!open) return
@@ -26,6 +36,36 @@ export default function Modal({
     }
   }, [open, onClose])
 
+  useEffect(() => {
+    if (!open || !autoDismiss || autoDismiss <= 0) return
+
+    elapsedRef.current = 0
+    startRef.current = null
+    setRemaining(autoDismiss)
+
+    const tick = (timestamp) => {
+      if (!startRef.current) startRef.current = timestamp
+      if (!paused) {
+        elapsedRef.current += timestamp - startRef.current
+        startRef.current = timestamp
+        const left = Math.max(0, autoDismiss - elapsedRef.current)
+        setRemaining(left)
+        if (left <= 0) {
+          dismiss()
+          return
+        }
+      } else {
+        startRef.current = timestamp
+      }
+      rafRef.current = requestAnimationFrame(tick)
+    }
+
+    rafRef.current = requestAnimationFrame(tick)
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current)
+    }
+  }, [open, autoDismiss, paused, dismiss])
+
   if (!open) return null
 
   const sizeClasses = {
@@ -38,6 +78,8 @@ export default function Modal({
   const handleBackdrop = (e) => {
     if (closeOnBackdrop && e.target === e.currentTarget) onClose?.()
   }
+
+  const progress = autoDismiss ? remaining / autoDismiss : 0
 
   return (
     <div
@@ -53,6 +95,8 @@ export default function Modal({
         className={`bg-surface border border-border/50 rounded-2xl shadow-2xl shadow-black/40 p-8 w-full ${sizeClasses[size]} relative overflow-hidden`}
         style={{ animation: 'modalContent 0.4s cubic-bezier(0.16, 1, 0.3, 1)' }}
         onClick={(e) => e.stopPropagation()}
+        onMouseEnter={() => autoDismiss && setPaused(true)}
+        onMouseLeave={() => autoDismiss && setPaused(false)}
       >
         <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-plumbob/60 to-transparent" />
 
@@ -74,6 +118,15 @@ export default function Modal({
 
         {footer && (
           <div className="mt-6 flex gap-3 justify-end">{footer}</div>
+        )}
+
+        {autoDismiss > 0 && (
+          <div className="absolute bottom-0 left-0 right-0 h-1 bg-border/20">
+            <div
+              className="h-full bg-plumbob/40 transition-none"
+              style={{ width: `${progress * 100}%` }}
+            />
+          </div>
         )}
       </div>
     </div>

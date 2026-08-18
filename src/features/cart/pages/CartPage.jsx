@@ -99,7 +99,9 @@ export default function CartPage() {
         </h1>
         {isLoggedIn && items.length > 0 && (
           <span className="text-sm font-semibold text-plumbob bg-plumbob/10 px-3 py-1 rounded-full">
-            {itemsCount} {itemsCount === 1 ? 'paquete' : 'paquetes'}
+            {itemsCount === 1
+              ? cartContent.packages_count?.replace('{{count}}', itemsCount) ?? `${itemsCount} paquete`
+              : cartContent.packages_count_plural?.replace('{{count}}', itemsCount) ?? `${itemsCount} paquetes`}
           </span>
         )}
       </div>
@@ -160,6 +162,9 @@ export default function CartPage() {
             <Button variant="primary" onClick={() => { setCheckoutError(null); navigate('/') }}>
               {cartContent.checkout_error_continue}
             </Button>
+            <Button variant="ghost" onClick={() => setCheckoutError(null)}>
+              {cartContent.checkout_error_close}
+            </Button>
           </div>
         </div>
       )}
@@ -201,7 +206,7 @@ export default function CartPage() {
           {!showCheckoutForm && (
             <div className="lg:col-span-1 border border-border/40 rounded-2xl bg-surface p-6 h-fit space-y-4">
               <h3 className="text-lg font-bold text-text-main pb-3 border-b border-border/50">
-                Resumen del pedido
+                {cartContent.order_summary}
               </h3>
 
               {feedback && (

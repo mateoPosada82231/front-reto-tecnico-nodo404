@@ -171,7 +171,7 @@ function ExpansionDetailPage() {
       )}
 
       {buySuccess && (
-        <Alert variant="success" className="mb-4">
+        <Alert variant="success" className="mb-4" autoDismiss={5000} onDismiss={() => {}}>
           <span className="inline-flex items-center gap-1.5">
             {detailContent.success_message}
           </span>
@@ -185,7 +185,7 @@ function ExpansionDetailPage() {
       )}
 
       {cartSuccess && (
-        <Alert variant="success" className="mb-4">
+        <Alert variant="success" className="mb-4" autoDismiss={5000} onDismiss={() => setCartSuccess(false)}>
           <span className="inline-flex items-center gap-1.5">
             {detailContent.add_to_cart_success}
           </span>

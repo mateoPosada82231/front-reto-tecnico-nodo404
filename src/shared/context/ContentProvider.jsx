@@ -29,6 +29,7 @@ const SECTIONS = [
   'select.default',
   'extensions.search',
   'cart',
+  'about.page',
 ]
 
 const CONFIG_KEYS = ['countries']
@@ -185,6 +186,11 @@ const FALLBACK = {
   },
   footer: {
     copyright: 'Todos los derechos reservados.',
+    about_link: 'Sobre este proyecto',
+  },
+  'about.page': {
+    title: 'Sobre este proyecto',
+    description: 'Esta página es el resultado del reto técnico impuesto por EA Electronic Arts en conjunto con Nodo Eafit, para desarrollar en el transcurso del bootcamp de desarrollo web.',
   },
   common: {
     loading_aria: 'Cargando',
@@ -309,6 +315,9 @@ const FALLBACK = {
     remove_aria: 'Quitar producto',
     clear_cta: 'Vaciar carrito',
     total_label: 'Total',
+    order_summary: 'Resumen del pedido',
+    packages_count: '{{count}} paquete',
+    packages_count_plural: '{{count}} paquetes',
     checkout_cta: 'Proceder al pago',
     checkout_processing: 'Procesando compra...',
     checkout_success: '¡Compra realizada con éxito!',
@@ -322,6 +331,7 @@ const FALLBACK = {
     checkout_error_subtitle: 'No se pudo completar el pedido.',
     checkout_error_retry: 'Reintentar',
     checkout_error_continue: 'Seguir comprando',
+    checkout_error_close: 'Cerrar',
     login_required: 'Inicia sesión para ver tu carrito',
     login_link: 'Ir a login',
     platform_label: 'Plataforma',
@@ -485,6 +495,11 @@ const FALLBACK_EN = {
   },
   footer: {
     copyright: '© 2026 Nodo Store. All rights reserved.',
+    about_link: 'About this project',
+  },
+  'about.page': {
+    title: 'About this project',
+    description: 'This page is the result of the technical challenge imposed by EA Electronic Arts together with Nodo Eafit, to be developed during the web development bootcamp.',
   },
   common: {
     loading_aria: 'Loading',
@@ -609,6 +624,9 @@ const FALLBACK_EN = {
     remove_aria: 'Remove item',
     clear_cta: 'Clear cart',
     total_label: 'Total',
+    order_summary: 'Order summary',
+    packages_count: '{{count}} package',
+    packages_count_plural: '{{count}} packages',
     checkout_cta: 'Proceed to checkout',
     checkout_processing: 'Processing purchase...',
     checkout_success: 'Purchase completed successfully!',
@@ -622,6 +640,7 @@ const FALLBACK_EN = {
     checkout_error_subtitle: 'Could not complete order.',
     checkout_error_retry: 'Retry',
     checkout_error_continue: 'Continue shopping',
+    checkout_error_close: 'Close',
     login_required: 'Log in to view your cart',
     login_link: 'Go to login',
     platform_label: 'Platform',
