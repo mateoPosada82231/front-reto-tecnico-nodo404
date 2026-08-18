@@ -9,6 +9,9 @@ const LoginPage = lazy(() => import('../features/auth/pages/LoginPage'))
 const OAuthCallback = lazy(() => import('../features/auth/pages/OAuthCallback'))
 const ProfilePage = lazy(() => import('../features/profile/pages/ProfilePage'))
 const CartPage = lazy(() => import('../features/cart/pages/CartPage'))
+const ForgotPasswordPage = lazy(() => import('../features/auth/pages/ForgotPasswordPage'))
+const ResetPasswordPage = lazy(() => import('../features/auth/pages/ResetPasswordPage'))
+const AdminPage = lazy(() => import('../features/admin/pages/AdminPage'))
 
 const FALLBACK_TEXT = {
   es: 'Cargando…',
@@ -33,6 +36,9 @@ function AppRouter() {
         <Route path="/perfil" element={<ProfilePage />} />
         <Route path="/cart" element={<CartPage />} />
         <Route path="/car" element={<CartPage />} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
+        <Route path="/admin" element={<AdminPage />} />
       </Routes>
     </Suspense>
   )
