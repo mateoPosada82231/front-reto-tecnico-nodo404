@@ -190,7 +190,7 @@ const FALLBACK = {
   },
   'about.page': {
     title: 'Sobre este proyecto',
-    description: 'Esta página es el resultado del reto técnico impuesto por EA Electronic Arts en conjunto con Nodo Eafit, para desarrollar en el transcurso del bootcamp de desarrollo web.',
+    description: 'Esta página es el resultado del reto técnico impuesto por Electronic Arts Inc en conjunto con Nodo Eafit, para desarrollar en el transcurso del bootcamp de desarrollo web.',
   },
   common: {
     loading_aria: 'Cargando',
@@ -499,7 +499,7 @@ const FALLBACK_EN = {
   },
   'about.page': {
     title: 'About this project',
-    description: 'This page is the result of the technical challenge imposed by EA Electronic Arts together with Nodo Eafit, to be developed during the web development bootcamp.',
+    description: 'This page is the result of the technical challenge imposed by Electronic Arts Inc together with Nodo Eafit, to be developed during the web development bootcamp.',
   },
   common: {
     loading_aria: 'Loading',
