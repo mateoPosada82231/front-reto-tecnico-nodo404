@@ -12,7 +12,7 @@ function BuyDirectForm({ onSubmit, onCancel, buying, pack, ownedPlatforms = [] }
     return parsePlatforms(
       pack?.platforms || "PC, PS5, Xbox",
       ownedPlatforms,
-      content.already_owned_option || "(Ya adquirida)"
+      content.already_owned_option
     );
   }, [pack?.platforms, ownedPlatforms, content.already_owned_option]);
 
@@ -20,8 +20,8 @@ function BuyDirectForm({ onSubmit, onCancel, buying, pack, ownedPlatforms = [] }
     const parsed = parseLanguages(pack?.languages || "ES, EN");
     if (parsed.length > 0) return parsed;
     return [
-      { value: "ES", label: content.language_es || "Español" },
-      { value: "EN", label: content.language_en || "Inglés" },
+      { value: "ES", label: content.language_es },
+      { value: "EN", label: content.language_en },
     ];
   }, [pack?.languages, content.language_es, content.language_en]);
 

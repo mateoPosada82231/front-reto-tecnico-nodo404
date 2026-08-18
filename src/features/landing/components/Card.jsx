@@ -23,9 +23,9 @@ function Card({
 
   let activeCtaLabel = ctaLabel
   if (isInCart) {
-    activeCtaLabel = viewInCartLabel || 'Ver en carrito'
+    activeCtaLabel = viewInCartLabel
   } else if (hasOwnedPlatforms) {
-    activeCtaLabel = buyAnotherPlatformLabel || 'Comprar otra plataforma'
+    activeCtaLabel = buyAnotherPlatformLabel
   }
 
   const handleActionClick = (e) => {

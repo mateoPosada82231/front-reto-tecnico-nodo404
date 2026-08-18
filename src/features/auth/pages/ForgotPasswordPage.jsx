@@ -4,8 +4,11 @@ import InputField from "../../../shared/components/InputField";
 import Button from "../../../shared/components/Button";
 import Alert from "../../../shared/components/Alert";
 import { forgotPassword } from "../../../shared/services/auth";
+import useContent from "../../../shared/hooks/useContent";
 
 function ForgotPasswordPage() {
+  const { content } = useContent("auth.forgot_password");
+  const { content: placeholders } = useContent("placeholders");
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
@@ -31,10 +34,10 @@ function ForgotPasswordPage() {
     <section className="flex flex-col items-center justify-center gap-8 py-12 animate-fade-in">
       <div className="text-center max-w-xl">
         <h1 className="text-3xl font-extrabold text-text-main md:text-4xl mb-3 tracking-tight">
-          ¿Olvidaste tu contraseña?
+          {content.title}
         </h1>
         <p className="text-text-sub text-sm md:text-base leading-relaxed">
-          Escribe tu correo y te enviaremos un link para restablecerla.
+          {content.subtitle}
         </p>
       </div>
 
@@ -45,7 +48,7 @@ function ForgotPasswordPage() {
       >
         {sent && (
           <Alert variant="success" autoDismiss={5000} onDismiss={() => setSent(false)}>
-            Si el correo existe, revisa tu bandeja de entrada para continuar.
+            {content.success_message}
           </Alert>
         )}
 
@@ -54,23 +57,24 @@ function ForgotPasswordPage() {
         {!sent && (
           <>
             <InputField
-              label="Correo electrónico"
+              label={content.email_label}
               name="email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              placeholder={placeholders.email}
               required
             />
 
             <Button type="submit" loading={loading} disabled={loading} className="w-full">
-              {loading ? "Enviando..." : "Enviar link de recuperación"}
+              {loading ? content.loading_text : content.submit_text}
             </Button>
           </>
         )}
 
         <div className="text-center">
           <Link to="/login" className="text-sm text-plumbob underline hover:text-plumbob-light">
-            ← Volver a iniciar sesión
+            {content.back_to_login}
           </Link>
         </div>
       </form>

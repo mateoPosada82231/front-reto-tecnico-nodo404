@@ -1,5 +1,6 @@
 import { useId, useState, useEffect } from 'react'
 import { Eye, EyeOff } from 'lucide-react'
+import useContent from '../hooks/useContent'
 
 const SHOW_PASSWORD_TIMEOUT_MS = 1000
 
@@ -20,6 +21,7 @@ function InputField({
   const [showPassword, setShowPassword] = useState(false)
   const isPassword = type === 'password'
   const inputType = isPassword ? (showPassword ? 'text' : 'password') : type
+  const { content: commonContent } = useContent('common')
 
   useEffect(() => {
     if (!showPassword) return
@@ -57,7 +59,7 @@ function InputField({
           <button
             type="button"
             onClick={() => setShowPassword((prev) => !prev)}
-            aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+            aria-label={showPassword ? commonContent.hide_password_aria : commonContent.show_password_aria}
             className="absolute right-3 top-1/2 -translate-y-1/2 text-text-dim hover:text-text-muted transition-colors duration-200 cursor-pointer"
           >
             {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
