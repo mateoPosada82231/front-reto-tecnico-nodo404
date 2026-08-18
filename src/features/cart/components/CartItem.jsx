@@ -69,14 +69,14 @@ function CartItem({ item, onRemove, removing, isHighlighted }) {
           )}
         </div>
 
-        {/* Dynamic Selectors in Cart Line: Strictly inline on single line with truncated select */}
-        <div className="flex items-center gap-x-3 mt-1.5 text-xs text-text-dim overflow-hidden">
+        {/* Dynamic Selectors in Cart Line: Platform & Language */}
+        <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 mt-1.5 text-xs text-text-dim">
           <div className="flex items-center gap-1 min-w-0 shrink-0">
             <span className="text-[11px] text-text-sub shrink-0">{cartContent.platform_label || 'Plataforma'}:</span>
             <select
               value={item.platform || platformOptions[0]?.value || 'PC'}
               onChange={handlePlatformChange}
-              className="bg-bg border border-border/80 rounded-md px-1.5 py-0.5 text-xs text-text-main focus:outline-none focus:border-plumbob cursor-pointer max-w-[110px] sm:max-w-[130px] truncate"
+              className="bg-bg border border-border/80 rounded-md px-1.5 py-0.5 text-xs text-text-main focus:outline-none focus:border-plumbob cursor-pointer max-w-[85px] sm:max-w-[110px] truncate"
             >
               {platformOptions.map((opt) => (
                 <option key={opt.value} value={opt.value} disabled={opt.disabled && item.platform !== opt.value}>
@@ -86,12 +86,12 @@ function CartItem({ item, onRemove, removing, isHighlighted }) {
             </select>
           </div>
 
-          <div className="flex items-center gap-1 shrink-0">
+          <div className="flex items-center gap-1 min-w-0 shrink-0">
             <span className="text-[11px] text-text-sub shrink-0">{cartContent.language_label || 'Idioma'}:</span>
             <select
               value={item.language || languageOptions[0]?.value || 'ES'}
               onChange={handleLanguageChange}
-              className="bg-bg border border-border/80 rounded-md px-1.5 py-0.5 text-xs text-text-main focus:outline-none focus:border-plumbob cursor-pointer max-w-[95px] truncate"
+              className="bg-bg border border-border/80 rounded-md px-1.5 py-0.5 text-xs text-text-main focus:outline-none focus:border-plumbob cursor-pointer max-w-[85px] sm:max-w-[110px] truncate"
             >
               {languageOptions.map((opt) => (
                 <option key={opt.value} value={opt.value}>
