@@ -12,6 +12,7 @@ const SECTIONS = [
   'auth.register',
   'auth.social',
   'auth.oauth',
+  'auth.forgot_password',
   'header',
   'beta_modal',
   'footer',
@@ -141,6 +142,8 @@ const FALLBACK = {
     beta_badge_label: 'Beta',
     mobile_profile_link: 'Perfil',
     nav_admin: 'Admin',
+    switch_language_aria_en: 'Switch to English',
+    switch_language_aria_es: 'Cambiar a español',
   },
   'admin.page': {
     title: 'Panel de Administrador',
@@ -196,6 +199,17 @@ const FALLBACK = {
     loading_aria: 'Cargando',
     close_aria: 'Cerrar',
     loading_router: 'Cargando…',
+    show_password_aria: 'Mostrar contraseña',
+    hide_password_aria: 'Ocultar contraseña',
+  },
+  'auth.forgot_password': {
+    title: '¿Olvidaste tu contraseña?',
+    subtitle: 'Escribe tu correo y te enviaremos un link para restablecerla.',
+    email_label: 'Correo electrónico',
+    success_message: 'Si el correo existe, revisa tu bandeja de entrada para continuar.',
+    loading_text: 'Enviando...',
+    submit_text: 'Enviar link de recuperación',
+    back_to_login: '← Volver a iniciar sesión',
   },
   'profile.page': {
     name_fallback: 'Sin nombre',
@@ -437,6 +451,15 @@ const FALLBACK_EN = {
   'auth.oauth': {
     loading_text: 'Logging in...',
   },
+  'auth.forgot_password': {
+    title: 'Forgot your password?',
+    subtitle: 'Enter your email and we will send you a link to reset it.',
+    email_label: 'Email address',
+    success_message: 'If the email exists, check your inbox to continue.',
+    loading_text: 'Sending...',
+    submit_text: 'Send recovery link',
+    back_to_login: '← Back to login',
+  },
   header: {
     profile_warning_prefix: 'Complete your profile information',
     profile_warning_link: 'here',
@@ -450,6 +473,8 @@ const FALLBACK_EN = {
     beta_badge_label: 'Beta',
     mobile_profile_link: 'Profile',
     nav_admin: 'Admin',
+    switch_language_aria_en: 'Switch to English',
+    switch_language_aria_es: 'Switch to Spanish',
   },
   'admin.page': {
     title: 'Admin Panel',
@@ -505,6 +530,8 @@ const FALLBACK_EN = {
     loading_aria: 'Loading',
     close_aria: 'Close',
     loading_router: 'Loading…',
+    show_password_aria: 'Show password',
+    hide_password_aria: 'Hide password',
   },
   'profile.page': {
     name_fallback: 'No name',

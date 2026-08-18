@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { getExtensions } from '../../../shared/services/extensions'
 import lang from '../../../shared/lang'
-import { expansionPacks, getTranslatedPacks } from '../../../data/expansionPacks'
 import { ExtensionsContext } from './ExtensionsContext'
 
 export function ExtensionsProvider({ children }) {
@@ -17,14 +16,13 @@ export function ExtensionsProvider({ children }) {
       getExtensions(currentLang)
         .then((result) => {
           if (!cancelled) {
-            const rawList = Array.isArray(result) && result.length > 0 ? result : expansionPacks
-            setData(getTranslatedPacks(rawList, currentLang))
+            setData(Array.isArray(result) ? result : [])
             setError(null)
           }
         })
         .catch(() => {
           if (!cancelled) {
-            setData(getTranslatedPacks(expansionPacks, currentLang))
+            setData([])
             setError(null)
           }
         })

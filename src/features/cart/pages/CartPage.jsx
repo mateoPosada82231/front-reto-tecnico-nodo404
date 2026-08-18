@@ -90,7 +90,7 @@ export default function CartPage() {
         className="inline-flex items-center gap-1.5 mb-6 text-sm text-text-sub hover:text-text-main transition-colors"
       >
         <ArrowLeft className="h-4 w-4" />
-        {cartContent.explore_cta || 'Seguir explorando'}
+        {cartContent.explore_cta}
       </Link>
 
       <div className="flex items-center justify-between mb-8 pb-4 border-b border-border/50">
@@ -100,8 +100,8 @@ export default function CartPage() {
         {isLoggedIn && items.length > 0 && (
           <span className="text-sm font-semibold text-plumbob bg-plumbob/10 px-3 py-1 rounded-full">
             {itemsCount === 1
-              ? cartContent.packages_count?.replace('{{count}}', itemsCount) ?? `${itemsCount} paquete`
-              : cartContent.packages_count_plural?.replace('{{count}}', itemsCount) ?? `${itemsCount} paquetes`}
+              ? cartContent.packages_count?.replace('{{count}}', itemsCount)
+              : cartContent.packages_count_plural?.replace('{{count}}', itemsCount)}
           </span>
         )}
       </div>
@@ -132,7 +132,7 @@ export default function CartPage() {
           <h2 className="text-2xl font-bold text-text-main">{cartContent.checkout_success_title}</h2>
           <p className="text-sm text-text-sub">{cartContent.checkout_success_subtitle}</p>
           <p className="text-sm text-text-dim">
-            {cartContent.checkout_success_items?.replace('{{count}}', checkoutSuccess.itemCount) ?? `${checkoutSuccess.itemCount} paquete(s) comprado(s)`}
+            {cartContent.checkout_success_items?.replace('{{count}}', checkoutSuccess.itemCount)}
           </p>
           <p className="text-xl font-bold text-plumbob">
             {cartContent.checkout_success_total}: ${Number(checkoutSuccess.totalPrice).toLocaleString('es-CO')}
@@ -155,7 +155,7 @@ export default function CartPage() {
           <Alert variant="error" className="max-w-md">
             {checkoutError}
           </Alert>
-          <div className="flex gap-3 mt-2">
+          <div className="flex flex-col sm:flex-row flex-wrap gap-3 mt-2 items-center">
             <Button variant="secondary" onClick={() => { setCheckoutError(null); setShowCheckoutForm(true) }}>
               {cartContent.checkout_error_retry}
             </Button>

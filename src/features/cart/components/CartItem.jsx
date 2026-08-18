@@ -17,7 +17,7 @@ function CartItem({ item, onRemove, removing, onUpdateItem }) {
   const platformOptions = parsePlatforms(
     availablePlatformsStr,
     item.ownedPlatforms || [],
-    detailContent.already_owned_option || '(Ya adquirida)'
+    detailContent.already_owned_option
   )
   const languageOptions = parseLanguages(availableLanguagesStr)
 

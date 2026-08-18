@@ -4,7 +4,6 @@ import { buyDirect } from '../../../shared/services/buys'
 import useContent from '../../../shared/hooks/useContent'
 import { getFriendlyError } from '../../../shared/utils/errors'
 import lang from '../../../shared/lang'
-import { expansionPacks, getTranslatedPack } from '../../../data/expansionPacks'
 
 export default function useExpansionDetail(id, email) {
   const { content: detailContent } = useContent('landing.detail')
@@ -30,29 +29,17 @@ export default function useExpansionDetail(id, email) {
     setBuyError(null)
     setShowForm(false)
 
-    const findLocalFallback = () =>
-      expansionPacks.find(
-        (p) => p.id === numericId || String(p.id) === String(id)
-      )
-
     const currentLang = lang.get()
 
     getExtensionById(numericId, currentLang)
       .then((result) => {
         if (!cancelled) {
-          const raw = result || findLocalFallback() || null
-          setPack(getTranslatedPack(raw, currentLang))
+          setPack(result || null)
         }
       })
       .catch(() => {
         if (!cancelled) {
-          const fallback = findLocalFallback()
-          if (fallback) {
-            setPack(getTranslatedPack(fallback, currentLang))
-            setError(null)
-          } else {
-            setError(detailContent.not_found)
-          }
+          setError(detailContent.not_found)
         }
       })
       .finally(() => {
@@ -65,17 +52,12 @@ export default function useExpansionDetail(id, email) {
       getExtensionById(numericId, newLang)
         .then((result) => {
           if (!cancelled) {
-            const raw = result || findLocalFallback() || null
-            setPack(getTranslatedPack(raw, newLang))
+            setPack(result || null)
           }
         })
         .catch(() => {
           if (!cancelled) {
-            const fallback = findLocalFallback()
-            if (fallback) {
-              setPack(getTranslatedPack(fallback, newLang))
-              setError(null)
-            }
+            setError(detailContent.not_found)
           }
         })
         .finally(() => {

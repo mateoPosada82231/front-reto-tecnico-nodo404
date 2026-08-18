@@ -29,6 +29,7 @@ function ExpansionDetailPage() {
     showForm,
     setShowForm,
     submitBuy,
+    resetBuy,
     detailContent,
     errorsContent,
   } = useExpansionDetail(id, email);
@@ -171,7 +172,7 @@ function ExpansionDetailPage() {
       )}
 
       {buySuccess && (
-        <Alert variant="success" className="mb-4" autoDismiss={5000} onDismiss={() => {}}>
+        <Alert variant="success" className="mb-4" autoDismiss={5000} onDismiss={resetBuy}>
           <span className="inline-flex items-center gap-1.5">
             {detailContent.success_message}
           </span>
