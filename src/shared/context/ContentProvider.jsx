@@ -83,6 +83,10 @@ const FALLBACK = {
     beta_badge_label: 'Beta',
     beta_only_notice: 'Esta extensión es exclusiva para beta testers. Conviértete en beta para adquirirla.',
     beta_only_cta: 'Quiero ser beta tester',
+    buy_another_platform: 'Comprar otra plataforma',
+    in_library_badge: 'En biblioteca ({{platforms}})',
+    view_in_cart: 'Ver en carrito',
+    already_owned_option: '(Ya adquirida)',
   },
   'auth.login': {
     title: 'Iniciar Sesión',
@@ -379,6 +383,10 @@ const FALLBACK_EN = {
     beta_badge_label: 'Beta',
     beta_only_notice: 'This extension is exclusive to beta testers. Become one to purchase it.',
     beta_only_cta: 'Become a beta tester',
+    buy_another_platform: 'Buy for another platform',
+    in_library_badge: 'In library ({{platforms}})',
+    view_in_cart: 'View in cart',
+    already_owned_option: '(Already owned)',
   },
   'auth.login': {
     title: 'Log In',
