@@ -8,6 +8,7 @@ import BetaTesterModal from './BetaTesterModal'
 import useHeader from '../hooks/useHeader'
 import useContent from '../hooks/useContent'
 import useCartStore from '../stores/useCartStore'
+import useCartUIStore from '../stores/useCartUIStore'
 import lang from '../lang'
 
 const navLinkClass = ({ isActive }) =>
@@ -45,6 +46,7 @@ function Header() {
 
   const itemsCount = useCartStore((state) => state.itemsCount)
   const fetchCart = useCartStore((state) => state.fetchCart)
+  const cartOpen = useCartUIStore((state) => state.open)
 
   useEffect(() => {
     if (isLoggedIn && email) fetchCart(email)

@@ -7,7 +7,6 @@ import useContent from '../../../shared/hooks/useContent'
 import useAuthStore from '../../../shared/stores/useAuthStore'
 import useCartStore from '../../../shared/stores/useCartStore'
 import useCartUIStore from '../../../shared/stores/useCartUIStore'
-import { parsePlatforms } from '../../../shared/utils/extensionOptions'
 
 export default function ExpansionGrid() {
   const navigate = useNavigate()
@@ -26,7 +25,7 @@ export default function ExpansionGrid() {
     }
   }, [isLoggedIn, email, fetchPurchases])
 
-  const handleAddToCart = async (pack, isInCart, ownedPlatforms = []) => {
+  const handleAddToCart = async (packId, isInCart, ownedPlatforms = []) => {
     if (!isLoggedIn) {
       navigate('/login')
       return
@@ -35,16 +34,15 @@ export default function ExpansionGrid() {
       navigate('/car')
       return
     }
+    // Select first non-owned platform automatically
+    const availablePlatforms = ['PC', 'PS5', 'XBOX'].filter((p) => !ownedPlatforms.includes(p))
+    const platformToAssign = availablePlatforms[0] || 'PS5'
 
-    const platformOptions = parsePlatforms(pack.platforms || pack.platform, ownedPlatforms)
-    const availableOpt = platformOptions.find((p) => !p.disabled)
-    const platformToAssign = availableOpt?.value || platformOptions[0]?.value || 'PC'
-
-    setAddingId(pack.id)
+    setAddingId(packId)
     try {
       await addItem({
         email,
-        extensionId: pack.id,
+        extensionId: packId,
         platform: platformToAssign,
         language: 'Español',
       })
@@ -132,7 +130,7 @@ export default function ExpansionGrid() {
                 price={pack.price ? pack.price.toLocaleString('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }) : ''}
                 ctaLabel={content.cta_text}
                 href={`/expansion/${pack.id}`}
-                onAddToCart={isLoggedIn ? () => handleAddToCart(pack, isInCart, purchasedPlatforms) : null}
+                onAddToCart={isLoggedIn ? () => handleAddToCart(pack.id, isInCart, purchasedPlatforms) : null}
                 adding={addingId === pack.id}
                 purchasedPlatforms={purchasedPlatforms}
                 isInCart={isInCart}

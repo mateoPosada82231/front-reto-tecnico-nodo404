@@ -312,9 +312,9 @@ function CartDrawer() {
               <Button
                 variant="secondary"
                 className="w-full text-xs font-bold uppercase tracking-wider border-border/80"
-                onClick={() => { close(); navigate('/cart') }}
+                onClick={() => { close(); navigate('/car') }}
               >
-                VER CARRITO COMPLETO
+                {(cartContent.view_full_cart || 'VER CARRITO COMPLETO').toUpperCase()}
               </Button>
             </div>
 

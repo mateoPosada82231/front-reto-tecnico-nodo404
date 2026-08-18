@@ -69,8 +69,8 @@ function CartItem({ item, onRemove, removing, isHighlighted }) {
           )}
         </div>
 
-        {/* Dynamic Selectors in Cart Line: Platform & Language */}
-        <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 mt-1.5 text-xs text-text-dim">
+        {/* Dynamic Selectors in Cart Line: Responsive flex-wrap container with truncated selects */}
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 mt-1.5 text-xs text-text-dim">
           <div className="flex items-center gap-1 min-w-0 shrink-0">
             <span className="text-[11px] text-text-sub shrink-0">{cartContent.platform_label || 'Plataforma'}:</span>
             <select
@@ -86,7 +86,7 @@ function CartItem({ item, onRemove, removing, isHighlighted }) {
             </select>
           </div>
 
-          <div className="flex items-center gap-1 min-w-0 shrink-0">
+          <div className="flex items-center gap-1 shrink-0">
             <span className="text-[11px] text-text-sub shrink-0">{cartContent.language_label || 'Idioma'}:</span>
             <select
               value={item.language || languageOptions[0]?.value || 'ES'}
