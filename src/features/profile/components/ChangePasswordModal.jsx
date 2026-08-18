@@ -32,10 +32,7 @@ export default function ChangePasswordModal({ open, onClose }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const ok = await submit({ validation, errorsContent, content })
-    if (ok) {
-      setTimeout(() => onClose?.(), 1500)
-    }
+    await submit({ validation, errorsContent, content })
   }
 
   const passwordRequirements = buildPasswordRequirements(validation)
@@ -63,6 +60,7 @@ export default function ChangePasswordModal({ open, onClose }) {
       footer={null}
       size="md"
       closeAriaLabel={common.close_aria}
+      autoDismiss={isSuccess ? 1500 : undefined}
     >
       {isSuccess ? (
         <div className="text-center">

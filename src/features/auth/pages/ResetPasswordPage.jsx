@@ -99,7 +99,7 @@ function ResetPasswordPage() {
         className="w-full max-w-md space-y-5 rounded-2xl bg-surface border border-border/50 p-8 shadow-2xl shadow-black/20"
       >
         {success && (
-          <Alert variant="success">
+          <Alert variant="success" autoDismiss={5000}>
             ¡Contraseña actualizada! Redirigiendo al login...
           </Alert>
         )}

@@ -15,7 +15,7 @@ export default function BetaTesterModal({
   const { content } = useContent('beta_modal')
 
   return (
-    <Modal open={open} onClose={onClose} size="md" closeAriaLabel={content.close_aria}>
+    <Modal open={open} onClose={onClose} size="md" closeAriaLabel={content.close_aria} autoDismiss={success ? 7000 : undefined}>
       {success ? (
         <div className="text-center">
           <div className="flex justify-center mb-5">
