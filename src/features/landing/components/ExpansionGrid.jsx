@@ -7,6 +7,7 @@ import useExtensionSearch from '../../../shared/hooks/useExtensionSearch'
 import useContent from '../../../shared/hooks/useContent'
 import useAuthStore from '../../../shared/stores/useAuthStore'
 import useCartStore from '../../../shared/stores/useCartStore'
+import useOwnedPlatforms from '../../../shared/hooks/useOwnedPlatforms'
 import { parsePlatforms } from '../../../shared/utils/extensionOptions'
 
 export default function ExpansionGrid() {
@@ -16,8 +17,9 @@ export default function ExpansionGrid() {
   const { content: searchContent } = useContent('extensions.search')
   const { query, setQuery, results, isSearching } = useExtensionSearch(extensions)
 
-  const { isLoggedIn, email, user } = useAuthStore()
+  const { isLoggedIn, email } = useAuthStore()
   const { items: cartItems, addItem } = useCartStore()
+  const { ownedMap } = useOwnedPlatforms()
 
   if (loading) {
     return (
@@ -72,10 +74,7 @@ export default function ExpansionGrid() {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 3xl:grid-cols-5 4k:grid-cols-6 gap-6">
           {results.map((pack, index) => {
-            const ownedPlatforms =
-              pack.ownedPlatforms ||
-              user?.purchasedPlatforms?.[pack.id] ||
-              (pack.isPurchased && pack.platform ? [pack.platform] : [])
+            const ownedPlatforms = ownedMap[pack.id] || []
 
             const parsedPlatforms = parsePlatforms(
               pack.platforms || 'PC, PS5, Xbox',

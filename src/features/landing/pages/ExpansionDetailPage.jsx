@@ -6,6 +6,7 @@ import useAuthStore from "../../../shared/stores/useAuthStore";
 import useBetaModalStore from "../../../shared/stores/useBetaModalStore";
 import useCartStore from "../../../shared/stores/useCartStore";
 import useCartUIStore from "../../../shared/stores/useCartUIStore";
+import useOwnedPlatforms from "../../../shared/hooks/useOwnedPlatforms";
 import Button from "../../../shared/components/Button";
 import Skeleton from "../../../shared/components/Skeleton";
 import Alert from "../../../shared/components/Alert";
@@ -19,6 +20,7 @@ function ExpansionDetailPage() {
   const addItem = useCartStore((state) => state.addItem);
   const { open: openCart } = useCartUIStore();
   const openBetaModal = useBetaModalStore((state) => state.open);
+  const { ownedMap } = useOwnedPlatforms();
   const {
     pack,
     loading,
@@ -83,6 +85,7 @@ function ExpansionDetailPage() {
   };
 
   const isBetaLocked = isLoggedIn && !buySuccess && pack.isPublic === false && !isBetaTester;
+  const ownedPlatforms = ownedMap[pack.id] || [];
 
   return (
     <div className="max-w-3xl mx-auto p-6 sm:p-10">
@@ -232,6 +235,8 @@ function ExpansionDetailPage() {
               onSubmit={submitBuy}
               onCancel={() => setShowForm(false)}
               buying={buying}
+              pack={pack}
+              ownedPlatforms={ownedPlatforms}
             />
           )}
           {showCartForm && (
@@ -239,6 +244,8 @@ function ExpansionDetailPage() {
               onSubmit={handleAddToCart}
               onCancel={() => setShowCartForm(false)}
               loading={addingToCart}
+              pack={pack}
+              ownedPlatforms={ownedPlatforms}
             />
           )}
         </div>
