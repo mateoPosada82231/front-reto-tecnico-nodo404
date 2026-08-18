@@ -2,14 +2,14 @@
  * Dynamically parses comma-separated platform strings from an extension
  * (e.g. "PC, Mac, PlayStation, Xbox") into normalized option objects.
  */
-export function parsePlatforms(platformsStr, ownedPlatforms = []) {
+export function parsePlatforms(platformsStr, ownedPlatforms = [], alreadyOwnedLabel = ' (Ya adquirida)') {
   if (!platformsStr || typeof platformsStr !== 'string') {
     const defaults = ['PC', 'PlayStation', 'Xbox']
     return defaults.map((p) => {
       const isOwned = ownedPlatforms.some((op) => op.toLowerCase() === p.toLowerCase())
       return {
         value: p,
-        label: p + (isOwned ? ' (Ya adquirida)' : ''),
+        label: p + (isOwned ? ` ${alreadyOwnedLabel}`.replace(/\s+/g, ' ') : ''),
         disabled: isOwned,
       }
     })
@@ -27,7 +27,7 @@ export function parsePlatforms(platformsStr, ownedPlatforms = []) {
 
     return {
       value: raw,
-      label: raw + (isOwned ? ' (Ya adquirida)' : ''),
+      label: raw + (isOwned ? ` ${alreadyOwnedLabel}`.replace(/\s+/g, ' ') : ''),
       disabled: isOwned,
     }
   })
