@@ -115,10 +115,16 @@ function Header() {
 
           {isLoggedIn && (
             <div className="flex items-center gap-3 ml-2 pl-4 border-l border-border/50">
-              <button
-                onClick={cartOpen}
+              <NavLink
+                to="/car"
                 aria-label={cartContent.aria_label}
-                className="relative p-2 rounded-lg text-text-dim hover:text-plumbob hover:bg-plumbob/10 transition-all duration-200 cursor-pointer"
+                className={({ isActive }) =>
+                  `relative p-2 rounded-lg transition-all duration-200 cursor-pointer ${
+                    isActive
+                      ? "text-plumbob bg-plumbob/10"
+                      : "text-text-dim hover:text-plumbob hover:bg-plumbob/10"
+                  }`
+                }
               >
                 <ShoppingCart className="w-4 h-4" />
                 {itemsCount > 0 && (
@@ -126,7 +132,7 @@ function Header() {
                     {itemsCount}
                   </span>
                 )}
-              </button>
+              </NavLink>
               <NavLink
                 to="/perfil"
                 className="p-2 rounded-lg text-text-dim hover:text-plumbob hover:bg-plumbob/10 transition-all duration-200 cursor-pointer"
@@ -163,11 +169,17 @@ function Header() {
         </nav>
 
         <div className="flex items-center gap-1 md:hidden">
-          {isLoggedIn && (
-            <button
-              onClick={cartOpen}
+          {isLoggedIn === true && (
+            <NavLink
+              to="/car"
               aria-label={cartContent.aria_label}
-              className="relative p-2 rounded-lg text-text-sub hover:text-plumbob hover:bg-surface/50 transition-colors cursor-pointer"
+              className={({ isActive }) =>
+                `relative p-2 rounded-lg transition-colors cursor-pointer ${
+                  isActive
+                    ? "text-plumbob bg-surface/50"
+                    : "text-text-sub hover:text-plumbob hover:bg-surface/50"
+                }`
+              }
             >
               <ShoppingCart className="w-5 h-5" />
               {itemsCount > 0 && (
@@ -175,7 +187,7 @@ function Header() {
                   {itemsCount}
                 </span>
               )}
-            </button>
+            </NavLink>
           )}
           <LanguageToggle />
           <ThemeToggle theme={theme} onToggle={toggleTheme} />

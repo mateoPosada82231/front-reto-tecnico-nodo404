@@ -1,16 +1,42 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import useContent from "../../../shared/hooks/useContent";
 import Button from "../../../shared/components/Button";
 import SelectField from "../../../shared/components/SelectField";
-import { PLATFORM_OPTIONS } from "../../../shared/constants/platformOptions";
+import { parsePlatforms, parseLanguages } from "../../../shared/utils/extensionOptions";
 
-function BuyDirectForm({ onSubmit, onCancel, buying }) {
+function BuyDirectForm({ onSubmit, onCancel, buying, pack, ownedPlatforms = [] }) {
   const { content } = useContent("landing.detail");
   const { content: errorsContent } = useContent("errors.common");
+
+  const platformOptions = useMemo(() => {
+    return parsePlatforms(
+      pack?.platforms || "PC, PS5, Xbox",
+      ownedPlatforms,
+      content.already_owned_option || "(Ya adquirida)"
+    );
+  }, [pack?.platforms, ownedPlatforms, content.already_owned_option]);
+
+  const languageOptions = useMemo(() => {
+    const parsed = parseLanguages(pack?.languages || "ES, EN");
+    if (parsed.length > 0) return parsed;
+    return [
+      { value: "ES", label: content.language_es || "Español" },
+      { value: "EN", label: content.language_en || "Inglés" },
+    ];
+  }, [pack?.languages, content.language_es, content.language_en]);
+
+  const initialPlatform = useMemo(() => {
+    return platformOptions.find((o) => !o.disabled)?.value || platformOptions[0]?.value || "PC";
+  }, [platformOptions]);
+
+  const initialLanguage = useMemo(() => {
+    return languageOptions[0]?.value || "ES";
+  }, [languageOptions]);
+
   const [formData, setFormData] = useState({
     paymentMethod: "CARD",
-    language: "ES",
-    platform: "PC",
+    language: initialLanguage,
+    platform: initialPlatform,
   });
   const [errors, setErrors] = useState({});
 
@@ -18,10 +44,7 @@ function BuyDirectForm({ onSubmit, onCancel, buying }) {
     { value: "CARD", label: content.payment_method_card },
     { value: "PAYPAL", label: content.payment_method_paypal },
   ];
-  const LANGUAGE_OPTIONS = [
-    { value: "ES", label: content.language_es },
-    { value: "EN", label: content.language_en },
-  ];
+
   const validate = () => {
     const errs = {};
     if (!formData.paymentMethod) errs.paymentMethod = errorsContent.required_field;
@@ -58,7 +81,7 @@ function BuyDirectForm({ onSubmit, onCancel, buying }) {
         name="language"
         value={formData.language}
         onChange={(e) => handleChange("language", e.target.value)}
-        options={LANGUAGE_OPTIONS}
+        options={languageOptions}
         error={errors.language}
         required
       />
@@ -67,7 +90,7 @@ function BuyDirectForm({ onSubmit, onCancel, buying }) {
         name="platform"
         value={formData.platform}
         onChange={(e) => handleChange("platform", e.target.value)}
-        options={PLATFORM_OPTIONS}
+        options={platformOptions}
         error={errors.platform}
         required
       />

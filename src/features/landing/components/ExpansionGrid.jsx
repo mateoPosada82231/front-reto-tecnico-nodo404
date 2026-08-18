@@ -5,12 +5,19 @@ import ExtensionSearch from '../../../shared/components/ExtensionSearch'
 import useExpansionGrid from '../hooks/useExpansionGrid'
 import useExtensionSearch from '../../../shared/hooks/useExtensionSearch'
 import useContent from '../../../shared/hooks/useContent'
+import useAuthStore from '../../../shared/stores/useAuthStore'
+import useCartStore from '../../../shared/stores/useCartStore'
+import { parsePlatforms } from '../../../shared/utils/extensionOptions'
 
 export default function ExpansionGrid() {
   const { extensions, loading, error } = useExpansionGrid()
   const { content } = useContent('landing.grid')
+  const { content: detailContent } = useContent('landing.detail')
   const { content: searchContent } = useContent('extensions.search')
   const { query, setQuery, results, isSearching } = useExtensionSearch(extensions)
+
+  const { isLoggedIn, email, user } = useAuthStore()
+  const { items: cartItems, addItem } = useCartStore()
 
   if (loading) {
     return (
@@ -64,21 +71,79 @@ export default function ExpansionGrid() {
         </p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 3xl:grid-cols-5 4k:grid-cols-6 gap-6">
-          {results.map((pack, index) => (
-            <div key={pack.id} style={{ animationDelay: `${index * 60}ms` }} className="animate-slide-up">
-              <Card
-                image={pack.image || pack.imagen || ''}
-                category={pack.category}
-                title={pack.name}
-                description={pack.description || pack.aboutGame || ''}
-                price={pack.price ? pack.price.toLocaleString('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }) : ''}
-                ctaLabel={content.cta_text}
-                href={`/expansion/${pack.id}`}
-                isBeta={pack.isPublic === false}
-                betaBadgeLabel={content.beta_badge_label}
-              />
-            </div>
-          ))}
+          {results.map((pack, index) => {
+            const ownedPlatforms =
+              pack.ownedPlatforms ||
+              user?.purchasedPlatforms?.[pack.id] ||
+              (pack.isPurchased && pack.platform ? [pack.platform] : [])
+
+            const parsedPlatforms = parsePlatforms(
+              pack.platforms || 'PC, PS5, Xbox',
+              ownedPlatforms
+            )
+            const firstAvailable =
+              parsedPlatforms.find((p) => !p.disabled)?.value || 'PC'
+
+            const isInCart = cartItems.some(
+              (item) =>
+                item.extensionId === pack.id ||
+                item.extension?.id === pack.id ||
+                String(item.extensionId) === String(pack.id)
+            )
+
+            const inLibraryText =
+              ownedPlatforms.length > 0
+                ? (detailContent.in_library_badge || 'En biblioteca ({{platforms}})').replace(
+                    '{{platforms}}',
+                    ownedPlatforms.join(', ')
+                  )
+                : null
+
+            const handleAddToCart = isLoggedIn
+              ? () => {
+                  addItem({
+                    email,
+                    extensionId: pack.id,
+                    platform: firstAvailable,
+                    language: 'ES',
+                  })
+                }
+              : null
+
+            return (
+              <div
+                key={pack.id}
+                style={{ animationDelay: `${index * 60}ms` }}
+                className="animate-slide-up"
+              >
+                <Card
+                  image={pack.image || pack.imagen || ''}
+                  category={pack.category}
+                  title={pack.name}
+                  description={pack.description || pack.aboutGame || ''}
+                  price={
+                    pack.price
+                      ? pack.price.toLocaleString('es-CO', {
+                          style: 'currency',
+                          currency: 'COP',
+                          minimumFractionDigits: 0,
+                        })
+                      : ''
+                  }
+                  ctaLabel={content.cta_text}
+                  href={`/expansion/${pack.id}`}
+                  isBeta={pack.isPublic === false}
+                  betaBadgeLabel={content.beta_badge_label}
+                  ownedPlatforms={ownedPlatforms}
+                  isInCart={isInCart}
+                  inLibraryBadgeLabel={inLibraryText}
+                  buyAnotherPlatformLabel={detailContent.buy_another_platform}
+                  viewInCartLabel={detailContent.view_in_cart}
+                  onAddToCart={handleAddToCart}
+                />
+              </div>
+            )
+          })}
         </div>
       )}
     </section>
