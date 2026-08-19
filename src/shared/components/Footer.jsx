@@ -6,7 +6,7 @@ function Footer() {
 
   return (
     <footer className="w-full border-t border-border/50 py-8 mt-auto">
-      <div className="max-w-7xl mx-auto px-4 text-center text-sm text-text-dim md:px-8">
+      <div className="max-w-7xl 3xl:max-w-[80rem] 4k:max-w-[100rem] mx-auto px-4 text-center text-sm 3xl:text-base text-text-dim md:px-8 3xl:px-12 4k:px-16">
         <p>&copy; {new Date().getFullYear()} Sims Expansion Store. {content.copyright}</p>
         <Link
           to="/about"

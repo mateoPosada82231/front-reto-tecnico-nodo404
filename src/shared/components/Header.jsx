@@ -19,12 +19,10 @@ import useCartStore from "../stores/useCartStore";
 import lang from "../lang";
 
 const navLinkClass = ({ isActive }) =>
-  `text-sm font-medium transition-colors duration-200 md:text-base ${
-    isActive ? "text-plumbob" : "text-text-sub hover:text-text-main"
-  }`;
+  `text-sm font-medium transition-colors duration-200 md:text-base 3xl:text-lg ${isActive ? "text-plumbob" : "text-text-sub hover:text-text-main"}`;
 
 const mobileLinkClass = ({ isActive }) =>
-  `block text-sm font-medium py-2 ${isActive ? "text-plumbob" : "text-text-sub"}`;
+  `block text-sm font-medium py-2 3xl:text-base ${isActive ? "text-plumbob" : "text-text-sub"}`;
 
 function Header() {
   const { content: headerContent } = useContent("header");
@@ -70,7 +68,7 @@ function Header() {
     <header className="w-full sticky top-0 z-50 bg-surface border-b border-border">
       {isLoggedIn && !profileComplete && (
         <div className="bg-azure/10 border-b border-azure/20 px-4 py-2 md:px-8">
-          <div className="max-w-7xl mx-auto flex items-center justify-center gap-2 text-xs md:text-sm text-azure">
+          <div className="max-w-7xl 3xl:max-w-[80rem] 4k:max-w-[100rem] mx-auto flex items-center justify-center gap-2 text-xs md:text-sm 3xl:text-base text-azure">
             <AlertCircle className="w-4 h-4 shrink-0" />
             <span>
               {headerContent.profile_warning_prefix}{" "}
@@ -82,7 +80,7 @@ function Header() {
         </div>
       )}
 
-      <div className="max-w-7xl mx-auto flex items-center justify-between px-4 py-3 md:px-8">
+      <div className="max-w-7xl 3xl:max-w-[80rem] 4k:max-w-[100rem] mx-auto flex items-center justify-between px-4 py-3 md:px-8 3xl:px-12 4k:px-16">
         <Logo />
 
         <nav className="hidden md:flex items-center gap-6">
@@ -126,7 +124,7 @@ function Header() {
               >
                 <ShoppingCart className="w-4 h-4" />
                 {itemsCount > 0 && (
-                  <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-plumbob text-[0.625rem] font-bold text-white">
+                  <span className="absolute -top-1 -right-1 flex h-4 w-4 3xl:h-5 3xl:w-5 items-center justify-center rounded-full bg-plumbob text-[0.625rem] 3xl:text-xs font-bold text-white">
                     {itemsCount}
                   </span>
                 )}
@@ -138,7 +136,7 @@ function Header() {
               >
                 <User className="w-4 h-4" />
               </NavLink>
-              <span className="text-sm font-medium text-text-sub truncate max-w-[8.75rem]">
+              <span className="text-sm 3xl:text-base font-medium text-text-sub truncate max-w-[8.75rem] 3xl:max-w-[12rem]">
                 {user?.fullName || email}
               </span>
               {isBetaTester && (
@@ -181,7 +179,7 @@ function Header() {
             >
               <ShoppingCart className="w-5 h-5" />
               {itemsCount > 0 && (
-                <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-plumbob text-[0.625rem] font-bold text-white">
+                <span className="absolute -top-1 -right-1 flex h-4 w-4 3xl:h-5 3xl:w-5 items-center justify-center rounded-full bg-plumbob text-[0.625rem] 3xl:text-xs font-bold text-white">
                   {itemsCount}
                 </span>
               )}

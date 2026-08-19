@@ -111,7 +111,7 @@ function CartDrawer() {
         role="dialog"
         aria-modal="true"
         aria-label={cartContent.aria_label}
-        className={`fixed top-0 right-0 z-[70] h-full w-full max-w-md bg-bg border-l border-border/60 shadow-2xl transition-transform duration-300 flex flex-col ${
+        className={`fixed top-0 right-0 z-[70] h-full w-full max-w-md 3xl:max-w-lg 4k:max-w-xl bg-bg border-l border-border/60 shadow-2xl transition-transform duration-300 flex flex-col ${
           isOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >

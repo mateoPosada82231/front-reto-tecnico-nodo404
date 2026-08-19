@@ -37,7 +37,7 @@ function LoginForm() {
     <form
       noValidate
       onSubmit={submit}
-      className="w-full max-w-md space-y-5 rounded-2xl bg-surface border border-border/50 p-8 shadow-2xl shadow-black/20 animate-scale-in"
+      className="w-full max-w-md 3xl:max-w-lg 4k:max-w-xl space-y-5 rounded-2xl bg-surface border border-border/50 p-8 3xl:p-10 4k:p-12 shadow-2xl shadow-black/20 animate-scale-in"
     >
       {success && (
         <Alert variant="success" autoDismiss={1500} onDismiss={reset}>

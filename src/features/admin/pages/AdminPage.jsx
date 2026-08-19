@@ -258,14 +258,14 @@ function AdminPage() {
   ]
 
   return (
-    <div className="max-w-4xl mx-auto">
-      <div className="rounded-2xl border border-border bg-surface/40 p-6 md:p-8">
+    <div className="max-w-4xl 3xl:max-w-5xl 4k:max-w-6xl mx-auto">
+      <div className="rounded-2xl border border-border bg-surface/40 p-6 md:p-8 3xl:p-10 4k:p-12">
         <div className="flex items-center gap-3 border-b border-border/60 pb-6 mb-6">
           <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-plumbob/15 border border-plumbob/30">
             <ShieldCheck className="h-6 w-6 text-plumbob" aria-hidden="true" />
           </div>
           <div>
-            <h1 className="text-xl font-semibold text-text-main md:text-2xl">
+            <h1 className="text-xl font-semibold text-text-main md:text-2xl 3xl:text-3xl">
               {content.title}
             </h1>
           </div>

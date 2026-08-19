@@ -73,6 +73,7 @@ export default function Modal({
     md: 'max-w-md',
     lg: 'max-w-lg',
     xl: 'max-w-2xl',
+    xxl: 'max-w-4xl 3xl:max-w-5xl 4k:max-w-6xl',
   }
 
   const handleBackdrop = (e) => {

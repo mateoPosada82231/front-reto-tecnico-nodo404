@@ -70,12 +70,12 @@ function ProfilePage() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto">
-      <div className="rounded-2xl border border-border bg-surface/40 p-6 md:p-8">
+    <div className="max-w-2xl 3xl:max-w-3xl 4k:max-w-4xl mx-auto">
+      <div className="rounded-2xl border border-border bg-surface/40 p-6 md:p-8 3xl:p-10 4k:p-12">
         <div className="flex flex-col items-center gap-3 text-center border-b border-border/60 pb-6 mb-6">
           <ProfileAvatar name={user?.fullName} />
           <div>
-            <h1 className="text-xl font-semibold text-text-main md:text-2xl">
+            <h1 className="text-xl font-semibold text-text-main md:text-2xl 3xl:text-3xl">
               {user?.fullName || content.name_fallback}
             </h1>
             <p className="text-sm text-text-sub">{email}</p>

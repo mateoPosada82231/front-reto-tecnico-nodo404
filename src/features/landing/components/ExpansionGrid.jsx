@@ -50,8 +50,8 @@ export default function ExpansionGrid() {
 
   if (loading) {
     return (
-      <section className="w-full max-w-[150rem] mx-auto px-4 py-12">
-        <h2 className="text-2xl md:text-3xl font-extrabold text-text-main mb-10 tracking-tight">
+      <section className="w-full max-w-[150rem] 3xl:max-w-[200rem] 4k:max-w-[250rem] mx-auto px-4 py-12">
+        <h2 className="text-2xl md:text-3xl 3xl:text-4xl font-extrabold text-text-main mb-10 tracking-tight">
           {content.title}
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 3xl:grid-cols-5 4k:grid-cols-6 gap-6">
@@ -72,8 +72,8 @@ export default function ExpansionGrid() {
 
   if (error) {
     return (
-      <section className="w-full max-w-[150rem] mx-auto px-4 py-12">
-        <h2 className="text-2xl md:text-3xl font-extrabold text-text-main mb-10 tracking-tight">
+      <section className="w-full max-w-[150rem] 3xl:max-w-[200rem] 4k:max-w-[250rem] mx-auto px-4 py-12">
+        <h2 className="text-2xl md:text-3xl 3xl:text-4xl font-extrabold text-text-main mb-10 tracking-tight">
           {content.title}
         </h2>
         <p className="text-red-400 text-sm">{content.error_prefix}{error}</p>
@@ -82,9 +82,9 @@ export default function ExpansionGrid() {
   }
 
   return (
-    <section className="w-full max-w-[150rem] mx-auto px-4 py-12 animate-fade-in">
+    <section className="w-full max-w-[150rem] 3xl:max-w-[200rem] 4k:max-w-[250rem] mx-auto px-4 py-12 animate-fade-in">
       <div className="mb-10">
-        <h2 className="text-2xl md:text-3xl font-extrabold text-text-main tracking-tight mb-2">
+        <h2 className="text-2xl md:text-3xl 3xl:text-4xl font-extrabold text-text-main tracking-tight mb-2">
           {content.title}
         </h2>
         <div className="h-1 w-16 rounded-full bg-plumbob/60" />

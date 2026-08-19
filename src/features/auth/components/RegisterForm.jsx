@@ -54,7 +54,7 @@ function RegisterForm() {
     <form
       noValidate
       onSubmit={submit}
-      className="w-full max-w-2xl space-y-5 rounded-2xl bg-surface border border-border/50 p-8 shadow-2xl shadow-black/20 animate-scale-in"
+      className="w-full max-w-2xl 3xl:max-w-3xl 4k:max-w-4xl space-y-5 rounded-2xl bg-surface border border-border/50 p-8 3xl:p-10 4k:p-12 shadow-2xl shadow-black/20 animate-scale-in"
     >
       {success && (
         <Alert variant="success" autoDismiss={3000} onDismiss={reset}>
