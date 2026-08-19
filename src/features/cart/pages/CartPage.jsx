@@ -78,6 +78,7 @@ export default function CartPage() {
       await fetchCart(email)
     } catch (err) {
       setCheckoutError(getFriendlyError(errorsContent, err))
+      setShowCheckoutForm(false)
     } finally {
       setCheckingOut(false)
     }

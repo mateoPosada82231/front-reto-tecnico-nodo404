@@ -48,6 +48,9 @@ const FALLBACK = {
     error_prefix: 'Error al cargar extensiones: ',
     cta_text: 'Ver más',
     beta_badge_label: 'Beta',
+    filter_purchased: 'Compradas',
+    filter_not_purchased: 'No compradas',
+    filter_empty: 'No hay extensiones para mostrar con este filtro.',
   },
   'landing.welcome': {
     title: '¡Bienvenido a Los Sims 4!',
@@ -85,10 +88,7 @@ const FALLBACK = {
     beta_badge_label: 'Beta',
     beta_only_notice: 'Esta extensión es exclusiva para beta testers. Conviértete en beta para adquirirla.',
     beta_only_cta: 'Quiero ser beta tester',
-    buy_another_platform: 'Comprar otra plataforma',
-    in_library_badge: 'En biblioteca ({{platforms}})',
-    view_in_cart: 'Ver en carrito',
-    already_owned_option: '(Ya adquirida)',
+    in_library_badge: 'En biblioteca',
   },
   'auth.login': {
     title: 'Iniciar Sesión',
@@ -368,6 +368,9 @@ const FALLBACK_EN = {
     error_prefix: 'Error loading extensions: ',
     cta_text: 'View more',
     beta_badge_label: 'Beta',
+    filter_purchased: 'Purchased',
+    filter_not_purchased: 'Not purchased',
+    filter_empty: 'No extensions to show with this filter.',
   },
   'landing.welcome': {
     title: 'Welcome to The Sims 4!',
@@ -407,10 +410,7 @@ const FALLBACK_EN = {
     beta_badge_label: 'Beta',
     beta_only_notice: 'This extension is exclusive to beta testers. Become one to purchase it.',
     beta_only_cta: 'Become a beta tester',
-    buy_another_platform: 'Buy for another platform',
-    in_library_badge: 'In library ({{platforms}})',
-    view_in_cart: 'View in cart',
-    already_owned_option: '(Already owned)',
+    in_library_badge: 'In library',
   },
   'auth.login': {
     title: 'Log In',

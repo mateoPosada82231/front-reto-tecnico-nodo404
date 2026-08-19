@@ -20,8 +20,16 @@ function RegisterForm() {
   const { content: validation } = useContent("validation.register");
   const { content: errorsContent } = useContent("errors.common");
   const { config: countries } = useConfig("countries");
-  const { form, errors, serverError, loading, success, handleChange, handleSubmit, reset } =
-    useRegisterFormStore();
+  const {
+    form,
+    errors,
+    serverError,
+    loading,
+    success,
+    handleChange,
+    handleSubmit,
+    reset,
+  } = useRegisterFormStore();
   const [passwordFocused, setPasswordFocused] = useState(false);
 
   useEffect(() => {
@@ -32,7 +40,12 @@ function RegisterForm() {
     handleSubmit(e, {
       validation,
       errorsContent,
-      onSuccess: () => setTimeout(() => navigate("/login"), 3000),
+      onSuccess: () => {
+        setTimeout(() => {
+          navigate("/login");
+          reset();
+        }, 3000);
+      },
     });
 
   const passwordRequirements = buildPasswordRequirements(validation);
@@ -43,7 +56,11 @@ function RegisterForm() {
       onSubmit={submit}
       className="w-full max-w-2xl space-y-5 rounded-2xl bg-surface border border-border/50 p-8 shadow-2xl shadow-black/20 animate-scale-in"
     >
-      {success && <Alert variant="success" autoDismiss={5000} onDismiss={reset}>{content.success_message}</Alert>}
+      {success && (
+        <Alert variant="success" autoDismiss={3000} onDismiss={reset}>
+          {content.success_message}
+        </Alert>
+      )}
 
       {serverError && !success && <Alert variant="error">{serverError}</Alert>}
 
@@ -159,7 +176,10 @@ function RegisterForm() {
 
       <p className="text-center text-sm text-text-sub">
         {content.has_account_text}{" "}
-        <Link to="/login" className="text-plumbob underline hover:text-plumbob-light">
+        <Link
+          to="/login"
+          className="text-plumbob underline hover:text-plumbob-light"
+        >
           {content.has_account_link}
         </Link>
       </p>
