@@ -1,4 +1,5 @@
 import Button from '../../../shared/components/Button'
+import { useNavigate } from 'react-router-dom'
 import { Beaker, CheckCircle } from 'lucide-react'
 
 function Card({
@@ -8,39 +9,20 @@ function Card({
   description,
   price,
   ctaLabel,
-  onCtaClick,
   href,
   isBeta,
   betaBadgeLabel,
   ownedPlatforms = [],
-  isInCart = false,
   inLibraryBadgeLabel,
-  buyAnotherPlatformLabel,
-  viewInCartLabel,
-  onAddToCart,
 }) {
+  const navigate = useNavigate()
   const hasOwnedPlatforms = ownedPlatforms && ownedPlatforms.length > 0
 
-  let activeCtaLabel = ctaLabel
-  if (isInCart) {
-    activeCtaLabel = viewInCartLabel
-  } else if (hasOwnedPlatforms) {
-    activeCtaLabel = buyAnotherPlatformLabel
-  }
-
-  const handleActionClick = (e) => {
-    if (isInCart) {
-      if (onCtaClick) onCtaClick(e)
-    } else if (hasOwnedPlatforms && onAddToCart) {
-      e.preventDefault()
-      onAddToCart()
-    } else if (onCtaClick) {
-      onCtaClick(e)
-    }
-  }
-
   return (
-    <article className="group flex flex-col overflow-hidden rounded-2xl border border-border/50 bg-surface transition-all duration-300 hover:shadow-2xl hover:shadow-plumbob/5 hover:border-plumbob/30 hover:-translate-y-1">
+    <article
+      className="group flex flex-col overflow-hidden rounded-2xl border border-border/50 bg-surface transition-all duration-300 hover:shadow-2xl hover:shadow-plumbob/5 hover:border-plumbob/30 hover:-translate-y-1 cursor-pointer"
+      onClick={() => navigate(href)}
+    >
       <div className="relative overflow-hidden">
         <img
           src={image}
@@ -86,16 +68,13 @@ function Card({
           {price && (
             <span className="text-sm font-bold text-plumbob">{price}</span>
           )}
-          {activeCtaLabel && (
-            <Button
-              variant={isInCart || hasOwnedPlatforms ? 'secondary' : 'ghost'}
-              href={!hasOwnedPlatforms || isInCart ? href : undefined}
-              onClick={handleActionClick}
-              className="text-xs shrink-0"
-            >
-              {activeCtaLabel} &rarr;
-            </Button>
-          )}
+          <Button
+            variant="ghost"
+            href={href}
+            className="text-xs shrink-0"
+          >
+            {ctaLabel} &rarr;
+          </Button>
         </div>
       </div>
     </article>

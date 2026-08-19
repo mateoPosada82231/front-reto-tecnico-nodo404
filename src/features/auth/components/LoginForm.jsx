@@ -11,13 +11,26 @@ function LoginForm() {
   const { content } = useContent("auth.login");
   const { content: placeholders } = useContent("placeholders");
   const { content: errorsContent } = useContent("errors.common");
-  const { form, errors, serverError, loading, success, handleChange, handleSubmit, reset } =
-    useLoginFormStore();
+  const {
+    form,
+    errors,
+    serverError,
+    loading,
+    success,
+    handleChange,
+    handleSubmit,
+    reset,
+  } = useLoginFormStore();
 
   const submit = (e) =>
     handleSubmit(e, {
       errorsContent,
-      onSuccess: () => setTimeout(() => navigate("/"), 1500),
+      onSuccess: () => {
+        setTimeout(() => {
+          navigate("/");
+          reset();
+        }, 1500);
+      },
     });
 
   return (
@@ -26,7 +39,11 @@ function LoginForm() {
       onSubmit={submit}
       className="w-full max-w-md space-y-5 rounded-2xl bg-surface border border-border/50 p-8 shadow-2xl shadow-black/20 animate-scale-in"
     >
-      {success && <Alert variant="success" autoDismiss={5000} onDismiss={reset}>{content.success_message}</Alert>}
+      {success && (
+        <Alert variant="success" autoDismiss={1500} onDismiss={reset}>
+          {content.success_message}
+        </Alert>
+      )}
 
       {serverError && !success && <Alert variant="error">{serverError}</Alert>}
 
@@ -53,7 +70,10 @@ function LoginForm() {
       />
 
       <div className="text-right">
-        <Link to="/forgot-password" className="text-sm text-plumbob underline hover:text-plumbob-light">
+        <Link
+          to="/forgot-password"
+          className="text-sm text-plumbob underline hover:text-plumbob-light"
+        >
           {content.forgot_password_link}
         </Link>
       </div>
@@ -71,7 +91,10 @@ function LoginForm() {
 
       <p className="text-center text-sm text-text-sub">
         {content.no_account_text}{" "}
-        <Link to="/registro" className="text-plumbob underline hover:text-plumbob-light">
+        <Link
+          to="/registro"
+          className="text-plumbob underline hover:text-plumbob-light"
+        >
           {content.no_account_link}
         </Link>
       </p>
