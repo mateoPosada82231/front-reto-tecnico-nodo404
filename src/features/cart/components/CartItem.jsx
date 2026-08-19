@@ -1,25 +1,17 @@
 import { X } from 'lucide-react'
 import useContent from '../../../shared/hooks/useContent'
-import { parsePlatforms, parseLanguages } from '../../../shared/utils/extensionOptions'
 
-function CartItem({ item, onRemove, removing, onUpdateItem }) {
+function CartItem({ item, onRemove, removing }) {
   const { content: cartContent } = useContent('cart')
-  const { content: detailContent } = useContent('landing.detail')
+  const _ = useContent('landing.detail')
   const itemId = item.id ?? item.cartItemId
   const ext = item.extension
   const name = ext?.name ?? item.name ?? item.extensionName ?? item.title
   const image = ext?.image ?? item.image ?? item.extensionImage ?? item.imageUrl
   const price = ext?.price ?? item.price ?? 0
 
-  const availablePlatformsStr = ext?.platforms || item.platformOptions || item.platform || 'PC, PS5, Xbox'
-  const availableLanguagesStr = ext?.languages || item.languageOptions || item.language || 'ES, EN'
-
-  const platformOptions = parsePlatforms(
-    availablePlatformsStr,
-    item.ownedPlatforms || [],
-    detailContent.already_owned_option
-  )
-  const languageOptions = parseLanguages(availableLanguagesStr)
+  const _availablePlatformsStr = ext?.platforms || item.platformOptions || item.platform || 'PC, PS5, Xbox'
+  const _availableLanguagesStr = ext?.languages || item.languageOptions || item.language || 'ES, EN'
 
   return (
     <div className="flex gap-3 py-4 border-b border-border/50 last:border-b-0">
@@ -36,44 +28,16 @@ function CartItem({ item, onRemove, removing, onUpdateItem }) {
         <div className="flex flex-wrap gap-x-3 gap-y-1 mt-1.5 text-xs text-text-dim">
           <div className="flex items-center gap-1">
             <span>{cartContent.platform_label}:</span>
-            {platformOptions.length > 1 ? (
-              <select
-                value={item.platform || ''}
-                onChange={(e) => onUpdateItem?.(itemId, { platform: e.target.value })}
-                className="max-w-[85px] sm:max-w-[110px] truncate bg-surface border border-border/50 rounded px-1 py-0.5 text-text-main focus:outline-none focus:border-plumbob cursor-pointer"
-              >
-                {platformOptions.map((opt) => (
-                  <option key={opt.value} value={opt.value} disabled={opt.disabled}>
-                    {opt.label}
-                  </option>
-                ))}
-              </select>
-            ) : (
-              <span className="max-w-[85px] sm:max-w-[110px] truncate font-medium text-text-main">
-                {item.platform}
-              </span>
-            )}
+            <span className="max-w-[85px] sm:max-w-[110px] truncate font-medium text-text-main">
+              {item.platform}
+            </span>
           </div>
 
           <div className="flex items-center gap-1">
             <span>{cartContent.language_label}:</span>
-            {languageOptions.length > 1 ? (
-              <select
-                value={item.language || ''}
-                onChange={(e) => onUpdateItem?.(itemId, { language: e.target.value })}
-                className="max-w-[85px] sm:max-w-[110px] truncate bg-surface border border-border/50 rounded px-1 py-0.5 text-text-main focus:outline-none focus:border-plumbob cursor-pointer"
-              >
-                {languageOptions.map((opt) => (
-                  <option key={opt.value} value={opt.value}>
-                    {opt.label}
-                  </option>
-                ))}
-              </select>
-            ) : (
-              <span className="max-w-[85px] sm:max-w-[110px] truncate font-medium text-text-main">
-                {item.language}
-              </span>
-            )}
+            <span className="max-w-[85px] sm:max-w-[110px] truncate font-medium text-text-main">
+              {item.language}
+            </span>
           </div>
         </div>
 
