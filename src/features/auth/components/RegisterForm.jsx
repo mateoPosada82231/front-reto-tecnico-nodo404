@@ -105,6 +105,7 @@ function RegisterForm() {
           onChange={handleChange}
           error={errors.birthDate}
           required
+          max={new Date().toISOString().split('T')[0]}
         />
       </div>
 
