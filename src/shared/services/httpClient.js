@@ -41,6 +41,15 @@ function getAuthToken() {
   return useAuthStore.getState().token
 }
 
+function handleSessionExpiration(res) {
+    if (res.status === 401) {
+      useAuthStore.getState().logout()
+      window.alert('Tu sesión ha expirado. Por favor, inicia sesión nuevamente.')
+      return true
+    }
+    return false
+  }
+
 function isPublicEndpoint(url) {
   const publicPatterns = [
     /^\/api\/extensions/,
@@ -95,6 +104,11 @@ async function executeRequest(url, options = {}) {
 
   for (const interceptor of responseInterceptors) {
     await interceptor(res)
+
+    if (handleSessionExpiration(res)) {
+      logResponse(url, res, null)
+      return null
+    }
   }
 
   if (res.status === 204) {

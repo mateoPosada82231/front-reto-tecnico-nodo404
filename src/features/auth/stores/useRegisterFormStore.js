@@ -40,6 +40,11 @@ const useRegisterFormStore = create((set, get) => ({
       newErrors.email = errorsContent.duplicate_email
     if (!form.country) newErrors.country = validation.country_required
     if (!form.birthDate) newErrors.birthDate = validation.birthdate_required
+    else {
+      const birthDate = new Date(form.birthDate)
+      const today = new Date()
+      if (birthDate > today) newErrors.birthDate = 'No se permiten fechas futuras'
+    }
     if (!form.identification.trim()) newErrors.identification = validation.id_required
     if (!form.phone.trim()) newErrors.phone = validation.phone_required
     if (!form.password) newErrors.password = errorsContent.password_required
