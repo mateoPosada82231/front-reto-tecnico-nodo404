@@ -55,6 +55,7 @@ const FALLBACK = {
   'landing.welcome': {
     title: '¡Bienvenido a Los Sims 4!',
     subtitle: 'Explora todos los paquetes de expansión y descubre nuevas aventuras para tus Sims.',
+    message: 'Los datos se cargarán correctamente aun cuando el servidor esté dormido.',
     cta_text: 'Explorar',
     close_aria: 'Cerrar',
   },
@@ -375,6 +376,7 @@ const FALLBACK_EN = {
   'landing.welcome': {
     title: 'Welcome to The Sims 4!',
     subtitle: 'Explore all expansion packs and discover new adventures for your Sims.',
+    message: 'Data will load correctly even when the server is asleep.',
     cta_text: 'Explore',
     close_aria: 'Close',
   },
