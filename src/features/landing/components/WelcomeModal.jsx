@@ -44,6 +44,11 @@ export default function WelcomeModal() {
       <p className="text-text-sub mb-8 leading-relaxed text-sm md:text-base text-center">
         {content.subtitle}
       </p>
+      {content.message && (
+        <p className="text-text-sub mb-8 leading-relaxed text-sm md:text-base text-center opacity-90">
+          {content.message}
+        </p>
+      )}
 
       <div className="flex justify-center">{footer}</div>
     </Modal>
